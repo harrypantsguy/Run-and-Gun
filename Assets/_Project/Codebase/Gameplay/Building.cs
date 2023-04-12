@@ -42,11 +42,7 @@ namespace _Project.Codebase.Gameplay
         {
             Vector2Int gridPos = (Vector2Int)m_wallMap.WorldToCell(pos);
             Vector2 center = m_wallMap.CellToWorld((Vector3Int)gridPos) + new Vector3(.5f, .5f);
-            float dist = .5f;
-            Debug.DrawLine(center + new Vector2(-dist, dist), center + new Vector2(dist, -dist),
-                Color.red, 1f);
-            Debug.DrawLine(center + new Vector2(-dist, -dist), center + new Vector2(dist, dist), 
-                Color.red, 1f);
+            GizmoUtilities.DrawXAtPos(center, 1f, Color.yellow);
             m_wallCells.TryGetValue(gridPos, out Cell cell);
             return cell;
         }
