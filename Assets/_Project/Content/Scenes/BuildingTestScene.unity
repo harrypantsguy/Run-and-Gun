@@ -358,9 +358,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3059835578406978174, guid: f42273713e3ddc9459ea7682fdc39609, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4792121483103183513, guid: f42273713e3ddc9459ea7682fdc39609, type: 3}
       propertyPath: m_Name
       value: TestShooter
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063984097434687676, guid: f42273713e3ddc9459ea7682fdc39609, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6063984097434687676, guid: f42273713e3ddc9459ea7682fdc39609, type: 3}
       propertyPath: m_SortingOrder

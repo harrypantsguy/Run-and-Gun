@@ -8,11 +8,13 @@ namespace _Project.Codebase.Gameplay.Player
     {
         private AimController m_aimController;
         [SerializeField] private Weapon m_weapon;
+        private Camera m_cam;
 
         private void Start()
         {
             m_aimController = GetComponent<AimController>();
             Time.timeScale = .25f;
+            m_cam = Camera.main;
         }
 
         private void Update()
@@ -31,6 +33,22 @@ namespace _Project.Codebase.Gameplay.Player
             
             if (Input.GetKeyDown(KeyCode.Mouse0))
                 m_weapon.Fire();
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                transform.position = ClampVectorToClosestRectEdge(MiscUtilities.WorldMousePos,
+                    new Vector2(m_cam.orthographicSize * m_cam.aspect, m_cam.orthographicSize));
+            }
+        }
+        
+        private Vector2 ClampVectorToClosestRectEdge(Vector2 vector, Vector2 rect)
+        {
+            float x = vector.x;
+            float y = vector.y;
+            if (Mathf.Abs(x) / rect.x > Mathf.Abs(y) / rect.y)
+                return new Vector2(rect.x * Mathf.Sign(vector.x), y);
+            return new Vector2(vector.x, rect.y * Mathf.Sign(vector.y));
+            
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using DanonFramework.Runtime.Core.Utilities;
+using _Project.Codebase.Gameplay.Projectile;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay
@@ -10,12 +10,12 @@ namespace _Project.Codebase.Gameplay
         private int m_pierceStrength;
 
         private const float c_cell_check_cast_dist = .03f;
-        public const float DEFAULT_SPEED = 75f;
-        private const float c_max_travel_dist = 120f;
+        private const float c_default_speed = 150f;
+        private const float c_max_travel_dist = 200f;
             
         public ProjectileSim()
         {
-            m_speed = DEFAULT_SPEED;
+            m_speed = c_default_speed;
             m_pierceStrength = 2;
         }
         
@@ -32,7 +32,9 @@ namespace _Project.Codebase.Gameplay
             float distanceTraveled = 0f;
             Cell cellInsideOf = null;
             float pierceHealth = m_pierceStrength;
-            
+            bool lastCastHitSurface = false;
+            bool piercing = false;
+
             int loop = 0;
             while (true)
             {
@@ -45,11 +47,11 @@ namespace _Project.Codebase.Gameplay
                 }
                 float maxDistRemaining = c_max_travel_dist - distanceTraveled;
                 float castDistance = maxDistRemaining;
-                if (cellInsideOf != null)
-                    castDistance = Mathf.Max(castDistance, CalculateEquivalentTravelDistanceFromDirection(direction) + .01f);
+                //if (cellInsideOf != null)
+                //    castDistance = Mathf.Max(castDistance, CalculateEquivalentTravelDistanceFromDirection(direction) + .01f);
 
                 Vector2 raycastSource = currentPosition;
-                if (cellInsideOf != null)
+                if (lastCastHitSurface)
                     raycastSource += direction * .001f;
                 RaycastHit2D hit = Physics2D.Raycast(raycastSource, direction, castDistance);
                 
@@ -58,54 +60,73 @@ namespace _Project.Codebase.Gameplay
                 //Debug.DrawLine(currentPosition, raycastEnd, Color.red);
                 //GizmoUtilities.DrawXAtPos(raycastEnd, .25f);
 
-                Vector2? exitPoint = null;
+                RaycastHit2D exitHit = new RaycastHit2D();
                 float exitTime = 0f;
-                if (cellInsideOf != null)
+                if (piercing)
                 {
-                   // float castDist = CalculateEquivalentTravelDistanceFromDirection(direction) + .005f;
-                    
-                  //  RaycastHit2D reverseHit = Physics2D.Linecast(currentPosition +
-                   //                                              direction * castDist, currentPosition);
-                   RaycastHit2D reverseHit = Physics2D.Linecast(raycastEnd + direction * .001f, currentPosition);
-                   
-                    //GizmoUtilities.DrawXAtPos(reverseHit.point, .125f, Color.yellow);
-                    exitPoint = reverseHit.point;
-                    exitTime = simTime + (exitPoint.Value - currentPosition).magnitude / m_speed;
+                    exitHit = GetExitRaycast(direction, raycastEnd, currentPosition, simTime, out exitTime);
                 }
                 
                 if (hit.collider == null)
                 {
-                    if (cellInsideOf != null && exitPoint != null) // keep second condition incase
-                        events.Add(new ProjectileEvent(ProjectileEventType.EndPierce, exitPoint.Value, exitTime));
-                    
+                    if (piercing)
+                        events.Add(new ProjectileEvent(ProjectileEventType.EndPierce, exitHit.point, exitHit.normal, exitTime));
+
                     events.Add(new ProjectileEvent(ProjectileEventType.Termination, 
-                        currentPosition + direction * maxDistRemaining, maxDistRemaining / m_speed));
+                    currentPosition + direction * maxDistRemaining, simTime + maxDistRemaining / m_speed));
                     break;
                 }
-                
+
+                lastCastHitSurface = true;
                 distanceTraveled += hit.distance;
                 currentPosition = hit.point;
                 
                 simTime += hit.distance / m_speed;
-                Cell hitCell = Building.building.GetWallAtPos(hit.point - hit.normal * c_cell_check_cast_dist);
-                float newPierceHealth = pierceHealth;//pierceHealth - hitCell.pierceInfluence;
+                Vector2 cellSamplePoint = hit.point - hit.normal * c_cell_check_cast_dist;
+                Cell hitCell = Building.building.GetWallAtPos(cellSamplePoint);
 
-                if (cellInsideOf != null && exitPoint != null && Vector2.Distance(exitPoint.Value, currentPosition) > .005f)
+                if (cellInsideOf != null && Vector2.Distance(exitHit.point, currentPosition) > .005f)
                 {
-                    // keep second condition incase
-                    events.Add(new ProjectileEvent(ProjectileEventType.EndPierce, exitPoint.Value, exitTime));
+                    piercing = false;
+                    events.Add(new ProjectileEvent(ProjectileEventType.EndPierce, exitHit.point, exitTime));
                     cellInsideOf = null;
                 }
 
-                if (newPierceHealth >= 0f)
+                if (hitCell == null)
                 {
-                    if (cellInsideOf == null)
-                        events.Add(new ProjectileEvent(ProjectileEventType.StartPierce, currentPosition, simTime));
-                    cellInsideOf = hitCell;
+                    Debug.Log("hit cell is null");
+                    GizmoUtilities.DrawXAtPos(hit.point, .1f, Color.yellow);
+                    GizmoUtilities.DrawXAtPos(cellSamplePoint, .1f, Color.red);
+                    Debug.Break();
+                    break;
                 }
+
+                if (hitCell.pierceInfluence > 0)
+                {
+                    events.Add(new ProjectileEvent(ProjectileEventType.Ricochet, currentPosition, hit.normal, simTime));
+                    direction = Vector2.Reflect(direction, hit.normal);
+                    continue;
+                }
+                
+                if (!piercing)
+                    events.Add(new ProjectileEvent(ProjectileEventType.StartPierce, currentPosition, hit.normal, simTime));
+                piercing = true;
+
+                cellInsideOf = hitCell;
             }
 
             return events;
+        }
+
+        private RaycastHit2D GetExitRaycast(Vector2 direction, Vector2 raycastEnd, Vector2 currentPosition, float simTime, out float exitTime)
+        {
+            Vector2? exitPoint;
+            RaycastHit2D reverseHit = Physics2D.Linecast(raycastEnd + direction * .001f, currentPosition);
+
+            //GizmoUtilities.DrawXAtPos(reverseHit.point, .125f, Color.yellow);
+            exitPoint = reverseHit.point;
+            exitTime = simTime + (exitPoint.Value - currentPosition).magnitude / m_speed;
+            return reverseHit;
         }
 
         private static float CalculateEquivalentTravelDistanceFromDirection(Vector2 direction)
@@ -115,14 +136,6 @@ namespace _Project.Codebase.Gameplay
 
             float slope = Mathf.Abs(x) > Mathf.Abs(y) ? y / x : x / y;
             return Mathf.Sqrt(slope * slope + 1);
-        }
-
-        public static void SpawnProjectile(Vector2 position, Vector2 direction, float speed)
-        {
-            GameObject newProj = Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.BASIC_PROJECTILE));
-            newProj.transform.right = direction;
-            newProj.transform.position = position;
-            newProj.GetComponent<ProjectileSim>().m_speed = speed;
         }
     }
 }

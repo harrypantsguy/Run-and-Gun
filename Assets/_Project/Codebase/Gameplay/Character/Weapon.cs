@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using _Project.Codebase.Gameplay.Projectile;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Character
@@ -7,11 +7,11 @@ namespace _Project.Codebase.Gameplay.Character
     public class Weapon : MonoBehaviour
     {
         [SerializeField] private Transform m_barrelTipTransform;
-        [SerializeField] private float m_fireDelay;
 
         private float m_lastFireTime;
         private ProjectileSim m_projectileSim;
         private List<ProjectileEvent> m_events;
+        private ProjectileSimReenactor m_reenactor;
 
         private void Start()
         {
@@ -21,46 +21,56 @@ namespace _Project.Codebase.Gameplay.Character
         private void Update()
         {
             m_events = m_projectileSim.Simulate(m_barrelTipTransform.position, m_barrelTipTransform.right);
+            m_reenactor?.Update(Time.deltaTime);
         }
 
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying) return;
-            
-            foreach (ProjectileEvent projEvent in m_events)
+
+            Vector2 lastPos = Vector2.zero;
+            for (var i = 0; i < m_events.Count; i++)
             {
+                var projEvent = m_events[i];
+                
                 float radius = .5f;
-                Color color = Color.white;
+                Color pointColor = Color.white;
+                Color lineColor = Color.white;
                 switch (projEvent.type)
                 {
                     case ProjectileEventType.Position:
                         break;
                     case ProjectileEventType.StartPierce:
-                        color = Color.green;
+                        pointColor = Color.green;
                         break;
                     case ProjectileEventType.EndPierce:
-                        color = Color.magenta;
+                        pointColor = Color.magenta;
+                        lineColor = Color.red;
                         break;
                     case ProjectileEventType.Ricochet:
+                        pointColor = Color.cyan;
                         break;
                     case ProjectileEventType.Termination:
-                        color = Color.red;
+                        pointColor = Color.red;
                         break;
                 }
 
-                Gizmos.color = color;
+                Gizmos.color = pointColor;
                 Gizmos.DrawWireSphere(projEvent.location, radius);
+
+                if (i != 0)
+                {
+                    Gizmos.color = lineColor;
+                    Gizmos.DrawLine(lastPos, projEvent.location);
+                }
+
+                lastPos = projEvent.location;
             }
         }
 
         public void Fire()
         {
-            if (Time.time < m_lastFireTime + m_fireDelay) return;
-            
-            m_lastFireTime = Time.time;
-            
-            //ProjectileSim.SpawnProjectile(m_barrelTipTransform.position, m_barrelTipTransform.right, 
-            //    ProjectileSim.DEFAULT_SPEED);
+            m_reenactor = new ProjectileSimReenactor(m_events);
         }
     }
 }

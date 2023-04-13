@@ -6,5 +6,6 @@ namespace _Project.Codebase
     {
         //public const string PLAYER = "Player";
         public const string BASIC_PROJECTILE = "BasicProjectile";
+        public const string RICOCHET_PARTICLE_SYSTEM = "RicochetParticleSystem";
     }
 }
