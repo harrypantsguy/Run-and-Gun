@@ -33,7 +33,7 @@ namespace _Project.Codebase.Gameplay.Character
             {
                 var projEvent = m_events[i];
                 
-                float radius = .5f;
+                float radius = .25f;
                 Color pointColor = Color.white;
                 Color lineColor = Color.white;
                 switch (projEvent.type)

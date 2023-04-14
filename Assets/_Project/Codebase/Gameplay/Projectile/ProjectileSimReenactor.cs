@@ -68,8 +68,9 @@ namespace _Project.Codebase.Gameplay
                     break;
                 case ProjectileEventType.EndPierce:
                     GameObject newParticleSystem = 
-                        Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.RICOCHET_PARTICLE_SYSTEM));
-                    newParticleSystem.transform.position = m_lastEvent.location;
+                        Object.Instantiate(
+                            ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.RICOCHET_PARTICLE_SYSTEM));
+                    newParticleSystem.transform.position = eventEnding.location + (Vector2)m_projectile.transform.right * .001f;
                     newParticleSystem.transform.right = GetDirectionToNextEvent();
                     break;
                 case ProjectileEventType.Ricochet:
