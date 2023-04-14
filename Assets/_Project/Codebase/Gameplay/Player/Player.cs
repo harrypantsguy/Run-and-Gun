@@ -13,7 +13,6 @@ namespace _Project.Codebase.Gameplay.Player
         private void Start()
         {
             m_aimController = GetComponent<AimController>();
-            Time.timeScale = .25f;
             m_cam = Camera.main;
         }
 

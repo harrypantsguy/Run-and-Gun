@@ -10,7 +10,7 @@ namespace _Project.Codebase.Gameplay
         private int m_pierceStrength;
 
         private const float c_cell_check_cast_dist = .03f;
-        private const float c_default_speed = 150f;
+        private const float c_default_speed = 55f;
         private const float c_max_travel_dist = 200f;
             
         public ProjectileSim()
