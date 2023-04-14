@@ -28,7 +28,17 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 103c40e31bc79c141a563a158318a491
-    m_Address: RicochetParticleSystem
+    m_Address: PierceParticleSystem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0bc5971b4353a64a93674758953f9de
+    m_Address: Building
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f42273713e3ddc9459ea7682fdc39609
+    m_Address: Shooter
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

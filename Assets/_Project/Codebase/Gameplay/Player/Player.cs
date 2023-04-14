@@ -1,6 +1,5 @@
 ﻿using _Project.Codebase.Gameplay.Character;
 using DanonFramework.Runtime.Core.Utilities;
-using UnityEditor;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Player
@@ -16,12 +15,14 @@ namespace _Project.Codebase.Gameplay.Player
         private Vector2 m_aimTargetClampRect;
         private Vector2 m_clampedWorldMousePos;
 
+        private const float c_shooter_region_height = 10f;
+        
         private void Start()
         {
             m_aimController = GetComponent<AimController>();
             m_cam = Camera.main;
             
-            m_shooterClampRect = new Vector2(m_cam.orthographicSize * m_cam.aspect, m_cam.orthographicSize);
+            m_shooterClampRect = new Vector2(c_shooter_region_height * (1920f/1080f), c_shooter_region_height);
             m_aimTargetClampRect = new Vector2(m_shooterClampRect.x - .25f, m_shooterClampRect.y - .25f);
         }
 

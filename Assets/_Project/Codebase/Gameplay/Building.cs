@@ -6,8 +6,7 @@ using UnityEngine.Tilemaps;
 namespace _Project.Codebase.Gameplay
 {
     public class Building : MonoBehaviour
-    {
-        public static Building building;
+    { 
         [SerializeField] private Tilemap m_wallMap;
         [SerializeField] private Tilemap m_floorMap;
         [SerializeField] private Tilemap m_doorMap;
@@ -17,12 +16,10 @@ namespace _Project.Codebase.Gameplay
         private Dictionary<Vector2Int, Cell> m_floorCells = new();
         private Dictionary<Vector2Int, Cell> m_doorCells = new();
 
-        private void Start()
+        private void Awake()
         {
             Destroy(m_wallDataCollection);
-            
-            building = this;
-            
+                
             m_wallDataCollection = Instantiate(ContentUtilities.GetCachedAsset<WallCellCollection>(ScriptableAssetGroup.WALL_COLLECTION));
             
             for (int x = -100; x <= 100; x++)

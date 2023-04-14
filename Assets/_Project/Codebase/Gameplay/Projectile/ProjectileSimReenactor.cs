@@ -22,9 +22,10 @@ namespace _Project.Codebase.Gameplay
         
         public bool AtEndOfSim { get; private set; }
 
-        private const float c_ricochet_slowdown_rate = .125f;
-        private const float c_pierce_slowdown_rate = .02f;
-        private const float c_event_slowdown_dist = 5f;
+        private const float c_pierce_slowdown_rate = .01f;
+        private const float c_pierce_slowdown_dist = 4f;
+        private const float c_ricochet_slowdown_rate = 1f;
+        private const float c_ricochet_slowdown_dist = 1.5f;
 
         public ProjectileSimReenactor(List<ProjectileEvent> events)
         {
@@ -49,7 +50,10 @@ namespace _Project.Codebase.Gameplay
             if (AtEndOfSim) return;
             
             float distanceToEvent = Vector2.Distance(m_projectile.transform.position, m_nextEvent.location);
-            //Time.timeScale = Mathf.SmoothStep(c_ricochet_slowdown_rate, 1f, distanceToEvent / c_event_slowdown_dist);
+            if (m_lastEvent.type == ProjectileEventType.EndPierce && m_currEventTime < .01f)
+                Time.timeScale = c_pierce_slowdown_rate;
+            else
+                Time.timeScale = Mathf.SmoothStep(m_slowdownRate, 1f, distanceToEvent / m_slowdownDist);
                 
             m_projectile.transform.position = Vector2.Lerp(m_lastEvent.location, m_nextEvent.location, 
                 m_currEventTime / m_currentEventLength);
@@ -69,7 +73,7 @@ namespace _Project.Codebase.Gameplay
                 case ProjectileEventType.EndPierce:
                     GameObject newParticleSystem = 
                         Object.Instantiate(
-                            ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.RICOCHET_PARTICLE_SYSTEM));
+                            ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.PIERCE_PARTICLE_SYSTEM));
                     newParticleSystem.transform.position = eventEnding.location + (Vector2)m_projectile.transform.right * .001f;
                     newParticleSystem.transform.right = GetDirectionToNextEvent();
                     break;
@@ -79,18 +83,24 @@ namespace _Project.Codebase.Gameplay
                     break;
             }
 
-            m_slowdownDist = c_event_slowdown_dist;
+            Time.timeScale = 1f;
+            m_slowdownDist = 0f;
+            m_slowdownRate = 1f;
             switch (nextEvent.type)
             {
                 case ProjectileEventType.Position:
                     break;
                 case ProjectileEventType.StartPierce:
                     m_slowdownRate = c_pierce_slowdown_rate;
+                    m_slowdownDist = c_pierce_slowdown_dist;
                     break;
                 case ProjectileEventType.EndPierce:
+                    m_slowdownRate = c_pierce_slowdown_rate;
+                    m_slowdownDist = c_pierce_slowdown_dist;
                     break;
                 case ProjectileEventType.Ricochet:
                     m_slowdownRate = c_ricochet_slowdown_rate;
+                    m_slowdownDist = c_ricochet_slowdown_dist;
                     break;
                 case ProjectileEventType.Termination:
                     break;

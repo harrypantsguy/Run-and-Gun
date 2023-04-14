@@ -10,7 +10,7 @@ namespace _Project.Codebase.Gameplay.Character
 
         private float m_lastFireTime;
         private ProjectileSim m_projectileSim;
-        private List<ProjectileEvent> m_events;
+        private List<ProjectileEvent> m_events = new();
         private ProjectileSimReenactor m_reenactor;
 
         private void Start()

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Project.Codebase.Gameplay.Projectile;
+using _Project.Codebase.Services;
+using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay
@@ -8,15 +10,19 @@ namespace _Project.Codebase.Gameplay
     {
         private float m_speed;
         private int m_pierceStrength;
-
+        
         private const float c_cell_check_cast_dist = .03f;
         private const float c_default_speed = 55f;
-        private const float c_max_travel_dist = 200f;
+        private const float c_max_travel_dist = 500f;
+
+        private Building m_building;
             
         public ProjectileSim()
         {
             m_speed = c_default_speed;
             m_pierceStrength = 2;
+
+            m_building = ServiceUtilities.Get<BuildingService>().Building;
         }
         
         public List<ProjectileEvent> Simulate(Vector2 start, Vector2 direction)
@@ -83,7 +89,7 @@ namespace _Project.Codebase.Gameplay
                 
                 simTime += hit.distance / m_speed;
                 Vector2 cellSamplePoint = hit.point - hit.normal * c_cell_check_cast_dist;
-                Cell hitCell = Building.building.GetWallAtPos(cellSamplePoint);
+                Cell hitCell = m_building.GetWallAtPos(cellSamplePoint);
 
                 if (cellInsideOf != null && Vector2.Distance(exitHit.point, currentPosition) > .005f)
                 {
