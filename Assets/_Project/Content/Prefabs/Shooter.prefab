@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8553993948829867032}
-  - component: {fileID: 6787850007194871571}
+  - component: {fileID: 5930945502564489931}
   - component: {fileID: 6063984097434687676}
   m_Layer: 0
   m_Name: Laser
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 1580711458172413197}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6787850007194871571
+--- !u!114 &5930945502564489931
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,11 +42,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3059835578406978174}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56ea7c17c1454bb9ba5b410171ad11e3, type: 3}
+  m_Script: {fileID: 11500000, guid: d473c27504f949278d27da157e9c54b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_barrelTipTransform: {fileID: 8553993948829867032}
-  m_fireDelay: 0
 --- !u!120 &6063984097434687676
 LineRenderer:
   serializedVersion: 2
@@ -88,10 +86,10 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 50, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -148,7 +146,7 @@ LineRenderer:
     shadowBias: 0.5
     generateLightingData: 0
   m_MaskInteraction: 0
-  m_UseWorldSpace: 0
+  m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
 --- !u!1 &4792121483103183513
@@ -162,6 +160,7 @@ GameObject:
   - component: {fileID: 1580711458172413197}
   - component: {fileID: 8829457917584930253}
   - component: {fileID: 3714727702084380230}
+  - component: {fileID: 3681870973683369609}
   m_Layer: 0
   m_Name: Shooter
   m_TagString: Untagged
@@ -183,7 +182,7 @@ Transform:
   m_Children:
   - {fileID: 8553993948829867032}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8829457917584930253
 MonoBehaviour:
@@ -197,7 +196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50435a8b50e5460fbf5865862f2e097d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aimTarget: {x: 0, y: 0}
 --- !u!114 &3714727702084380230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,4 +208,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31b111e02d5640609b1e2e5fb1e7cc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_weapon: {fileID: 6787850007194871571}
+  m_weapon: {fileID: 3681870973683369609}
+--- !u!114 &3681870973683369609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4792121483103183513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56ea7c17c1454bb9ba5b410171ad11e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_barrelTipTransform: {fileID: 1580711458172413197}

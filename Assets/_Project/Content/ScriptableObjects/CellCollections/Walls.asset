@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_tiles:
   - tileBase: {fileID: 11400000, guid: c092d175f4dae1d42a4175f2983d8200, type: 2}
+    type: 0
     pierceInfluence: 1
     ricochetInfluence: 1
   - tileBase: {fileID: 11400000, guid: bf292523dad9df74db2e68ae0e959668, type: 2}
+    type: 1
     pierceInfluence: 0
     ricochetInfluence: 0

@@ -1,5 +1,4 @@
 ﻿using _Project.Codebase.Gameplay;
-using _Project.Codebase.Services;
 using Cysharp.Threading.Tasks;
 using DanonFramework.Runtime.Core.ModuleLayer;
 using DanonFramework.Runtime.Core.Utilities;
@@ -11,6 +10,8 @@ namespace _Project.Codebase.Modules
     {
         private const string c_scene_name = "GameScene";
         
+        public Building Building { get; private set; }
+        
         public async UniTask LoadAsync()
         {
             SceneUtilities.CreateScene(c_scene_name);
@@ -18,7 +19,7 @@ namespace _Project.Codebase.Modules
 
             GameObject building = 
                 Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.BUILDING));
-            ServiceUtilities.Get<BuildingService>().SetBuilding(building);
+            Building = building.GetComponent<Building>();
             
             Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.SHOOTER));
         }

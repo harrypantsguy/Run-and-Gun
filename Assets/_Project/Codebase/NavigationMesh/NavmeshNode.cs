@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Project.Codebase.Navmesh
+namespace _Project.Codebase.NavigationMesh
 {
     public class NavmeshNode
     {

@@ -7,6 +7,7 @@ namespace _Project.Codebase.Gameplay
     public struct WallCellData
     {
         public TileBase tileBase;
+        public CellType type;
         public int pierceInfluence;
         public int ricochetInfluence;
     }

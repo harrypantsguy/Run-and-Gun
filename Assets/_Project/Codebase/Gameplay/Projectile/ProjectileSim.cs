@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Project.Codebase.Gameplay.Projectile;
-using _Project.Codebase.Services;
+using _Project.Codebase.Modules;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
@@ -22,7 +22,7 @@ namespace _Project.Codebase.Gameplay
             m_speed = c_default_speed;
             m_pierceStrength = 2;
 
-            m_building = ServiceUtilities.Get<BuildingService>().Building;
+            m_building = ModuleUtilities.Get<GameModule>().Building;
         }
         
         public List<ProjectileEvent> Simulate(Vector2 start, Vector2 direction)
@@ -41,14 +41,13 @@ namespace _Project.Codebase.Gameplay
             bool lastCastHitSurface = false;
             bool piercing = false;
 
-            int loop = 0;
+            int its = 0;
             while (true)
             {
-                loop++;
-                if (loop == 500)
+                its++;
+                if (its == 500)
                 {
-                    Debug.Log("stack overflow");
-                    Debug.Break();
+                    Debug.LogWarning($"{nameof(ProjectileSim)}: stack overflow");
                     break;
                 }
                 float maxDistRemaining = c_max_travel_dist - distanceTraveled;
@@ -107,7 +106,7 @@ namespace _Project.Codebase.Gameplay
                     break;
                 }
 
-                if (hitCell.pierceInfluence > 0)
+                if (hitCell.type != CellType.Glass)
                 {
                     events.Add(new ProjectileEvent(ProjectileEventType.Ricochet, currentPosition, hit.normal, simTime));
                     direction = Vector2.Reflect(direction, hit.normal);

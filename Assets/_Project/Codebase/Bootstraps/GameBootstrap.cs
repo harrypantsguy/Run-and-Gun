@@ -1,5 +1,4 @@
 ﻿using _Project.Codebase.Modules;
-using _Project.Codebase.Services;
 using Cysharp.Threading.Tasks;
 using DanonFramework.Runtime.Core.BootstrapLayer;
 using DanonFramework.Runtime.Core.ContentLayer;
@@ -18,7 +17,6 @@ namespace _Project.Codebase.Bootstraps
             await contentService.LoadAssetGroupAsync<PrefabAssetGroup, GameObject>();
             await contentService.LoadAssetGroupAsync<ScriptableAssetGroup, ScriptableObject>();
             //await modules.LoadAsync(new BuildingTestModule());
-            services.Add(new BuildingService());
             await modules.LoadAsync(new GameModule());
         }
     }
