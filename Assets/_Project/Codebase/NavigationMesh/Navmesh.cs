@@ -3,34 +3,29 @@ using UnityEngine;
 
 namespace _Project.Codebase.NavigationMesh
 {
-    public class Navmesh
+    public sealed class Navmesh
     {
+        public const float DIAGONAL_COST = 1f;
+        public const float CARDINAL_COST = .707f;
+        public const int SEARCH_LIMIT = 1000;
+        
         private readonly Dictionary<Vector2Int, NavmeshNode> m_nodes = new();
 
-        public Navmesh(Vector2Int size, bool[,] walkableNodes = null)
+        public Navmesh(Dictionary<Vector2Int, bool> nodes)
         {
-            bool initializingNodes = walkableNodes != null;
-            for (int x = 0; x < size.x; x++)
-            for (int y = 0; y < size.y; y++)
+            foreach (KeyValuePair<Vector2Int, bool> node in nodes)
             {
-                bool walkable = initializingNodes && walkableNodes[x,y];
-                Vector2Int pos = new Vector2Int(x, y);
-                m_nodes[pos] = new NavmeshNode(pos, walkable);
+                m_nodes[node.Key] = new NavmeshNode(node.Key, node.Value);
             }
         }
 
-        public List<Vector2Int> SolvePath(Vector2Int start, Vector2Int end)
+        public bool IsValidNode(Vector2Int pos) => true;
+
+        public bool IsWalkableNode(Vector2Int pos)
         {
-            List<Vector2Int> path = new List<Vector2Int>();
-
-            Dictionary<Vector2Int, PathNode> openNodes = new();
-            Dictionary<Vector2Int, PathNode> closedNodes = new();
-            
-            openNodes.Add(start, new PathNode(start, 0f, 0f, null));
-
-            return path;
+            return m_nodes.TryGetValue(pos, out NavmeshNode node) && node.walkable;
         }
-        
+
         public NavmeshNode GetNodeAtPos(Vector2Int pos)
         {
             m_nodes.TryGetValue(pos, out NavmeshNode node);

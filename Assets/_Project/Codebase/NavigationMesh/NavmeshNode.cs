@@ -2,7 +2,7 @@
 
 namespace _Project.Codebase.NavigationMesh
 {
-    public class NavmeshNode
+    public sealed class NavmeshNode
     {
         public Vector2Int pos;
         public bool walkable;

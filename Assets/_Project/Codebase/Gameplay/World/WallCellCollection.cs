@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace _Project.Codebase.Gameplay
+namespace _Project.Codebase.Gameplay.World
 {
     [CreateAssetMenu(menuName = "Cell Collection/WallCellCollection")]
     public class WallCellCollection : ScriptableObject

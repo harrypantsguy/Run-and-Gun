@@ -1,4 +1,4 @@
-﻿using _Project.Codebase.Gameplay.Character;
+﻿using _Project.Codebase.Gameplay.Shooter;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
@@ -24,6 +24,9 @@ namespace _Project.Codebase.Gameplay.Player
             
             m_shooterClampRect = new Vector2(c_shooter_region_height * (1920f/1080f), c_shooter_region_height);
             m_aimTargetClampRect = new Vector2(m_shooterClampRect.x - .25f, m_shooterClampRect.y - .25f);
+
+            MoveShooterToClosestEdge(new Vector2(-10, 0), m_shooterClampRect);
+            m_aimController.SetAimTarget(Vector2.zero);
         }
 
         private void Update()
@@ -49,11 +52,11 @@ namespace _Project.Codebase.Gameplay.Player
             if (rightClicking)
             {
                 if (Input.GetKey(KeyCode.LeftShift))
-                    ShiftCameraAlongRectEdge(m_clampedWorldMousePos - m_oldMousePos, m_shooterClampRect);
+                    ShiftShooterAlongRectEdge(m_clampedWorldMousePos - m_oldMousePos, m_shooterClampRect);
                 else
                 {
                     if (Input.GetKey(KeyCode.LeftControl))
-                        MoveCameraToClosestRectEdge(m_clampedWorldMousePos, m_shooterClampRect);
+                        MoveShooterToClosestEdge(m_clampedWorldMousePos, m_shooterClampRect);
                     AimShooterAtMouse();
                 }
             }
@@ -63,7 +66,7 @@ namespace _Project.Codebase.Gameplay.Player
 
         private void AimShooterAtMouse() => m_aimController.SetAimTarget(m_clampedWorldMousePos);
         
-        private void MoveCameraToClosestRectEdge(Vector2 vector, Vector2 rect)
+        private void MoveShooterToClosestEdge(Vector2 vector, Vector2 rect)
         {
             float x = vector.x;
             float y = vector.y;
@@ -78,7 +81,7 @@ namespace _Project.Codebase.Gameplay.Player
             transform.position = new Vector2(x, rect.y * Mathf.Sign(vector.y));
         }
 
-        private void ShiftCameraAlongRectEdge(Vector2 delta, Vector2 rect)
+        private void ShiftShooterAlongRectEdge(Vector2 delta, Vector2 rect)
         {
             Vector2 pos = transform.position;
             float newX = pos.x, newY = pos.y;

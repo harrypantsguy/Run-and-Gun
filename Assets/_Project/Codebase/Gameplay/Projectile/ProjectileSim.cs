@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Project.Codebase.Gameplay.Projectile;
+using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
@@ -62,9 +63,6 @@ namespace _Project.Codebase.Gameplay
                 
                 Vector2 raycastEnd = hit.collider == null ? currentPosition + direction * castDistance : hit.point;
 
-                //Debug.DrawLine(currentPosition, raycastEnd, Color.red);
-                //GizmoUtilities.DrawXAtPos(raycastEnd, .25f);
-
                 RaycastHit2D exitHit = new RaycastHit2D();
                 float exitTime = 0f;
                 if (piercing)
@@ -88,16 +86,16 @@ namespace _Project.Codebase.Gameplay
                 
                 simTime += hit.distance / m_speed;
                 Vector2 cellSamplePoint = hit.point - hit.normal * c_cell_check_cast_dist;
-                Cell hitCell = m_building.GetWallAtPos(cellSamplePoint);
+                Wall hitWall = m_building.GetWallAtPos(cellSamplePoint);
 
-                if (cellInsideOf != null && Vector2.Distance(exitHit.point, currentPosition) > .005f)
+                if (piercing && Vector2.Distance(exitHit.point, currentPosition) > .005f)
                 {
                     piercing = false;
                     events.Add(new ProjectileEvent(ProjectileEventType.EndPierce, exitHit.point, exitTime));
                     cellInsideOf = null;
                 }
 
-                if (hitCell == null)
+                if (hitWall == null)
                 {
                     Debug.Log("hit cell is null");
                     GizmoUtilities.DrawXAtPos(hit.point, .1f, Color.yellow);
@@ -106,7 +104,7 @@ namespace _Project.Codebase.Gameplay
                     break;
                 }
 
-                if (hitCell.type != CellType.Glass)
+                if (hitWall.type != WallType.Glass)
                 {
                     events.Add(new ProjectileEvent(ProjectileEventType.Ricochet, currentPosition, hit.normal, simTime));
                     direction = Vector2.Reflect(direction, hit.normal);
@@ -117,7 +115,7 @@ namespace _Project.Codebase.Gameplay
                     events.Add(new ProjectileEvent(ProjectileEventType.StartPierce, currentPosition, hit.normal, simTime));
                 piercing = true;
 
-                cellInsideOf = hitCell;
+                cellInsideOf = hitWall;
             }
 
             return events;

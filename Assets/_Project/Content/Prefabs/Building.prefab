@@ -4593,8 +4593,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_wallMap: {fileID: 7895885288598946893}
-  m_floorMap: {fileID: 0}
+  m_floorMap: {fileID: 4609458500736013813}
   m_doorMap: {fileID: 0}
+  m_debugNavmesh: 0
 --- !u!156049354 &851840098058855491
 Grid:
   m_ObjectHideFlags: 0

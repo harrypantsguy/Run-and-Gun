@@ -1,4 +1,5 @@
-﻿using _Project.Codebase.Gameplay;
+﻿using _Project.Codebase.Gameplay.World;
+using _Project.Codebase.NavigationMesh;
 using Cysharp.Threading.Tasks;
 using DanonFramework.Runtime.Core.ModuleLayer;
 using DanonFramework.Runtime.Core.Utilities;
@@ -11,6 +12,7 @@ namespace _Project.Codebase.Modules
         private const string c_scene_name = "GameScene";
         
         public Building Building { get; private set; }
+        public Navmesh Navmesh { get; private set; }
         
         public async UniTask LoadAsync()
         {
@@ -22,7 +24,10 @@ namespace _Project.Codebase.Modules
             Building = building.GetComponent<Building>();
             
             Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.SHOOTER));
+            Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.CHARACTER));
         }
+
+        public void SetNavmesh(Navmesh navmesh) => Navmesh = navmesh;
 
         public async UniTask UnloadAsync()
         {

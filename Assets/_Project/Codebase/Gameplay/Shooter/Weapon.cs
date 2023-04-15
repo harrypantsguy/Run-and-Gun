@@ -2,7 +2,7 @@
 using _Project.Codebase.Gameplay.Projectile;
 using UnityEngine;
 
-namespace _Project.Codebase.Gameplay.Character
+namespace _Project.Codebase.Gameplay.Shooter
 {
     public class Weapon : MonoBehaviour
     {

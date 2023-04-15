@@ -1,8 +1,9 @@
-﻿using _Project.Codebase.Modules;
+﻿using _Project.Codebase.Gameplay.World;
+using _Project.Codebase.Modules;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
-namespace _Project.Codebase.Gameplay.Character
+namespace _Project.Codebase.Gameplay.Shooter
 {
     public class LaserSight : MonoBehaviour
     {
@@ -38,10 +39,14 @@ namespace _Project.Codebase.Gameplay.Character
                     break;
                 }
 
-                Vector2 pointInsideCell = hit.point + (Vector2)transform.right * .001f;
-                Cell cell = m_building.GetWallAtPos(pointInsideCell);
-
-                if (cell.type == CellType.Concrete)
+                Vector2 pointInsideCell = hit.point - hit.normal * .001f;
+                Wall wall = m_building.GetWallAtPos(pointInsideCell);
+                if (wall == null)
+                {
+                    Debug.LogWarning($"{nameof(LaserSight)} is epically erroring again");
+                    return;
+                }
+                if (wall.type != WallType.Glass)
                 {
                     end = hit.point;
                     break;

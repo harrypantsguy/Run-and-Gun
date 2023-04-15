@@ -2,19 +2,22 @@
 
 namespace _Project.Codebase.NavigationMesh
 {
-    public class PathNode
+    public sealed class PathNode
     {
-        public readonly Vector2Int pos;
-        public readonly float g;
-        public readonly float h;
-        public readonly PathNode parent;
+        public Vector2Int Pos { get; }
+        public float G { get; set; }
+        public float H { get; set; }
+        public float F { get; private set; }
+        public PathNode parent;
 
-        public PathNode(Vector2Int pos, float g, float h, PathNode parent)
+        public PathNode(Vector2Int pos)
         {
-            this.pos = pos;
-            this.g = g;
-            this.h = h;
-            this.parent = parent;
+            Pos = pos;
+        }
+
+        public void UpdateF()
+        {
+            F = G + H;
         }
     }
 }

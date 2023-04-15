@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Project.Codebase.Gameplay.Player
+namespace _Project.Codebase.Gameplay
 {
     public class CharacterMovementController : MonoBehaviour
     {

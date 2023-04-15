@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Project.Codebase.Gameplay.Character
+namespace _Project.Codebase.Gameplay.Shooter
 {
     public class AimController : MonoBehaviour
     {

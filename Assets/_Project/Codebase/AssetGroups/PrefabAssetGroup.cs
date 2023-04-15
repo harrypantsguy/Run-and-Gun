@@ -8,5 +8,6 @@ namespace _Project.Codebase
         public const string BASIC_PROJECTILE = "BasicProjectile";
         public const string PIERCE_PARTICLE_SYSTEM = "PierceParticleSystem";
         public const string BUILDING = "Building";
+        public const string CHARACTER = "Character";
     }
 }
