@@ -9,6 +9,9 @@ namespace _Project.Codebase.NavigationMesh
         private Pathfinder m_pathfinder;
         public List<Vector2> Path { get; private set; }
         public Vector2 NextNode { get; private set; }
+        public Vector2 LastNode { get; private set; }
+        public Vector2 DirToNextNode { get; private set; }
+        public float DistFromLastToNextNode { get; private set; }
         public bool AtPathEnd { get; private set; }
         private int m_pathIndex;
         private readonly List<Vector2Int> m_gridPath = new();
@@ -25,20 +28,38 @@ namespace _Project.Codebase.NavigationMesh
             m_gridToWorld = gridToWorld;
             m_gridToWorldConverter = new Converter<Vector2Int, Vector2>(gridToWorld);
             m_cardinalOnly = cardinalOnly;
+            Path = new List<Vector2>();
+            AtPathEnd = true;
         }
 
         public PathResult GeneratePath(Vector2 source, Vector2 target)
         {
             PathResult result = m_pathfinder.FindPath(m_worldToGrid(source), m_worldToGrid(target), m_cardinalOnly, m_gridPath);
             Path = m_gridPath.ConvertAll(m_gridToWorldConverter);
+            Path.Reverse();
+            m_pathIndex = 0;
+            UpdateData();
             return result;
         }
 
-        public bool ProgressToNextNode()
+        public bool TryProgressToNextNode()
         {
             if (AtPathEnd) return false;
-            NextNode = Path[++m_pathIndex];
+            m_pathIndex++;
+            UpdateData();
             return true;
+        }
+
+        private void UpdateData()
+        {
+            AtPathEnd = m_pathIndex >= Path.Count - 1;
+            if (Path.Count == 0) return;
+            LastNode = Path[m_pathIndex];
+            if (!AtPathEnd)
+                NextNode = Path[m_pathIndex + 1];
+            DirToNextNode = Path[m_pathIndex] - NextNode;
+            DistFromLastToNextNode = DirToNextNode.magnitude;
+            DirToNextNode.Normalize();
         }
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3822716574586688400}
   - component: {fileID: 832618294643671343}
   m_Layer: 0
-  m_Name: RicochetParticleSystem
+  m_Name: GlassPierceParticleSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4855,7 +4855,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 2
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0

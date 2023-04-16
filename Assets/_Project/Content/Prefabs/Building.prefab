@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1388321877799161114}
   m_Layer: 0
   m_Name: FloorMap
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4313,7 +4313,7 @@ GameObject:
   - component: {fileID: 2392982299931139784}
   m_Layer: 0
   m_Name: DoorMap
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4557,7 +4557,7 @@ GameObject:
   - component: {fileID: 851840098058855491}
   m_Layer: 0
   m_Name: Building
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4623,7 +4623,7 @@ GameObject:
   - component: {fileID: 2326255417620438046}
   m_Layer: 0
   m_Name: WallMap
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

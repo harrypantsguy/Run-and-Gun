@@ -41,12 +41,8 @@ namespace _Project.Codebase.Gameplay.Shooter
 
                 Vector2 pointInsideCell = hit.point - hit.normal * .001f;
                 Wall wall = m_building.GetWallAtPos(pointInsideCell);
-                if (wall == null)
-                {
-                    Debug.LogWarning($"{nameof(LaserSight)} is epically erroring again");
-                    return;
-                }
-                if (wall.type != WallType.Glass)
+                
+                if (wall == null || wall.type != WallType.Glass)
                 {
                     end = hit.point;
                     break;

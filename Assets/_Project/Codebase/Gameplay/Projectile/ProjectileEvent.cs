@@ -2,7 +2,7 @@
 
 namespace _Project.Codebase.Gameplay.Projectile
 {
-    public struct ProjectileEvent
+    public class ProjectileEvent
     {
         public readonly ProjectileEventType type;
         public readonly Vector2 location;

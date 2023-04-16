@@ -4,6 +4,7 @@ using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace _Project.Codebase.Gameplay
 {
@@ -41,7 +42,8 @@ namespace _Project.Codebase.Gameplay
             float pierceHealth = m_pierceStrength;
             bool lastCastHitSurface = false;
             bool piercing = false;
-
+            SurfaceType lastEventSurfaceType = SurfaceType.Concrete;
+            
             int its = 0;
             while (true)
             {
@@ -73,7 +75,8 @@ namespace _Project.Codebase.Gameplay
                 if (hit.collider == null)
                 {
                     if (piercing)
-                        events.Add(new ProjectileEvent(ProjectileEventType.EndPierce, exitHit.point, exitHit.normal, exitTime));
+                        events.Add(new PierceEvent(ProjectileEventType.EndPierce, exitHit.point, exitHit.normal, exitTime, 
+                            lastEventSurfaceType));
 
                     events.Add(new ProjectileEvent(ProjectileEventType.Termination, 
                     currentPosition + direction * maxDistRemaining, simTime + maxDistRemaining / m_speed));
@@ -85,26 +88,39 @@ namespace _Project.Codebase.Gameplay
                 currentPosition = hit.point;
                 
                 simTime += hit.distance / m_speed;
+
+                bool projHitWall = hit.collider.GetComponent<TilemapCollider2D>() != null;
+                bool projHitCharacter = hit.collider.GetComponent<Character>() != null;
+
                 Vector2 cellSamplePoint = hit.point - hit.normal * c_cell_check_cast_dist;
                 Wall hitWall = m_building.GetWallAtPos(cellSamplePoint);
+
+                SurfaceType surfaceType = SurfaceType.Concrete;
+                if (projHitWall)
+                    surfaceType = hitWall.type == WallType.Concrete ? SurfaceType.Concrete : SurfaceType.Glass;
+                else if (projHitCharacter)
+                    surfaceType = SurfaceType.Flesh;
 
                 if (piercing && Vector2.Distance(exitHit.point, currentPosition) > .005f)
                 {
                     piercing = false;
-                    events.Add(new ProjectileEvent(ProjectileEventType.EndPierce, exitHit.point, exitTime));
+                    events.Add(new PierceEvent(ProjectileEventType.EndPierce, exitHit.point, exitTime,
+                        lastEventSurfaceType));
                     cellInsideOf = null;
                 }
+                
+                lastEventSurfaceType = surfaceType;
 
-                if (hitWall == null)
+                if (projHitWall && hitWall == null)
                 {
-                    Debug.Log("hit cell is null");
+                    Debug.LogWarning("hit cell is null");
                     GizmoUtilities.DrawXAtPos(hit.point, .1f, Color.yellow);
                     GizmoUtilities.DrawXAtPos(cellSamplePoint, .1f, Color.red);
                     Debug.Break();
                     break;
                 }
 
-                if (hitWall.type != WallType.Glass)
+                if (projHitWall && hitWall.type != WallType.Glass)
                 {
                     events.Add(new ProjectileEvent(ProjectileEventType.Ricochet, currentPosition, hit.normal, simTime));
                     direction = Vector2.Reflect(direction, hit.normal);
@@ -112,7 +128,8 @@ namespace _Project.Codebase.Gameplay
                 }
                 
                 if (!piercing)
-                    events.Add(new ProjectileEvent(ProjectileEventType.StartPierce, currentPosition, hit.normal, simTime));
+                    events.Add(new PierceEvent(ProjectileEventType.StartPierce, currentPosition, hit.normal, simTime,
+                        surfaceType));
                 piercing = true;
 
                 cellInsideOf = hitWall;

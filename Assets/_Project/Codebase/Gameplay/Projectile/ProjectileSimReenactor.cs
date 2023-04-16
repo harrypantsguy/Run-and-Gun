@@ -71,9 +71,12 @@ namespace _Project.Codebase.Gameplay
                 case ProjectileEventType.StartPierce:
                     break;
                 case ProjectileEventType.EndPierce:
-                    GameObject newParticleSystem = 
-                        Object.Instantiate(
-                            ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.PIERCE_PARTICLE_SYSTEM));
+                    SurfaceType surfaceType = ((PierceEvent)eventEnding).surfaceType;
+                    string particleSystem = surfaceType == SurfaceType.Flesh
+                        ? PrefabAssetGroup.FLESH_PIERCE_PARTICLE_SYSTEM
+                        : PrefabAssetGroup.GLASS_PIERCE_PARTICLE_SYSTEM;
+                    
+                    GameObject newParticleSystem = Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(particleSystem));
                     newParticleSystem.transform.position = eventEnding.location + (Vector2)m_projectile.transform.right * .001f;
                     newParticleSystem.transform.right = GetDirectionToNextEvent();
                     break;

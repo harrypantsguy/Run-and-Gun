@@ -1,18 +1,21 @@
 ﻿using _Project.Codebase.Gameplay.World;
-using _Project.Codebase.NavigationMesh;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay
 {
+    [RequireComponent(typeof(NavmeshAgent))]
     public class Character : MonoBehaviour
     {
+        [SerializeField] private bool m_moveToTestTarget;
         private GameObject m_navTarget;
-        private WorldSpacePathController m_pathController;
+        private NavmeshAgent m_agent;
         
         private Building m_building;
 
         private void Start()
         {
+            m_agent = GetComponent<NavmeshAgent>();
+            
             m_navTarget = new GameObject("Navmesh Target")
             {
                 transform =
@@ -21,6 +24,15 @@ namespace _Project.Codebase.Gameplay
                     parent = transform
                 }
             };
+        }
+
+        private void Update()
+        {
+            if (m_moveToTestTarget)
+            {
+                m_moveToTestTarget = false;
+                m_agent.SetTargetPosition(m_navTarget.transform.position);
+            }
         }
     }
 }
