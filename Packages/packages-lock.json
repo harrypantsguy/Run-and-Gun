@@ -83,7 +83,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.addressables": {
-      "version": "1.21.9",
+      "version": "1.21.10",
       "depth": 0,
       "source": "registry",
       "dependencies": {

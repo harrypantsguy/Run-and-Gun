@@ -40,6 +40,8 @@ namespace _Project.Codebase.Gameplay
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying || !m_debugPath) return;
+
+            if (m_pathController == null) return;
             
             for (var i = 1; i < m_pathController.Path.Count; i++)
             {

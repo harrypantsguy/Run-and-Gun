@@ -1,10 +1,9 @@
-﻿using _Project.Codebase.Gameplay.Shooter;
-using DanonFramework.Runtime.Core.Utilities;
+﻿using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
-namespace _Project.Codebase.Gameplay.Player
+namespace _Project.Codebase.Gameplay.Shooter
 {
-    public class Player : MonoBehaviour
+    public class ShooterController : MonoBehaviour
     {
         private AimController m_aimController;
         [SerializeField] private Weapon m_weapon;
@@ -31,16 +30,6 @@ namespace _Project.Codebase.Gameplay.Player
 
         private void Update()
         {
-            Vector2 input = Vector2.zero;
-            if (Input.GetKey(KeyCode.A))
-                input.x -= 1f;
-            if (Input.GetKey(KeyCode.D))
-                input.x += 1f;
-            if (Input.GetKey(KeyCode.W))
-                input.y += 1f;
-            if (Input.GetKey(KeyCode.S))
-                input.y -= 1f;
-
             if (Input.GetKeyDown(KeyCode.Mouse0))
                 m_weapon.Fire();
 

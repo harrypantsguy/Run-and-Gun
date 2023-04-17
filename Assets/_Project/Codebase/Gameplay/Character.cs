@@ -12,7 +12,7 @@ namespace _Project.Codebase.Gameplay
         
         private Building m_building;
 
-        private void Start()
+        protected virtual void Start()
         {
             m_agent = GetComponent<NavmeshAgent>();
             
@@ -26,7 +26,7 @@ namespace _Project.Codebase.Gameplay
             };
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (m_moveToTestTarget)
             {

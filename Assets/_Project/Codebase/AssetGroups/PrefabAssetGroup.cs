@@ -10,5 +10,6 @@ namespace _Project.Codebase
         public const string FLESH_PIERCE_PARTICLE_SYSTEM = "FleshPierceParticleSystem";
         public const string BUILDING = "Building";
         public const string CHARACTER = "Character";
+        public const string GAME_UI_CANVAS = "GameUICanvas";
     }
 }

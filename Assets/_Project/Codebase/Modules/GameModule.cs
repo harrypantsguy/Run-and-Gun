@@ -1,4 +1,5 @@
-﻿using _Project.Codebase.Gameplay.World;
+﻿using _Project.Codebase.Gameplay;
+using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.NavigationMesh;
 using Cysharp.Threading.Tasks;
 using DanonFramework.Runtime.Core.ModuleLayer;
@@ -13,6 +14,8 @@ namespace _Project.Codebase.Modules
         
         public Building Building { get; private set; }
         public Navmesh Navmesh { get; private set; }
+        public TurnController TurnController { get; private set; }
+        public EnemyManager EnemyManager { get; private set; }
         
         public async UniTask LoadAsync()
         {
@@ -22,9 +25,11 @@ namespace _Project.Codebase.Modules
             GameObject building = 
                 Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.BUILDING));
             Building = building.GetComponent<Building>();
+
+            TurnController = new TurnController();
             
             Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.SHOOTER));
-            Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.CHARACTER));
+            EnemyManager = new EnemyManager(TurnController);
         }
 
         public void SetNavmesh(Navmesh navmesh) => Navmesh = navmesh;
