@@ -34,7 +34,7 @@ namespace _Project.Codebase.Gameplay
 
         public void SetTargetPosition(Vector2 pos)
         {
-            m_pathController.GeneratePath(transform.position, pos);
+            m_pathController.GenerateAndSetPath(transform.position, pos);
         }
         
         private void OnDrawGizmos()

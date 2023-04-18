@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using _Project.Codebase.Gameplay.World;
 using DanonFramework.Runtime.Core.Utilities;
+using UnityEngine;
 
 namespace _Project.Codebase.Gameplay
 {
@@ -9,7 +11,7 @@ namespace _Project.Codebase.Gameplay
         
         public EnemyManager(TurnController turnController)
         {
-            ContentUtilities.Instantiate(PrefabAssetGroup.CHARACTER);
+            ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.CHARACTER);
             turnController.OnTurnChange += OnTurnChange; 
         }
 
@@ -17,9 +19,10 @@ namespace _Project.Codebase.Gameplay
         {
             if (turn == Turn.Enemy)
             {
+                WorldScreenshot worldScreenshot = new WorldScreenshot();
                 foreach (EnemyCharacter enemy in m_enemies)
                 {
-                    
+                    enemy.DecideTurn(ref worldScreenshot);
                 }
             }
         }

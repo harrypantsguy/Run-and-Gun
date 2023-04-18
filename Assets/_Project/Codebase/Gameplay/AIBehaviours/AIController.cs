@@ -1,4 +1,6 @@
-﻿namespace _Project.Codebase.Gameplay.AIBehaviours
+﻿using _Project.Codebase.Gameplay.World;
+
+namespace _Project.Codebase.Gameplay.AIBehaviours
 {
     public abstract class AIController
     {
@@ -10,7 +12,7 @@
             Character = character;
         }
         
-        public void SetState(AIBehavior behavior)
+        public void SetBehaviour(AIBehavior behavior)
         {
             AIBehavior?.OnExit();
             
@@ -20,9 +22,9 @@
             AIBehavior.OnEnter();
         }
 
-        public void Update(float deltaTime)
+        public void Update(ref WorldScreenshot worldScreenshot)
         {
-            AIBehavior?.Tick(deltaTime);
+            AIBehavior?.MakeDecision(ref worldScreenshot);
         }
     }
 }

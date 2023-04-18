@@ -4,7 +4,7 @@
     {
         public GruntAIController(Character character) : base(character)
         {
-            
+            SetBehaviour(new PatrolBehaviour(this));
         }
     }
 }

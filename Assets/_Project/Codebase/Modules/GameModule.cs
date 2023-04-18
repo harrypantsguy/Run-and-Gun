@@ -24,7 +24,7 @@ namespace _Project.Codebase.Modules
 
             GameObject building = 
                 Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.BUILDING));
-            Building = building.GetComponent<Building>();
+            Building = building.GetComponent<BuildingAuthoring>().Initialize();
 
             TurnController = new TurnController();
             

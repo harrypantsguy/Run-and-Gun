@@ -7,35 +7,27 @@ using UnityEngine.Tilemaps;
 
 namespace _Project.Codebase.Gameplay.World
 {
-    public class Building : MonoBehaviour
-    { 
-        [SerializeField] private Tilemap m_wallMap;
-        [SerializeField] private Tilemap m_floorMap;
-        [SerializeField] private Tilemap m_doorMap;
-        [SerializeField] private bool m_debugNavmesh;
-
+    public class Building
+    {
+        private Tilemap m_wallMap;
+        private Tilemap m_floorMap;
+        private Tilemap m_doorMap;
+        
         private Navmesh m_navmesh;
         private WallCellCollection m_wallDataCollection;
         private Dictionary<Vector2Int, Wall> m_wallCells = new();
         private Dictionary<Vector2Int, Floor> m_floorCells = new();
         private Dictionary<Vector2Int, Cell> m_doorCells = new();
-        private bool m_initialized = false;
         
         private const int c_world_size = 50;
 
-        private void Awake()
+        public Building(Tilemap wallMap, Tilemap floorMap, Tilemap doorMap)
         {
-            Initialize();
-        }
+            m_wallMap = wallMap;
+            m_floorMap = floorMap;
+            m_doorMap = doorMap;
 
-        public void Initialize()
-        {
-            if (m_initialized) return;
-            m_initialized = true;
-            
-            Destroy(m_wallDataCollection);
-                
-            m_wallDataCollection = Instantiate(ContentUtilities.GetCachedAsset<WallCellCollection>(ScriptableAssetGroup.WALL_COLLECTION));
+            m_wallDataCollection = ContentUtilities.Instantiate<WallCellCollection>(ScriptableAssetGroup.WALL_COLLECTION);
 
             Dictionary<Vector2Int, bool> nodes = new();
             
@@ -80,20 +72,6 @@ namespace _Project.Codebase.Gameplay.World
         }
 
         public bool IsFloorAtPos(Vector2 pos) => m_floorCells.ContainsKey(WorldToGrid(pos));
-
-        private void OnDrawGizmos()
-        {
-            if (!Application.isPlaying || !m_debugNavmesh) return;
-
-            int halfSize = c_world_size / 2;
-            for (int x = -halfSize; x < halfSize; x++)
-            for (int y = -halfSize; y < halfSize; y++)
-            {
-                Vector2Int pos = new Vector2Int(x, y);
-                Gizmos.color = m_navmesh.IsValidNode(pos) && m_navmesh.IsWalkableNode(pos) ? Color.green : Color.red;
-                Gizmos.DrawWireCube(pos + new Vector2(.5f, .5f), Vector3.one);
-            }
-        }
 
         public Vector2Int WorldToGrid(Vector2 pos) => (Vector2Int)m_wallMap.WorldToCell(pos);
         public Vector2 GridToWorld(Vector2Int pos) => m_wallMap.CellToWorld((Vector3Int)pos) + new Vector3(.5f, .5f);

@@ -1,11 +1,12 @@
-﻿namespace _Project.Codebase.Gameplay.AIBehaviours
+﻿using _Project.Codebase.Gameplay.World;
+
+namespace _Project.Codebase.Gameplay.AIBehaviours
 {
     public abstract class AIBehavior
     {
         protected readonly AIController controller;
 
         public Character Character { get; }
-        public float ElapsedTime { get; private set; }
         public AIBehavior(AIController controller)
         {
             this.controller = controller;
@@ -14,9 +15,9 @@
 
         public virtual void OnEnter() {}
 
-        public virtual void Tick(float deltaTime)
+        public virtual void MakeDecision(ref WorldScreenshot worldScreenshot)
         {
-            ElapsedTime += deltaTime;
+            
         }
 
         public virtual void OnExit()

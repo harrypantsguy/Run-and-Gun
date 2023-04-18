@@ -4553,7 +4553,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5760048860870097982}
-  - component: {fileID: 4292301761459409673}
+  - component: {fileID: 2486852284267055173}
   - component: {fileID: 851840098058855491}
   m_Layer: 0
   m_Name: Building
@@ -4570,7 +4570,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3476567809078344408}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.01, y: 0.01, z: 0}
+  m_LocalPosition: {x: 0.005, y: 0.005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4578,9 +4578,9 @@ Transform:
   - {fileID: 2311983363499292658}
   - {fileID: 937819008395517396}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4292301761459409673
+--- !u!114 &2486852284267055173
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4589,12 +4589,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3476567809078344408}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ebe50ce2eb940aea347748f88c0f84d, type: 3}
+  m_Script: {fileID: 11500000, guid: 92e12048482a4ac8903f9fb59948c747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_wallMap: {fileID: 7895885288598946893}
   m_floorMap: {fileID: 4609458500736013813}
-  m_doorMap: {fileID: 0}
+  m_doorMap: {fileID: 1526534265482731585}
   m_debugNavmesh: 0
 --- !u!156049354 &851840098058855491
 Grid:

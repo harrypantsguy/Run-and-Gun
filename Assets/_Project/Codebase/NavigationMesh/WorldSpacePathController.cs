@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Resources;
 using UnityEngine;
 
 namespace _Project.Codebase.NavigationMesh
@@ -7,7 +8,7 @@ namespace _Project.Codebase.NavigationMesh
     public sealed class WorldSpacePathController
     {
         private Pathfinder m_pathfinder;
-        public List<Vector2> Path { get; private set; }
+        public List<Vector2> Path { get; }
         public Vector2 NextNode { get; private set; }
         public Vector2 LastNode { get; private set; }
         public Vector2 DirToNextNode { get; private set; }
@@ -16,9 +17,9 @@ namespace _Project.Codebase.NavigationMesh
         private int m_pathIndex;
         private readonly List<Vector2Int> m_gridPath = new();
         private readonly bool m_cardinalOnly;
-        private Func<Vector2, Vector2Int> m_worldToGrid;
+        private readonly Func<Vector2, Vector2Int> m_worldToGrid;
         private Func<Vector2Int, Vector2> m_gridToWorld;
-        private Converter<Vector2Int, Vector2> m_gridToWorldConverter;
+        private readonly Converter<Vector2Int, Vector2> m_gridToWorldConverter;
 
         public WorldSpacePathController(Navmesh navmesh, Func<Vector2, Vector2Int> worldToGrid, 
             Func<Vector2Int, Vector2> gridToWorld, bool cardinalOnly)
@@ -32,13 +33,21 @@ namespace _Project.Codebase.NavigationMesh
             AtPathEnd = true;
         }
 
-        public PathResult GeneratePath(Vector2 source, Vector2 target)
+        public PathResult GenerateAndSetPath(Vector2 source, Vector2 target)
         {
-            PathResult result = m_pathfinder.FindPath(m_worldToGrid(source), m_worldToGrid(target), m_cardinalOnly, m_gridPath);
-            Path = m_gridPath.ConvertAll(m_gridToWorldConverter);
-            Path.Reverse();
+            PathResult result = GeneratePath(source, target, Path);
             m_pathIndex = 0;
             UpdateData();
+            return result;
+        }
+
+        public PathResult GeneratePath(Vector2 source, Vector2 target, in List<Vector2> path)
+        {
+            List<Vector2Int> gridPath = new List<Vector2Int>();
+            PathResult result = m_pathfinder.FindPath(m_worldToGrid(source), m_worldToGrid(target), m_cardinalOnly, gridPath);
+            path.Clear();
+            path.AddRange(gridPath.ConvertAll(m_gridToWorldConverter));
+            path.Reverse();
             return result;
         }
 

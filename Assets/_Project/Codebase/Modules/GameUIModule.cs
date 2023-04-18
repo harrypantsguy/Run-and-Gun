@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using DanonFramework.Runtime.Core.ModuleLayer;
 using DanonFramework.Runtime.Core.Utilities;
+using UnityEngine;
 
 namespace _Project.Codebase.Modules
 {
@@ -13,7 +14,7 @@ namespace _Project.Codebase.Modules
             SceneUtilities.CreateScene(c_scene_name);
             SceneUtilities.SetActiveSceneAsync(c_scene_name).Forget();
 
-            ContentUtilities.Instantiate(PrefabAssetGroup.GAME_UI_CANVAS);
+            ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.GAME_UI_CANVAS);
         }
 
         public void Unload()
