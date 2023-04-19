@@ -15,9 +15,9 @@ namespace _Project.Codebase.Gameplay.AIBehaviours
 
         public virtual void OnEnter() {}
 
-        public virtual void MakeDecision(ref WorldScreenshot worldScreenshot)
+        public virtual AIDecision MakeDecision(WorldScreenshot worldScreenshot)
         {
-            
+            return new MoveDecision();
         }
 
         public virtual void OnExit()

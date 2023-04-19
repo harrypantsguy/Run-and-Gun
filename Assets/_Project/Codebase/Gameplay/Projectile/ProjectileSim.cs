@@ -90,7 +90,7 @@ namespace _Project.Codebase.Gameplay
                 simTime += hit.distance / m_speed;
 
                 bool projHitWall = hit.collider.GetComponent<TilemapCollider2D>() != null;
-                bool projHitCharacter = hit.collider.GetComponent<Character>() != null;
+                bool projHitCharacter = hit.collider.GetComponent<EnemyObject>() != null;
 
                 Vector2 cellSamplePoint = hit.point - hit.normal * c_cell_check_cast_dist;
                 Wall hitWall = m_building.GetWallAtPos(cellSamplePoint);

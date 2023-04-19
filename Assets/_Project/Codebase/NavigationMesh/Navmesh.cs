@@ -11,6 +11,11 @@ namespace _Project.Codebase.NavigationMesh
         
         private readonly Dictionary<Vector2Int, NavmeshNode> m_nodes = new();
 
+        public Navmesh(Navmesh navmeshToCopy)
+        {
+            m_nodes = new Dictionary<Vector2Int, NavmeshNode>(navmeshToCopy.m_nodes);
+        }
+        
         public Navmesh(Dictionary<Vector2Int, bool> nodes)
         {
             foreach (KeyValuePair<Vector2Int, bool> node in nodes)

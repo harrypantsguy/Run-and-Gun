@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Resources;
 using UnityEngine;
 
 namespace _Project.Codebase.NavigationMesh

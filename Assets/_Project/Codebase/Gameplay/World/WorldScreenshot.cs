@@ -3,7 +3,7 @@ namespace _Project.Codebase.Gameplay.World
 {
     public class WorldScreenshot
     {
-        public WorldScreenshot()
+        public WorldScreenshot(Building building)
         {
             
         }

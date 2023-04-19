@@ -3,7 +3,7 @@ using UnityEngine.Tilemaps;
 
 namespace _Project.Codebase.Gameplay.World
 {
-    public class BuildingAuthoring : MonoBehaviour
+    public class BuildingAuthoring : MonoBehaviour, IInititializer<Building>
     {
         [SerializeField] private Tilemap m_wallMap;
         [SerializeField] private Tilemap m_floorMap;

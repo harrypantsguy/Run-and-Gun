@@ -22,9 +22,9 @@ namespace _Project.Codebase.Gameplay.AIBehaviours
             AIBehavior.OnEnter();
         }
 
-        public void Update(ref WorldScreenshot worldScreenshot)
+        public AIDecision Decide(WorldScreenshot worldScreenshot)
         {
-            AIBehavior?.MakeDecision(ref worldScreenshot);
+            return AIBehavior?.MakeDecision(worldScreenshot);
         }
     }
 }

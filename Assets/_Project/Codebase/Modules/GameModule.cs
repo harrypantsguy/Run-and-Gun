@@ -15,7 +15,7 @@ namespace _Project.Codebase.Modules
         public Building Building { get; private set; }
         public Navmesh Navmesh { get; private set; }
         public TurnController TurnController { get; private set; }
-        public EnemyManager EnemyManager { get; private set; }
+        public EnemyController EnemyController { get; private set; }
         
         public async UniTask LoadAsync()
         {
@@ -29,7 +29,9 @@ namespace _Project.Codebase.Modules
             TurnController = new TurnController();
             
             Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.SHOOTER));
-            EnemyManager = new EnemyManager(TurnController);
+            EnemyController = new EnemyController(TurnController);
+            
+            TurnController.StartGame();
         }
 
         public void SetNavmesh(Navmesh navmesh) => Navmesh = navmesh;

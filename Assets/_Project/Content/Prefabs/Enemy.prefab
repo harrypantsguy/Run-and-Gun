@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4136598901500374017}
   - component: {fileID: 8909814094184667476}
+  - component: {fileID: 3787387092478078721}
   - component: {fileID: 360050816067291611}
-  - component: {fileID: 5161258285987801697}
   - component: {fileID: 830659561568731656}
   - component: {fileID: 6201955159912815119}
   m_Layer: 0
-  m_Name: Character
+  m_Name: Enemy
   m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,6 +88,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3787387092478078721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1032884627729533068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b1f08ba8ab2478793591a353a5a8c59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &360050816067291611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,19 +115,6 @@ MonoBehaviour:
   m_debugPath: 1
   m_moveSpeed: 1
   m_nodeReachedDist: 0.01
---- !u!114 &5161258285987801697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1032884627729533068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a8f02a456f04c6db141b32d7973a0bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_moveToTestTarget: 0
 --- !u!50 &830659561568731656
 Rigidbody2D:
   serializedVersion: 4
