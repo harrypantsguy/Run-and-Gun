@@ -1,20 +1,18 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using _Project.Codebase.Gameplay.World;
+using Cysharp.Threading.Tasks;
 using DanonFramework.Runtime.Core.ModuleLayer;
 using DanonFramework.Runtime.Core.Utilities;
-using UnityEngine;
 
 namespace _Project.Codebase.Modules
 {
-    public class GameUIModule : IAsyncModule
+    public class TestModule : IAsyncModule
     {
-        private const string c_scene_name = "GameUIScene";
-
+        private const string c_scene_name = "TestScene";
+        
         public async UniTask LoadAsync()
         {
-            SceneUtilities.CreateScene(c_scene_name);
+            await SceneUtilities.LoadAddressableSceneAsync(c_scene_name);
             await SceneUtilities.SetActiveSceneAsync(c_scene_name);
-
-            ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.GAME_UI_CANVAS);
         }
 
         public async UniTask UnloadAsync()

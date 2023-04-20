@@ -1,4 +1,4 @@
-﻿using _Project.Codebase.Gameplay.World;
+﻿using System.Threading.Tasks;
 
 namespace _Project.Codebase.Gameplay.AIBehaviours
 {
@@ -14,17 +14,15 @@ namespace _Project.Codebase.Gameplay.AIBehaviours
         
         public void SetBehaviour(AIBehavior behavior)
         {
-            AIBehavior?.OnExit();
-            
             AIBehavior = behavior;
             if (behavior == null) return;
-
-            AIBehavior.OnEnter();
         }
 
-        public AIDecision Decide(WorldScreenshot worldScreenshot)
+        public async Task TakeTurn()
         {
-            return AIBehavior?.MakeDecision(worldScreenshot);
+            await AIBehavior.OnStartBehaviour();
+            await AIBehavior.Update();
+            await AIBehavior.OnEndBehaviour();
         }
     }
 }

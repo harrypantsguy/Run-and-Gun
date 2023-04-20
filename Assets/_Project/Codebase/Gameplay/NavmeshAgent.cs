@@ -1,4 +1,5 @@
-﻿using _Project.Codebase.Modules;
+﻿using System;
+using _Project.Codebase.Modules;
 using _Project.Codebase.NavigationMesh;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
@@ -11,12 +12,17 @@ namespace _Project.Codebase.Gameplay
         [SerializeField] private float m_moveSpeed;
         [SerializeField] private float m_nodeReachedDist;
         private WorldSpacePathController m_pathController;
+        public Action<Vector2, Vector2Int> OnReachPathEnd;
 
-        private void Start()
+        public bool AtPathEnd => m_pathController.AtPathEnd;
+
+        private void Awake()
         {
             GameModule gameModule = ModuleUtilities.Get<GameModule>();
-            m_pathController = new WorldSpacePathController(gameModule.Navmesh, gameModule.Building.WorldToGrid,
+            m_pathController = new WorldSpacePathController(gameModule.Building.navmesh, gameModule.Building.WorldToGrid,
                 gameModule.Building.GridToWorld, true);
+            OnReachPathEnd = (vector2, vector2Int) => { };
+            m_pathController.OnReachPathEnd += OnReachPathEnd;
         }
 
         private void FixedUpdate()
@@ -26,10 +32,13 @@ namespace _Project.Codebase.Gameplay
                 m_pathController.TryProgressToNextNode();
 
             if (!m_pathController.AtPathEnd)
-            {
-                transform.position = Vector2.MoveTowards(transform.position, m_pathController.NextNode, 
+                transform.position = Vector2.MoveTowards(transform.position, m_pathController.NextNode,
                     Time.fixedDeltaTime * m_moveSpeed);
-            }
+        }
+
+        private void OnReachEnd(Vector2 worldPos, Vector2Int gridPos)
+        {
+            transform.position = worldPos;
         }
 
         public void SetTargetPosition(Vector2 pos)

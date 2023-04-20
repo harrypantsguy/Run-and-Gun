@@ -1,4 +1,6 @@
-﻿using DanonFramework.Runtime.Core.Utilities;
+﻿using _Project.Codebase.Gameplay.World;
+using _Project.Codebase.Modules;
+using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Shooter
@@ -10,42 +12,42 @@ namespace _Project.Codebase.Gameplay.Shooter
         private Camera m_cam;
         private bool m_shooterOnSide;
         private Vector2 m_oldMousePos;
-        private Vector2 m_shooterClampRect;
-        private Vector2 m_aimTargetClampRect;
-        private Vector2 m_clampedWorldMousePos;
 
-        private const float c_shooter_region_height = 10f;
+        private Vector2 m_clampedWorldMousePos;
+        private TurnController m_turnController;
+        private WorldRegions m_worldRegions;
         
         private void Start()
         {
             m_aimController = GetComponent<AimController>();
             m_cam = Camera.main;
-            
-            m_shooterClampRect = new Vector2(c_shooter_region_height * (1920f/1080f), c_shooter_region_height);
-            m_aimTargetClampRect = new Vector2(m_shooterClampRect.x - .25f, m_shooterClampRect.y - .25f);
 
-            MoveShooterToClosestEdge(new Vector2(-10, 0), m_shooterClampRect);
+            m_worldRegions = ModuleUtilities.Get<GameModule>().WorldRegions;
+
+            MoveShooterToClosestEdge(new Vector2(-10, 0), m_worldRegions.shooterRegionExtents);
             m_aimController.SetAimTarget(Vector2.zero);
+            
+            m_turnController = ModuleUtilities.Get<GameModule>().TurnController;
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (m_turnController.Turn == Turn.Player && Input.GetKeyDown(KeyCode.Space))
                 m_weapon.Fire();
 
-            m_clampedWorldMousePos = MathUtilities.ClampVector(MiscUtilities.WorldMousePos, -m_aimTargetClampRect,
-                m_aimTargetClampRect);
+            m_clampedWorldMousePos = MathUtilities.ClampVector(MiscUtilities.WorldMousePos, -m_worldRegions.aimTargetRegionExtents,
+                m_worldRegions.aimTargetRegionExtents);
 
             bool rightClicking = Input.GetKey(KeyCode.Mouse1);
             
             if (rightClicking)
             {
                 if (Input.GetKey(KeyCode.LeftShift))
-                    ShiftShooterAlongRectEdge(m_clampedWorldMousePos - m_oldMousePos, m_shooterClampRect);
+                    ShiftShooterAlongRectEdge(m_clampedWorldMousePos - m_oldMousePos, m_worldRegions.shooterRegionExtents);
                 else
                 {
                     if (Input.GetKey(KeyCode.LeftControl))
-                        MoveShooterToClosestEdge(m_clampedWorldMousePos, m_shooterClampRect);
+                        MoveShooterToClosestEdge(m_clampedWorldMousePos, m_worldRegions.shooterRegionExtents);
                     AimShooterAtMouse();
                 }
             }

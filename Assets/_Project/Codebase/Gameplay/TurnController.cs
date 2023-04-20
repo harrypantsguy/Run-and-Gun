@@ -12,7 +12,7 @@ namespace _Project.Codebase.Gameplay
 
         public TurnController()
         {
-            Turn = Turn.Enemy;
+            Turn = Turn.Player;
             m_numTurns = Enum.GetNames(typeof(Turn)).Length;
             
             OnTurnChange = turn => { };

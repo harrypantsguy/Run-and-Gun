@@ -15,7 +15,9 @@ namespace _Project.Codebase.Gameplay
         
         private const float c_cell_check_cast_dist = .03f;
         private const float c_default_speed = 55f;
-        private const float c_max_travel_dist = 500f;
+        private const float c_max_travel_dist = 400f;
+
+        private WorldRegions m_worldRegions;
 
         private Building m_building;
             
@@ -24,7 +26,9 @@ namespace _Project.Codebase.Gameplay
             m_speed = c_default_speed;
             m_pierceStrength = 2;
 
-            m_building = ModuleUtilities.Get<GameModule>().Building;
+            GameModule gameModule = ModuleUtilities.Get<GameModule>();
+            m_building = gameModule.Building;
+            m_worldRegions = gameModule.WorldRegions;
         }
         
         public List<ProjectileEvent> Simulate(Vector2 start, Vector2 direction)
@@ -78,8 +82,14 @@ namespace _Project.Codebase.Gameplay
                         events.Add(new PierceEvent(ProjectileEventType.EndPierce, exitHit.point, exitHit.normal, exitTime, 
                             lastEventSurfaceType));
 
+                    Vector2 offset = direction * maxDistRemaining;
+                    Vector2 endPoint = currentPosition + offset;
+                    GizmoUtilities.DrawXAtPos(endPoint, 1f, Color.red);
+                    //if (!m_worldRegions.IsPointInsideRegion(endPoint, m_worldRegions.shooterRegionExtents))
+                     //   endPoint = m_worldRegions.ProjectVectorOntoRegionEdge(currentPosition, 
+                    //        offset, m_worldRegions.shooterRegionExtents);
                     events.Add(new ProjectileEvent(ProjectileEventType.Termination, 
-                    currentPosition + direction * maxDistRemaining, simTime + maxDistRemaining / m_speed));
+                        endPoint, simTime + Vector2.Distance(endPoint, currentPosition) / m_speed));
                     break;
                 }
 

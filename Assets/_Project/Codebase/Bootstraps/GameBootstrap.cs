@@ -18,7 +18,7 @@ namespace _Project.Codebase.Bootstraps
             await contentService.LoadAssetGroupAsync<ScriptableAssetGroup, ScriptableObject>();
             //await modules.LoadAsync(new BuildingTestModule());
             await modules.LoadAsync(new GameModule());
-            modules.Load(new GameUIModule());
+            await modules.LoadAsync(new GameUIModule());
         }
     }
 }

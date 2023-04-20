@@ -1,4 +1,5 @@
-﻿using _Project.Codebase.Gameplay.World;
+﻿
+using System.Threading.Tasks;
 
 namespace _Project.Codebase.Gameplay.AIBehaviours
 {
@@ -13,16 +14,10 @@ namespace _Project.Codebase.Gameplay.AIBehaviours
             Character = controller.Character;
         }
 
-        public virtual void OnEnter() {}
+        public virtual Task OnStartBehaviour() => Task.CompletedTask;
 
-        public virtual AIDecision MakeDecision(WorldScreenshot worldScreenshot)
-        {
-            return new MoveDecision();
-        }
+        public virtual Task Update() => Task.CompletedTask;
 
-        public virtual void OnExit()
-        {
-            
-        }
+        public virtual Task OnEndBehaviour() => Task.CompletedTask;
     }
 }

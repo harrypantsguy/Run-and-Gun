@@ -3,7 +3,7 @@ using UnityEngine.Tilemaps;
 
 namespace _Project.Codebase.Gameplay.World
 {
-    public class BuildingAuthoring : MonoBehaviour, IInititializer<Building>
+    public class BuildingAuthoring : MonoBehaviour
     {
         [SerializeField] private Tilemap m_wallMap;
         [SerializeField] private Tilemap m_floorMap;
@@ -21,17 +21,16 @@ namespace _Project.Codebase.Gameplay.World
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying || !m_debugNavmesh) return;
-
-            /*
-            int halfSize = c_world_size / 2;
+            
+            int halfSize = Building.WORLD_SIZE / 2;
             for (int x = -halfSize; x < halfSize; x++)
             for (int y = -halfSize; y < halfSize; y++)
             {
                 Vector2Int pos = new Vector2Int(x, y);
-                Gizmos.color = m_navmesh.IsValidNode(pos) && m_navmesh.IsWalkableNode(pos) ? Color.green : Color.red;
+                Gizmos.color = m_building.navmesh.IsValidNode(pos) && m_building.navmesh.IsWalkableNode(pos)
+                    ? Color.green : Color.red;
                 Gizmos.DrawWireCube(pos + new Vector2(.5f, .5f), Vector3.one);
             }
-            */
         }
     }
 }
