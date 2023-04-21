@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using _Project.Codebase.Gameplay.Projectile;
+using _Project.Codebase.Gameplay.Projectiles;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Shooter
@@ -18,15 +18,10 @@ namespace _Project.Codebase.Gameplay.Shooter
             m_projectileSim = new ProjectileSim();
         }
 
-        private void Update()
-        {
-            m_events = m_projectileSim.Simulate(m_barrelTipTransform.position, m_barrelTipTransform.right);
-            m_reenactor?.Update(Time.deltaTime);
-        }
-
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying) return;
+            return;
 
             Vector2 lastPos = Vector2.zero;
             for (var i = 0; i < m_events.Count; i++)
@@ -70,7 +65,7 @@ namespace _Project.Codebase.Gameplay.Shooter
 
         public void Fire()
         {
-            m_reenactor = new ProjectileSimReenactor(m_events);
+            Projectile.SpawnProjectile(transform.position, transform.right);
         }
     }
 }

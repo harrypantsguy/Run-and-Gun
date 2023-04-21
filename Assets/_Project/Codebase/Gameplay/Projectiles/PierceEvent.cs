@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Project.Codebase.Gameplay.Projectile
+namespace _Project.Codebase.Gameplay.Projectiles
 {
     public class PierceEvent : ProjectileEvent
     {

@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using _Project.Codebase.Gameplay.Projectile;
 using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace _Project.Codebase.Gameplay
+namespace _Project.Codebase.Gameplay.Projectiles
 {
     public class ProjectileSim
     {

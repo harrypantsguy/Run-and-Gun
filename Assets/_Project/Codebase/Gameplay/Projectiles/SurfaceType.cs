@@ -1,4 +1,4 @@
-﻿namespace _Project.Codebase.Gameplay.Projectile
+﻿namespace _Project.Codebase.Gameplay.Projectiles
 {
     public enum SurfaceType
     {

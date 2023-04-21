@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using _Project.Codebase.Gameplay.Projectile;
+﻿using System.Collections.Generic;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace _Project.Codebase.Gameplay
+namespace _Project.Codebase.Gameplay.Projectiles
 {
     public class ProjectileSimReenactor
     {
