@@ -6,23 +6,15 @@ namespace _Project.Codebase.Gameplay.Projectiles
     {
         public readonly ProjectileEventType type;
         public readonly Vector2 location;
-        public readonly Vector2 normal;
         public readonly float time;
+        public readonly bool terminate;
 
-        public ProjectileEvent(ProjectileEventType type, Vector2 location, float time)
+        public ProjectileEvent(ProjectileEventType type, Vector2 location, float time, bool terminate = false)
         {
             this.type = type;
             this.location = location;
             this.time = time;
-            normal = Vector2.zero;
-        }
-        
-        public ProjectileEvent(ProjectileEventType type, Vector2 location, Vector2 normal, float time)
-        {
-            this.type = type;
-            this.normal = normal;
-            this.location = location;
-            this.time = time;
+            this.terminate = terminate;
         }
     }
 }

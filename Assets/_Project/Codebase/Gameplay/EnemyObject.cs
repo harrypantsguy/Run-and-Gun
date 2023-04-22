@@ -2,12 +2,14 @@
 
 namespace _Project.Codebase.Gameplay
 {
-    public class EnemyObject : MonoBehaviour
+    public class EnemyObject : CharacterObject
     {
         public EnemyCharacter Enemy { get; private set; }
         public EnemyCharacter Initialize(Vector2Int position)
         {
             return Enemy = new EnemyCharacter(GetComponent<NavmeshAgent>(), position);
         }
+
+        public override Character Character => Enemy;
     }
 }

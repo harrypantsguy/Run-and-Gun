@@ -6,6 +6,5 @@
         StartPierce,
         EndPierce,
         Ricochet,
-        Termination
     }
 }

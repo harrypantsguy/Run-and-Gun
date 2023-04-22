@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using _Project.Codebase.Gameplay.Projectiles;
+using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.World
 {
-    public class Wall : Cell
+    public class Wall : Cell, IProjectileHittable
     {
         public WallType type;
         public int pierceInfluence;
@@ -15,5 +16,7 @@ namespace _Project.Codebase.Gameplay.World
             this.pierceInfluence = pierceInfluence;
             this.ricochetInfluence = ricochetInfluence;
         }
+
+        public void OnProjectileHit() {}
     }
 }

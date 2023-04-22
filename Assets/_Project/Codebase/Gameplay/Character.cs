@@ -1,11 +1,12 @@
-﻿using _Project.Codebase.Gameplay.World;
+﻿using _Project.Codebase.Gameplay.Projectiles;
+using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay
 {
-    public class Character : IFloorObject
+    public class Character : IFloorObject, IProjectileHittable
     {
         public readonly NavmeshAgent agent;
         public readonly Transform transform;
@@ -33,5 +34,7 @@ namespace _Project.Codebase.Gameplay
         {
             UpdateFloorPosition(gridPos);
         }
+
+        public void OnProjectileHit() {}
     }
 }
