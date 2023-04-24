@@ -4578,7 +4578,7 @@ Transform:
   - {fileID: 2311983363499292658}
   - {fileID: 937819008395517396}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2486852284267055173
 MonoBehaviour:
@@ -6211,7 +6211,7 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
-  m_UseDelaunayMesh: 0
+  m_UseDelaunayMesh: 1
 --- !u!50 &2326255417620438046
 Rigidbody2D:
   serializedVersion: 4
@@ -6228,7 +6228,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f11f2871782450f42ac3b69ee5be90c5, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

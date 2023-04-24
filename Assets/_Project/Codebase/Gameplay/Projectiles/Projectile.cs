@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _Project.Codebase.EditorUtilities;
 using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
 using DanonFramework.Runtime.Core.Utilities;
@@ -24,8 +25,8 @@ namespace _Project.Codebase.Gameplay.Projectiles
         private Vector2 m_lastTransformPos;
         private Vector2 m_lastEventLocation;
         
-        private const float c_default_speed = 35f;
-        private const float c_max_travel_dist = 150f;
+        private const float c_default_speed = 40f;
+        private const float c_max_travel_dist = 300f;
 
         private void Awake()
         {
@@ -34,7 +35,14 @@ namespace _Project.Codebase.Gameplay.Projectiles
 
         private void LateUpdate()
         {
-           // if (m_queuedEvents.Count == 0) return;
+            /*
+            if (m_currentEvent != null)
+            {
+                Time.timeScale =
+                    m_currentEvent.type is ProjectileEventType.StartPierce or ProjectileEventType.EndPierce
+                    || m_hittableInside != null ? .025f : 1f;
+            }
+            */
             
             if (m_currentEvent != null && Time.time >= m_currentEvent.time)
             {
@@ -50,8 +58,9 @@ namespace _Project.Codebase.Gameplay.Projectiles
                     Debug.LogWarning("late update infinite loop");
                     return;
                 }
-                    
+
                 m_currentEventLength = m_currentEvent.time - m_currentEventStartTime;
+                transform.right = m_currentEvent.travelDir;
                 //Debug.Log($"{m_currentEventLength} = {m_currentEvent.time} - {m_currentEventStartTime}");
                 if (m_currentEvent.time < Time.time)
                 {
@@ -86,12 +95,12 @@ namespace _Project.Codebase.Gameplay.Projectiles
                 case ProjectileEventType.Position:
                     break;
                 case ProjectileEventType.StartPierce:
-                    debugColor = Color.red;
+                    debugColor = Color.green;
                     SpawnPierceParticleSystem(hitEvent.surfaceType, 
                         hitEvent.location + -hitEvent.travelDir * .005f, -hitEvent.travelDir);
                     break;
                 case ProjectileEventType.EndPierce:
-                    debugColor = Color.green;
+                    debugColor = Color.red;
                     SpawnPierceParticleSystem(hitEvent.surfaceType, 
                         hitEvent.location + hitEvent.travelDir * .005f, hitEvent.travelDir);
                     break;
@@ -130,7 +139,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
             float time = Time.fixedTime;
 
             float remainingTravelDist = travelDist;
-            //GizmoUtilities.DrawXAtPos(m_currentPosition, .25f, Color.magenta, Time.fixedDeltaTime);
+            GizmoUtilities.DrawXAtPos(m_currentPosition, .25f, Color.magenta, Time.fixedDeltaTime);
 
             m_currentEventStartTime = Time.fixedTime;
             m_lastEventLocation = m_currentPosition;
@@ -144,29 +153,11 @@ namespace _Project.Codebase.Gameplay.Projectiles
                     return;
                 }
                 RaycastHit2D hit = Physics2D.Raycast(m_currentPosition, m_travelDir, remainingTravelDist);
+                if (hit.collider != null)
+                    GizmoUtilities.DrawXAtPos(hit.point, .1f, Color.gray, Time.fixedDeltaTime);
 
-                if (m_hittableInside != null)
-                {
-                    Vector2 reverseCastSource = m_currentPosition + m_travelDir * remainingTravelDist, 
-                        reverseCastEnd = m_currentPosition;
-                    RaycastHit2D reverseHit = Physics2D.Linecast(reverseCastSource, reverseCastEnd);
-                    //if (hit.collider != null)
-                    //    Debug.Log($"dist: {reverseHit.collider.Distance(hit.collider)}");
-                    Debug.DrawLine(reverseCastSource, reverseCastEnd, Color.yellow);
-                    if (reverseHit.collider != null && reverseHit.collider == m_colliderInside)
-                    {
-                        UpdateCurrentPosition(reverseHit.point + m_travelDir * .003f);
-                        float distFromLastToHit = Vector2.Distance(m_lastPosition, m_currentPosition);
-                        m_distanceTraveled += distFromLastToHit;
-                        remainingTravelDist -= distFromLastToHit;
-                        time += CalcInterpolationTimeFromLastAndCurrentPos();
-                        m_queuedEvents.Enqueue(
-                            new HitEvent(ProjectileEventType.EndPierce, reverseHit.point, 
-                               time, m_hittableInside, m_surfaceTypeInside, -reverseHit.normal, m_travelDir));
-                        SetObjectInside(null, null);
-                        continue;
-                    }
-                }
+                HandleEndingPierce(hit, ref remainingTravelDist, ref time);
+
                 if (hit)
                 {
                     if (ProcessHitAndReturnDestroyState(hit, ref remainingTravelDist, ref time)) break;
@@ -184,6 +175,39 @@ namespace _Project.Codebase.Gameplay.Projectiles
                         m_travelDir, m_distanceTraveled >= c_max_travel_dist));
                 
             } while (remainingTravelDist > 0f);
+        }
+
+        private void HandleEndingPierce(RaycastHit2D hit, ref float remainingTravelDist, ref float time)
+        {
+            if (m_hittableInside != null)
+            {
+                Vector2 reverseCastSource = m_currentPosition + m_travelDir * remainingTravelDist,
+                    reverseCastEnd = m_currentPosition;
+                RaycastHit2D[] reverseHits = new RaycastHit2D[5];
+                int numReverseHits = MathUtilities.LinecastTrulyAll(reverseCastSource, reverseCastEnd, reverseHits);
+
+                Debug.DrawLine(reverseCastSource, reverseCastEnd, Color.yellow);
+                if (numReverseHits > 0)
+                {
+                    RaycastHit2D reverseHit = reverseHits[numReverseHits - 1];
+                    if (reverseHit.collider != null)
+                        GizmoUtilities.DrawXAtPos(reverseHit.point, .075f, Color.yellow, Time.fixedDeltaTime);
+
+                    if (reverseHit.collider != null && reverseHit.collider == m_colliderInside &&
+                        Vector2.Distance(reverseHit.point, hit.point) > .001f)
+                    {
+                        UpdateCurrentPosition(reverseHit.point + m_travelDir * .003f);
+                        float distFromLastToHit = Vector2.Distance(m_lastPosition, m_currentPosition);
+                        m_distanceTraveled += distFromLastToHit;
+                        remainingTravelDist -= distFromLastToHit;
+                        time += CalcInterpolationTimeFromLastAndCurrentPos();
+                        m_queuedEvents.Enqueue(
+                            new HitEvent(ProjectileEventType.EndPierce, reverseHit.point,
+                                time, m_hittableInside, m_surfaceTypeInside, -reverseHit.normal, m_travelDir));
+                        SetObjectInside(null, null);
+                    }
+                }
+            }
         }
 
         private void UpdateCurrentPosition(Vector2 newPos)
@@ -212,17 +236,19 @@ namespace _Project.Codebase.Gameplay.Projectiles
                 Wall hitWall = m_building.GetWallAtPos(cellSamplePoint);
                 if (hitWall.type == WallType.Glass)
                 {
-                    SetObjectInside(hitWall, hit.collider, SurfaceType.Glass);
-                    
-                    m_queuedEvents.Enqueue(new HitEvent(ProjectileEventType.StartPierce, hit.point, 
+                    m_queuedEvents.Enqueue(new HitEvent(m_hittableInside != null
+                            ? ProjectileEventType.Position : ProjectileEventType.StartPierce, hit.point, 
                         time, hitWall, SurfaceType.Glass, hit.normal, m_travelDir));
+                    
+                    SetObjectInside(hitWall, hit.collider, SurfaceType.Glass);
 
                     return false;
                 }
                 
-                m_queuedEvents.Enqueue(new HitEvent(ProjectileEventType.Position, hit.point, time,
-                    hitWall, SurfaceType.Concrete, hit.normal, m_travelDir, true));
-                return true;
+                m_queuedEvents.Enqueue(new HitEvent(ProjectileEventType.Ricochet, hit.point, time,
+                    hitWall, SurfaceType.Concrete, hit.normal, m_travelDir));
+                m_travelDir = Vector2.Reflect(m_travelDir, hit.normal);
+                return false;
             }
 
             if (hit.collider.TryGetComponent(out CharacterObject characterObject))

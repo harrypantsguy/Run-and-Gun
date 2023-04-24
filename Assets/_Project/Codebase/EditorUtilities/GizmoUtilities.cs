@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Project.Codebase
+namespace _Project.Codebase.EditorUtilities
 {
     public static class GizmoUtilities
     {
