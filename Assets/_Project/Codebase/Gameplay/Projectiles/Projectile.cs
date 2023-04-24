@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Timers;
 using _Project.Codebase.EditorUtilities;
 using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
 using DanonFramework.Runtime.Core.Utilities;
+using Mono.CecilX.Cil;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -27,10 +31,14 @@ namespace _Project.Codebase.Gameplay.Projectiles
         
         private const float c_default_speed = 40f;
         private const float c_max_travel_dist = 300f;
-
-        private void Awake()
+        private const float c_tick_rate = 1f/60f;
+        
+        private void Initialize(Vector2 pos, Vector2 dir)
         {
+            m_currentPosition = pos;
+            m_travelDir = dir;
             m_building = ModuleUtilities.Get<GameModule>().Building;
+            StartCoroutine(Tick());
         }
 
         private void LateUpdate()
@@ -53,9 +61,9 @@ namespace _Project.Codebase.Gameplay.Projectiles
             while (m_currentEvent == null && m_queuedEvents.TryDequeue(out m_currentEvent))
             {
                 loops++;
-                if (loops >= 30)
+                if (loops >= 9999)
                 {
-                    Debug.LogWarning("late update infinite loop");
+                    Debug.LogWarning($"late update infinite loop, {m_currentEvent.type}, {m_currentEvent.terminate}");
                     return;
                 }
 
@@ -70,9 +78,15 @@ namespace _Project.Codebase.Gameplay.Projectiles
             }
 
             if (m_currentEvent == null) return;
-            
-            float progress = (Time.time - m_currentEventStartTime) / m_currentEventLength;
-            transform.position = Vector2.Lerp(m_lastEventLocation, m_currentEvent.location, progress);
+
+            if (m_currentEventLength == 0)
+                transform.position = m_currentEvent.location;
+            else
+            {
+                float progress = (Time.time - m_currentEventStartTime) / m_currentEventLength;
+                transform.position = Vector2.Lerp(m_lastEventLocation, m_currentEvent.location, progress);
+            }
+
             //Debug.Log(Vector2.Distance(transform.position, m_lastTransformPos));
             m_lastTransformPos = transform.position;
         }
@@ -109,7 +123,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
                     break;
             }
 
-            GizmoUtilities.DrawXAtPos(m_currentEvent.location, .125f, debugColor);
+            GizmoUtilities.DrawXAtPos(m_currentEvent.location, .125f, debugColor, 1f);
             if (m_currentEvent.terminate)
             {
                 Destroy(gameObject);
@@ -132,16 +146,25 @@ namespace _Project.Codebase.Gameplay.Projectiles
             pierceParticles.transform.right = direction;
         }
 
+        private void Update()
+        {
+            //QueueEvents(Time.deltaTime);
+        }
+
         private void FixedUpdate()
         {
-            float travelDist = c_default_speed * Time.fixedDeltaTime;
+            //QueueEvents(Time.fixedTime, Time.fixedDeltaTime);
+        }
+
+        private void QueueEvents(float time, float deltaTime)
+        {
+            float travelDist = c_default_speed * deltaTime;
             travelDist = Mathf.Min(travelDist, c_max_travel_dist - m_distanceTraveled);
-            float time = Time.fixedTime;
 
             float remainingTravelDist = travelDist;
-            GizmoUtilities.DrawXAtPos(m_currentPosition, .25f, Color.magenta, Time.fixedDeltaTime);
+            GizmoUtilities.DrawXAtPos(m_currentPosition, .25f, Color.magenta, deltaTime);
 
-            m_currentEventStartTime = Time.fixedTime;
+            m_currentEventStartTime = time;
             m_lastEventLocation = m_currentPosition;
             int loops = 0;
             do
@@ -152,11 +175,12 @@ namespace _Project.Codebase.Gameplay.Projectiles
                     Debug.LogWarning("fixed update infinite loop");
                     return;
                 }
+
                 RaycastHit2D hit = Physics2D.Raycast(m_currentPosition, m_travelDir, remainingTravelDist);
                 if (hit.collider != null)
-                    GizmoUtilities.DrawXAtPos(hit.point, .1f, Color.gray, Time.fixedDeltaTime);
+                    GizmoUtilities.DrawXAtPos(hit.point, .1f, Color.gray, deltaTime);
 
-                HandleEndingPierce(hit, ref remainingTravelDist, ref time);
+                HandleEndingPierce(hit, deltaTime, ref remainingTravelDist, ref time);
 
                 if (hit)
                 {
@@ -169,15 +193,14 @@ namespace _Project.Codebase.Gameplay.Projectiles
                 remainingTravelDist = 0f;
                 UpdateCurrentPosition(m_currentPosition + offset);
                 time += CalcInterpolationTimeFromLastAndCurrentPos();
-                
+
                 m_queuedEvents.Enqueue(
                     new ProjectileEvent(ProjectileEventType.Position, m_currentPosition, time,
                         m_travelDir, m_distanceTraveled >= c_max_travel_dist));
-                
             } while (remainingTravelDist > 0f);
         }
 
-        private void HandleEndingPierce(RaycastHit2D hit, ref float remainingTravelDist, ref float time)
+        private void HandleEndingPierce(RaycastHit2D hit, float deltaTime, ref float remainingTravelDist, ref float time)
         {
             if (m_hittableInside != null)
             {
@@ -191,7 +214,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
                 {
                     RaycastHit2D reverseHit = reverseHits[numReverseHits - 1];
                     if (reverseHit.collider != null)
-                        GizmoUtilities.DrawXAtPos(reverseHit.point, .075f, Color.yellow, Time.fixedDeltaTime);
+                        GizmoUtilities.DrawXAtPos(reverseHit.point, .075f, Color.yellow, deltaTime);
 
                     if (reverseHit.collider != null && reverseHit.collider == m_colliderInside &&
                         Vector2.Distance(reverseHit.point, hit.point) > .001f)
@@ -265,6 +288,26 @@ namespace _Project.Codebase.Gameplay.Projectiles
             return false;
         }
 
+        private IEnumerator Tick()
+        {
+            float t = 0f;
+            float globalTime = Time.time;
+            QueueEvents(globalTime,c_tick_rate);
+
+            while (enabled)
+            {
+                t += Time.deltaTime;
+                while (t >= c_tick_rate)
+                {
+                    t -= c_tick_rate;
+                    QueueEvents(globalTime,c_tick_rate);
+                }
+                globalTime += Time.deltaTime;
+
+                yield return null;
+            }
+        }
+
         private float CalcInterpolationTimeFromLastAndCurrentPos(float speed = c_default_speed) =>
             CalcInterpolationTime(m_lastPosition, m_currentPosition, speed);
 
@@ -277,8 +320,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
             newProjectileObj.transform.position = pos;
             newProjectileObj.transform.right = direction;
             Projectile projectile = newProjectileObj.GetComponent<Projectile>();
-            projectile.m_travelDir = direction;
-            projectile.m_currentPosition = pos;
+            projectile.Initialize(pos, direction);
         }
     }
 }
