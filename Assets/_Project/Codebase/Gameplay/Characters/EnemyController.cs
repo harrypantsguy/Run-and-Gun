@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using _Project.Codebase.Gameplay.World;
+using _Project.Codebase.Modules;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
-namespace _Project.Codebase.Gameplay
+namespace _Project.Codebase.Gameplay.Characters
 {
     public class EnemyController
     {
@@ -28,10 +29,10 @@ namespace _Project.Codebase.Gameplay
         {
             if (turn == Turn.Enemy)
             {
-                //WorldScreenshot worldScreenshot = new WorldScreenshot(new Building(ModuleUtilities.Get<GameModule>().Building));
+                WorldScreenshot worldScreenshot = new WorldScreenshot(ModuleUtilities.Get<GameModule>().Building);
                 foreach (EnemyCharacter enemy in m_enemies)
                 {
-                   await enemy.TakeTurn();
+                   await enemy.TakeTurn(worldScreenshot);
                 }
                 
                 m_turnController.NextTurn();

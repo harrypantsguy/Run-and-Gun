@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_debugPath: 1
-  m_moveSpeed: 2
+  m_moveSpeed: 4
   m_nodeReachedDist: 0.01
 --- !u!50 &830659561568731656
 Rigidbody2D:

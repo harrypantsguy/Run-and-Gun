@@ -27,9 +27,10 @@ namespace _Project.Codebase.Gameplay.World
             for (int y = -halfSize; y < halfSize; y++)
             {
                 Vector2Int pos = new Vector2Int(x, y);
-                Gizmos.color = m_building.navmesh.IsValidNode(pos) && m_building.navmesh.IsWalkableNode(pos)
+                bool isValidAndWalkable = m_building.navmesh.IsValidNode(pos) && m_building.navmesh.IsWalkableNode(pos);
+                Gizmos.color = isValidAndWalkable
                     ? Color.green : Color.red;
-                Gizmos.DrawWireCube(pos + new Vector2(.5f, .5f), Vector3.one);
+                Gizmos.DrawWireCube(m_building.GridToWorld(pos), new Vector3(.99f, .99f));
             }
         }
     }

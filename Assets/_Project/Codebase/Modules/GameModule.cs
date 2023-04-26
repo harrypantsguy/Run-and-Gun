@@ -1,6 +1,6 @@
 ﻿using _Project.Codebase.Gameplay;
+using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.Gameplay.World;
-using _Project.Codebase.NavigationMesh;
 using Cysharp.Threading.Tasks;
 using DanonFramework.Runtime.Core.ModuleLayer;
 using DanonFramework.Runtime.Core.Utilities;

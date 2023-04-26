@@ -12,7 +12,7 @@ namespace _Project.Codebase.Gameplay
         [SerializeField] private float m_moveSpeed;
         [SerializeField] private float m_nodeReachedDist;
         private WorldSpacePathController m_pathController;
-        public Action<Vector2, Vector2Int> OnReachPathEnd;
+        public Action<Vector2, Vector2Int> onReachPathEnd;
 
         public bool AtPathEnd => m_pathController.AtPathEnd;
 
@@ -21,8 +21,12 @@ namespace _Project.Codebase.Gameplay
             GameModule gameModule = ModuleUtilities.Get<GameModule>();
             m_pathController = new WorldSpacePathController(gameModule.Building.navmesh, gameModule.Building.WorldToGrid,
                 gameModule.Building.GridToWorld, true);
-            OnReachPathEnd = (vector2, vector2Int) => { };
-            m_pathController.OnReachPathEnd += OnReachPathEnd;
+            m_pathController.onReachPathEnd += OnReachPathEnd;
+        }
+
+        private void OnReachPathEnd(Vector2 arg1, Vector2Int arg2)
+        {
+            onReachPathEnd?.Invoke(arg1, arg2);
         }
 
         private void FixedUpdate()

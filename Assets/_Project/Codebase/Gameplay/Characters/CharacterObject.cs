@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Project.Codebase.Gameplay
+namespace _Project.Codebase.Gameplay.Characters
 {
     public abstract class CharacterObject : MonoBehaviour
     {

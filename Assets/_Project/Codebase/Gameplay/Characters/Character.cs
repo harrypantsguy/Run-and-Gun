@@ -4,7 +4,7 @@ using _Project.Codebase.Modules;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
-namespace _Project.Codebase.Gameplay
+namespace _Project.Codebase.Gameplay.Characters
 {
     public class Character : IFloorObject, IProjectileHittable
     {
@@ -17,7 +17,7 @@ namespace _Project.Codebase.Gameplay
         {
             this.agent = agent;
             transform = agent.transform;
-            agent.OnReachPathEnd += OnReachPathEnd;
+            agent.onReachPathEnd += OnReachPathEnd;
             UpdateFloorPosition(position, true);
         }
 
@@ -25,14 +25,15 @@ namespace _Project.Codebase.Gameplay
         {
             FloorPos = gridPos;
             Building building = ModuleUtilities.Get<GameModule>().Building;
-            building.TryGetFloorAtPos(gridPos, out Floor floor);
-            floor.floorObject = this;
-            transform.position = building.GridToWorld(FloorPos);
+            building.SetFloorObjectAtPos(gridPos, this);
+            if (teleportToPos)
+                transform.position = building.GridToWorld(FloorPos);
         }
 
-        protected void OnReachPathEnd(Vector2 worldPos, Vector2Int gridPos)
+        protected virtual void OnReachPathEnd(Vector2 worldPos, Vector2Int gridPos)
         {
-            UpdateFloorPosition(gridPos);
+            Debug.Log("party");
+            UpdateFloorPosition(gridPos, true);
         }
 
         public void OnProjectileHit() {}

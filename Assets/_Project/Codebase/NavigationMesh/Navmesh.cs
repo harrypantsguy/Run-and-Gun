@@ -37,7 +37,7 @@ namespace _Project.Codebase.NavigationMesh
             return node;
         }
 
-        public void SetNodeWalkableState(Vector2Int pos, bool walkableState)
+        public void SetWalkable(Vector2Int pos, bool walkableState)
         {
             m_nodes[pos].walkable = walkableState;
         }

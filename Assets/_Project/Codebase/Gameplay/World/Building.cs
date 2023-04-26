@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using _Project.Codebase.Modules;
 using _Project.Codebase.NavigationMesh;
@@ -92,6 +93,14 @@ namespace _Project.Codebase.Gameplay.World
 
         public bool TryGetFloorAtPos(Vector2Int pos, out Floor floor) => m_floorCells.TryGetValue(pos, out floor);
         public bool IsFloorAtPos(Vector2 pos) => m_floorCells.ContainsKey(WorldToGrid(pos));
+        public void SetFloorObjectAtPos(Vector2Int pos, IFloorObject floorObject)
+        {
+            if (!m_floorCells.TryGetValue(pos, out Floor floor))
+                throw new Exception("Attempting to set floor object at nonexistent floor position");
+
+            floor.floorObject = floorObject;
+            navmesh.SetWalkable(pos, floorObject == null);
+        }
 
         public Vector2Int WorldToGrid(Vector2 pos) => (Vector2Int)m_grid.WorldToCell(pos);
         public Vector2 GridToWorld(Vector2Int pos) => m_grid.CellToWorld((Vector3Int)pos) + new Vector3(.5f, .5f);

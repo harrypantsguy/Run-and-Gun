@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
 namespace _Project.Codebase.NavigationMesh
 {
     public sealed class WorldSpacePathController
     {
-        private Pathfinder m_pathfinder;
+        private readonly Pathfinder m_pathfinder;
         public List<Vector2> Path { get; }
         public Vector2 NextNode { get; private set; }
         public Vector2 LastNode { get; private set; }
         public Vector2 DirToNextNode { get; private set; }
         public float DistFromLastToNextNode { get; private set; }
         public bool AtPathEnd { get; private set; }
-        public Action<Vector2, Vector2Int> OnReachPathEnd;
+        public Action<Vector2, Vector2Int> onReachPathEnd;
         private int m_pathIndex;
         private readonly List<Vector2Int> m_gridPath = new();
         private readonly bool m_cardinalOnly;
@@ -32,7 +31,6 @@ namespace _Project.Codebase.NavigationMesh
             m_cardinalOnly = cardinalOnly;
             Path = new List<Vector2>();
             AtPathEnd = true;
-            OnReachPathEnd = (vector2, vector2Int) => { };
         }
 
         public PathResult GenerateAndSetPath(Vector2 source, Vector2 target)
@@ -54,8 +52,8 @@ namespace _Project.Codebase.NavigationMesh
         {
             PathResult result = m_pathfinder.FindPath(m_worldToGrid(source), m_worldToGrid(target), m_cardinalOnly, gridPath);
             path.Clear();
+            gridPath.Reverse();
             path.AddRange(gridPath.ConvertAll(m_gridToWorldConverter));
-            path.Reverse();
             return result;
         }
 
@@ -71,7 +69,9 @@ namespace _Project.Codebase.NavigationMesh
         {
             AtPathEnd = m_pathIndex >= Path.Count - 1;
             if (AtPathEnd)
-                OnReachPathEnd?.Invoke(Path[^1], m_gridPath[^1]);
+            {
+                onReachPathEnd?.Invoke(Path[^1], m_gridPath[^1]);
+            }
             if (Path.Count == 0) return;
             LastNode = Path[m_pathIndex];
             if (!AtPathEnd)
