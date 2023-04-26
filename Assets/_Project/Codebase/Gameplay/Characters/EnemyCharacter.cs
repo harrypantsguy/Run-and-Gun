@@ -7,7 +7,7 @@ namespace _Project.Codebase.Gameplay.Characters
 {
     public class EnemyCharacter : Character
     {
-        private AIController m_AIController;
+        private readonly AIController m_AIController;
         
         private const int c_default_action_points = 1;
 

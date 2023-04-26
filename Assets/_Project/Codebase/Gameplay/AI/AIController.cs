@@ -15,7 +15,7 @@ namespace _Project.Codebase.Gameplay.AI
 
         public async Task TakeTurn(WorldScreenshot worldContext)
         {
-            TurnAction action = DetermineAction(worldContext);
+            CharacterAction action = DetermineAction(worldContext);
             if (action != null)
             {
                 await action.OnStartAction();
@@ -24,6 +24,6 @@ namespace _Project.Codebase.Gameplay.AI
             }
         }
 
-        protected abstract TurnAction DetermineAction(WorldScreenshot worldContext);
+        protected abstract CharacterAction DetermineAction(WorldScreenshot worldContext);
     }
 }

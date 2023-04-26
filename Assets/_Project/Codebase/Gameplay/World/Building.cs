@@ -6,6 +6,7 @@ using _Project.Codebase.NavigationMesh;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Random = UnityEngine.Random;
 
 namespace _Project.Codebase.Gameplay.World
 {
@@ -69,7 +70,7 @@ namespace _Project.Codebase.Gameplay.World
         {
             List<Vector2Int> floorPositions = m_floorCells.Keys.ToList();
             int its = 0;
-            while (its < 300)
+            while (its < 999)
             {
                 m_floorCells.TryGetValue(floorPositions.GetRandom(), out Floor floor);
                 if (floor != null && floor.floorObject == null)
@@ -81,25 +82,38 @@ namespace _Project.Codebase.Gameplay.World
 
             return null;
         }
+
+        public Floor GetRandomOpenFloorInRadius(Vector2 pos, int radius, bool excludeCenter = false)
+        {
+            Floor floor = null;
+            Vector2Int randomPos;
+            Vector2Int center = WorldToGrid(pos);
+            int its = 0;
+            do
+            {
+                its++;
+                randomPos = (center + Random.insideUnitCircle * Random.Range(1, radius)).ToVector2Int();
+            } while ((!m_floorCells.TryGetValue(randomPos, out floor) || (excludeCenter && randomPos == center)) && its < 999);
+
+            return floor;
+        }
         
         public Wall GetWallAtPos(Vector2 pos)
         {
             Vector2Int gridPos = WorldToGrid(pos);
-            //Vector2 center = m_grid.CellToWorld((Vector3Int)gridPos) + new Vector3(.5f, .5f);
-            //GizmoUtilities.DrawXAtPos(center, 1f, Color.yellow);
             m_wallCells.TryGetValue(gridPos, out Wall wall);
             return wall;
         }
 
         public bool TryGetFloorAtPos(Vector2Int pos, out Floor floor) => m_floorCells.TryGetValue(pos, out floor);
         public bool IsFloorAtPos(Vector2 pos) => m_floorCells.ContainsKey(WorldToGrid(pos));
-        public void SetFloorObjectAtPos(Vector2Int pos, IFloorObject floorObject)
+        public void SetFloorObjectAtPos(Vector2Int pos, IFloorObject floorObject, bool walkable = true)
         {
             if (!m_floorCells.TryGetValue(pos, out Floor floor))
                 throw new Exception("Attempting to set floor object at nonexistent floor position");
 
             floor.floorObject = floorObject;
-            navmesh.SetWalkable(pos, floorObject == null);
+            navmesh.SetWalkable(pos, walkable);
         }
 
         public Vector2Int WorldToGrid(Vector2 pos) => (Vector2Int)m_grid.WorldToCell(pos);

@@ -32,7 +32,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
         
         private const float c_default_speed = 40f;
         private const float c_max_travel_dist = 300f;
-        private const float c_tick_rate = 1f/60f;
+        private const float c_tick_rate = 1f / 30f;
         
         private void Initialize(Vector2 pos, Vector2 dir)
         {
@@ -44,15 +44,13 @@ namespace _Project.Codebase.Gameplay.Projectiles
 
         private void LateUpdate()
         {
-            /*
             if (m_currentEvent != null)
             {
                 Time.timeScale =
                     m_currentEvent.type is ProjectileEventType.StartPierce or ProjectileEventType.EndPierce
                     || m_hittableInside != null ? .025f : 1f;
             }
-            */
-            
+
             if (m_currentEvent != null && Time.time >= m_currentEvent.time)
             {
                 if (HandleEventAndReturnDestroyState()) return;
@@ -163,7 +161,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
             travelDist = Mathf.Min(travelDist, c_max_travel_dist - m_distanceTraveled);
 
             float remainingTravelDist = travelDist;
-            GizmoUtilities.DrawXAtPos(m_currentPosition, .25f, Color.magenta, deltaTime);
+            GizmoUtilities.DrawXAtPos(m_currentPosition, .25f, Color.magenta, 1f);
 
             m_currentEventStartTime = time;
             m_lastEventLocation = m_currentPosition;

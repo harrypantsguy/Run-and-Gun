@@ -58,6 +58,12 @@ namespace _Project.Codebase.NavigationMesh
                     {
                         var isDiagonal = Mathf.Abs(x) == 1 && Mathf.Abs(y) == 1;
                         if (x == 0 && y == 0 || (cardinalOnly && isDiagonal)) continue;
+
+                        if (isDiagonal)
+                        {
+                            if (!m_navmesh.IsWalkableNode(currentNode.Pos + new Vector2Int(x, 0)) ||
+                                !m_navmesh.IsWalkableNode(currentNode.Pos + new Vector2Int(0, y))) continue;
+                        }
                         
                         var cell = currentNode.Pos + new Vector2Int(x, y);
 

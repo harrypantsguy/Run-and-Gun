@@ -2,7 +2,7 @@
 
 namespace _Project.Codebase.Gameplay.AI
 {
-    public abstract class AIBehaviour
+    public abstract class CharacterBehaviour
     {
         public virtual Task OnStartBehaviour() => Task.CompletedTask;
         public virtual Task RunBehaviour() => Task.CompletedTask;

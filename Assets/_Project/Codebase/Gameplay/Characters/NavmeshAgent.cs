@@ -4,7 +4,7 @@ using _Project.Codebase.NavigationMesh;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
-namespace _Project.Codebase.Gameplay
+namespace _Project.Codebase.Gameplay.Characters
 {
     public class NavmeshAgent : MonoBehaviour
     {
@@ -20,13 +20,14 @@ namespace _Project.Codebase.Gameplay
         {
             GameModule gameModule = ModuleUtilities.Get<GameModule>();
             m_pathController = new WorldSpacePathController(gameModule.Building.navmesh, gameModule.Building.WorldToGrid,
-                gameModule.Building.GridToWorld, true);
+                gameModule.Building.GridToWorld, false);
             m_pathController.onReachPathEnd += OnReachPathEnd;
         }
 
-        private void OnReachPathEnd(Vector2 arg1, Vector2Int arg2)
+        private void OnReachPathEnd(Vector2 worldPos, Vector2Int gridPos)
         {
-            onReachPathEnd?.Invoke(arg1, arg2);
+            onReachPathEnd?.Invoke(worldPos, gridPos);
+            transform.position = worldPos;
         }
 
         private void FixedUpdate()
@@ -40,11 +41,11 @@ namespace _Project.Codebase.Gameplay
                     Time.fixedDeltaTime * m_moveSpeed);
         }
 
-        private void OnReachEnd(Vector2 worldPos, Vector2Int gridPos)
+        public void SetTargetPosition(Vector2Int pos)
         {
-            transform.position = worldPos;
+            m_pathController.GenerateAndSetPath(transform.position, pos);
         }
-
+        
         public void SetTargetPosition(Vector2 pos)
         {
             m_pathController.GenerateAndSetPath(transform.position, pos);

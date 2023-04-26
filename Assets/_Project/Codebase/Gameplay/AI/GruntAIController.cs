@@ -9,9 +9,12 @@ namespace _Project.Codebase.Gameplay.AI
         {
         }
 
-        protected override TurnAction DetermineAction(WorldScreenshot worldContext)
+        protected override CharacterAction DetermineAction(WorldScreenshot worldContext)
         {
-            return new PatrolAction(this);
+            bool playerInVision = false;
+            if (!playerInVision)
+                return new PatrolAction(this, worldContext);
+            return null;
         }
     }
 }

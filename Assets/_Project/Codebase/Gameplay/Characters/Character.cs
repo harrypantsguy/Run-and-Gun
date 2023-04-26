@@ -32,7 +32,6 @@ namespace _Project.Codebase.Gameplay.Characters
 
         protected virtual void OnReachPathEnd(Vector2 worldPos, Vector2Int gridPos)
         {
-            Debug.Log("party");
             UpdateFloorPosition(gridPos, true);
         }
 
