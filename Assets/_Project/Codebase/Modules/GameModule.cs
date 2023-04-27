@@ -35,7 +35,7 @@ namespace _Project.Codebase.Modules
             Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.SHOOTER));
             CharacterManager = new CharacterManager(TurnController, Building);
 
-            new GameObject("PlayerInteractionController").AddComponent<PlayerInteractionController>();
+            new GameObject("PlayerManager").AddComponent<PlayerManager>();
             
             TurnController.StartGame();
         }
