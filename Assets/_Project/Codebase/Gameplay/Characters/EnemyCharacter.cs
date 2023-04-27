@@ -8,17 +8,15 @@ namespace _Project.Codebase.Gameplay.Characters
     public class EnemyCharacter : Character
     {
         private readonly AIController m_AIController;
-        
-        private const int c_default_action_points = 1;
 
-        public EnemyCharacter(NavmeshAgent agent, Vector2Int position) : base(agent, position)
+        public EnemyCharacter(Vector2Int position, NavmeshAgent agent, CharacterRenderer renderer) : base(position, agent, renderer)
         {
             m_AIController = new GruntAIController(this);
         }
 
         public async Task TakeTurn(WorldScreenshot worldContext)
         {
-            for (int i = 0; i < c_default_action_points; i++)
+            for (int i = 0; i < DEFAULT_MAX_ACTION_POINTS; i++)
             {
                 await m_AIController.TakeTurn(worldContext);
             }

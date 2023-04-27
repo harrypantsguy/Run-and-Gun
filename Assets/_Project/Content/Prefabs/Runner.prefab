@@ -10,13 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4136598901500374017}
   - component: {fileID: 8909814094184667476}
-  - component: {fileID: 3787387092478078721}
+  - component: {fileID: 2904277470764337298}
   - component: {fileID: 360050816067291611}
   - component: {fileID: 3065633736586122913}
   - component: {fileID: 830659561568731656}
   - component: {fileID: 6201955159912815119}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Runner
   m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +34,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 779460464198030139}
+  - {fileID: 5281808460854349110}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -90,7 +90,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3787387092478078721
+--- !u!114 &2904277470764337298
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1032884627729533068}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b1f08ba8ab2478793591a353a5a8c59, type: 3}
+  m_Script: {fileID: 11500000, guid: 65c37acadf3e42f7972cae8c78393933, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &360050816067291611
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e50da2b6d6c2499c94b66e6c7403c1b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <SelectionRenderer>k__BackingField: {fileID: 7722588010732249063}
+  <SelectionRenderer>k__BackingField: {fileID: 2932361258441015786}
 --- !u!50 &830659561568731656
 Rigidbody2D:
   serializedVersion: 4
@@ -192,7 +192,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!1001 &8743892911013859194
+--- !u!1001 &4234931352183886199
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -253,15 +253,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6d9b764b2f9fed4cb21004f174c5822, type: 3}
---- !u!4 &779460464198030139 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8325395870035319873, guid: a6d9b764b2f9fed4cb21004f174c5822, type: 3}
-  m_PrefabInstance: {fileID: 8743892911013859194}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7722588010732249063 stripped
+--- !u!114 &2932361258441015786 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1329873228237852829, guid: a6d9b764b2f9fed4cb21004f174c5822, type: 3}
-  m_PrefabInstance: {fileID: 8743892911013859194}
+  m_PrefabInstance: {fileID: 4234931352183886199}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -269,3 +264,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e7e7d5ae2e49ada4ee3e5ed1cf6f71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &5281808460854349110 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8325395870035319873, guid: a6d9b764b2f9fed4cb21004f174c5822, type: 3}
+  m_PrefabInstance: {fileID: 4234931352183886199}
+  m_PrefabAsset: {fileID: 0}

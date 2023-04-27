@@ -16,7 +16,7 @@ namespace _Project.Codebase.Gameplay.AI
             this.worldContext = worldContext;
             character = controller.Character;
         }
-
+        
         public virtual Task OnStartAction() => Task.CompletedTask;
 
         public virtual Task Update() => Task.CompletedTask;

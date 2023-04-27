@@ -1,5 +1,7 @@
-﻿using _Project.Codebase.Gameplay;
+﻿using _Project.Codebase.AssetGroups;
+using _Project.Codebase.Gameplay;
 using _Project.Codebase.Gameplay.Characters;
+using _Project.Codebase.Gameplay.Player;
 using _Project.Codebase.Gameplay.World;
 using Cysharp.Threading.Tasks;
 using DanonFramework.Runtime.Core.ModuleLayer;
@@ -14,7 +16,7 @@ namespace _Project.Codebase.Modules
         
         public Building Building { get; private set; }
         public TurnController TurnController { get; private set; }
-        public EnemyController EnemyController { get; private set; }
+        public CharacterManager CharacterManager { get; private set; }
         public WorldRegions WorldRegions { get; private set; }
         
         public async UniTask LoadAsync()
@@ -31,7 +33,9 @@ namespace _Project.Codebase.Modules
             TurnController = new TurnController();
             
             Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.SHOOTER));
-            EnemyController = new EnemyController(TurnController, Building);
+            CharacterManager = new CharacterManager(TurnController, Building);
+
+            new GameObject("PlayerInteractionController").AddComponent<PlayerInteractionController>();
             
             TurnController.StartGame();
         }

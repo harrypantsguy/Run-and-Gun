@@ -2,8 +2,14 @@
 
 namespace _Project.Codebase.Gameplay.Characters
 {
-    public abstract class CharacterObject : MonoBehaviour
+    [RequireComponent(typeof(CharacterRenderer))]
+    public class CharacterObject : MonoBehaviour
     {
-        public abstract Character Character { get; }
+        public Character Character { get; protected set; }
+
+        public virtual Character Initialize(Vector2Int position)
+        {
+            return Character = new Character(position, GetComponent<NavmeshAgent>(), GetComponent<CharacterRenderer>());
+        }
     }
 }
