@@ -2,6 +2,7 @@
 using _Project.Codebase.Gameplay.AI;
 using _Project.Codebase.Gameplay.Player;
 using _Project.Codebase.Gameplay.World;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Characters
@@ -16,7 +17,7 @@ namespace _Project.Codebase.Gameplay.Characters
             m_AIController = new GruntAIController(this);
         }
 
-        public async Task TakeTurn(WorldScreenshot worldContext)
+        public async UniTask TakeTurn(WorldScreenshot worldContext)
         {
             await m_AIController.TakeTurn(worldContext);
         }

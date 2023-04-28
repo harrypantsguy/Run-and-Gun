@@ -6,14 +6,19 @@ namespace _Project.Codebase.Gameplay.Shooter
 {
     public class Weapon : MonoBehaviour
     {
-        [SerializeField] private Transform m_barrelTipTransform;
-
+        public List<Projectile> Projectiles { get; private set; }
         private float m_lastFireTime;
-        private List<ProjectileEvent> m_events = new();
+
+        private void Awake()
+        {
+            Projectiles = new List<Projectile>();
+        }
 
         public void Fire()
         {
-            Projectile.SpawnProjectile(transform.position, transform.right);
+            Projectile newProjectile = Projectile.SpawnProjectile(transform.position, transform.right);
+            Projectiles.Add(newProjectile);
+            newProjectile.OnDestroyProjectile += (projectile => Projectiles.Remove(projectile));
         }
     }
 }

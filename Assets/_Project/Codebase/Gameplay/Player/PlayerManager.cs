@@ -11,10 +11,14 @@ namespace _Project.Codebase.Gameplay.Player
         public IPlayerSelectable Selection { get; private set; }
 
         public ShooterController ShooterController { get; private set; }
+        
+        public bool ShooterActive { get; private set; }
 
         public event Action<IPlayerSelectable> OnSelectSelectable; 
+        public event Action<bool> OnShooterActivationStateChange; 
             
         private PlayerSelectionController m_selectionController;
+        
         private void Awake()
         {
             m_selectionController = gameObject.AddComponent<PlayerSelectionController>();
@@ -22,6 +26,8 @@ namespace _Project.Codebase.Gameplay.Player
                 ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.SHOOTER)).GetComponent<ShooterController>();
             
             gameObject.AddComponent<PlayerTurnController>();
+
+            SetShooterActiveState(false);
         }
         
         public void SetSelection(IPlayerSelectable newSelection)
@@ -33,6 +39,14 @@ namespace _Project.Codebase.Gameplay.Player
             
             Selection = newSelection;
             Selection?.SetPlayerSelectState(true);
+        }
+
+        public void SetShooterActiveState(bool state)
+        {
+            if (ShooterActive != state)
+                OnShooterActivationStateChange?.Invoke(state);
+            ShooterController.SetActivityState(state);
+            ShooterActive = state;
         }
     }
 }

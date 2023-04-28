@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using _Project.Codebase.Gameplay.Characters;
+﻿using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.NavigationMesh;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.AI
@@ -16,7 +16,7 @@ namespace _Project.Codebase.Gameplay.AI
             ActionPointCost = Mathf.CeilToInt(pathResults.distance / character.moveDistancePerActionPoint);
         }
 
-        public override async Task Update()
+        public override async UniTask Update()
         {
             await new MoveBehaviour(character.agent).RunBehaviour();
         }

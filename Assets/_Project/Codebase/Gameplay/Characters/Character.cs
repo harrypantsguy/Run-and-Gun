@@ -4,6 +4,7 @@ using _Project.Codebase.Gameplay.Player;
 using _Project.Codebase.Gameplay.Projectiles;
 using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
+using Cysharp.Threading.Tasks;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
@@ -34,7 +35,7 @@ namespace _Project.Codebase.Gameplay.Characters
             UpdateFloorPosition(position, true);
         }
         
-        public async Task PerformAction(CharacterAction action)
+        public async UniTask PerformAction(CharacterAction action)
         {
             if (action != null)
             {

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.Gameplay.World;
+using Cysharp.Threading.Tasks;
 
 namespace _Project.Codebase.Gameplay.AI
 {
@@ -13,7 +14,7 @@ namespace _Project.Codebase.Gameplay.AI
             Character = character;
         }
 
-        public async Task TakeTurn(WorldScreenshot worldContext)
+        public async UniTask TakeTurn(WorldScreenshot worldContext)
         {
             CharacterAction action = DetermineAction(worldContext);
             await Character.PerformAction(action);

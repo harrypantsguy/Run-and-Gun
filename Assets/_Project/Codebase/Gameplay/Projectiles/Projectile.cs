@@ -16,6 +16,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
 {
     public class Projectile : MonoBehaviour
     {
+        public event Action<Projectile> OnDestroyProjectile;
         private Vector2 m_currentPosition;
         private Vector2 m_lastPosition;
         private float m_distanceTraveled;
@@ -30,10 +31,10 @@ namespace _Project.Codebase.Gameplay.Projectiles
         private SurfaceType m_surfaceTypeInside;
         private Vector2 m_lastTransformPos;
         private Vector2 m_lastEventLocation;
-        
+
         private const float c_default_speed = 40f;
         private const float c_max_travel_dist = 300f;
-        private const float c_tick_rate = 1f / 30f;
+        private const float c_tick_rate = 1f / 50f;
         
         private void Initialize(Vector2 pos, Vector2 dir)
         {
@@ -127,6 +128,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
             if (m_currentEvent.terminate)
             {
                 Destroy(gameObject);
+                OnDestroyProjectile?.Invoke(this);
                 return true;
             }
 
@@ -314,13 +316,14 @@ namespace _Project.Codebase.Gameplay.Projectiles
         private float CalcInterpolationTime(Vector2 pos1, Vector2 pos2, float speed = c_default_speed) => 
             Vector2.Distance(pos1, pos2) / speed;
 
-        public static void SpawnProjectile(Vector2 pos, Vector2 direction)
+        public static Projectile SpawnProjectile(Vector2 pos, Vector2 direction)
         {
             GameObject newProjectileObj = ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.BASIC_PROJECTILE);
             newProjectileObj.transform.position = pos;
             newProjectileObj.transform.right = direction;
             Projectile projectile = newProjectileObj.GetComponent<Projectile>();
             projectile.Initialize(pos, direction);
+            return projectile;
         }
     }
 }

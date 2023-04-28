@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using _Project.Codebase.Gameplay.Characters;
+﻿using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.Gameplay.World;
+using Cysharp.Threading.Tasks;
 
 namespace _Project.Codebase.Gameplay.AI
 {
@@ -17,10 +17,10 @@ namespace _Project.Codebase.Gameplay.AI
             ActionPointCost = 0;
         }
         
-        public virtual Task OnStartAction() => Task.CompletedTask;
+        public virtual UniTask OnStartAction() => UniTask.CompletedTask;
 
-        public virtual Task Update() => Task.CompletedTask;
+        public virtual UniTask Update() => UniTask.CompletedTask;
 
-        public virtual Task OnEndAction() => Task.CompletedTask;
+        public virtual UniTask OnEndAction() => UniTask.CompletedTask;
     }
 }

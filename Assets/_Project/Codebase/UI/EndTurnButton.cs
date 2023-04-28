@@ -25,10 +25,12 @@ namespace _Project.Codebase.UI
             onClick -= OnClick;
         }
 
-        private void OnClick()
+        private async void OnClick()
         {
             if (m_turnController.Turn == Turn.Player)
+            {
                 m_turnController.NextTurn();
+            }
         }
 
         private void OnTurnChange(Turn turn)

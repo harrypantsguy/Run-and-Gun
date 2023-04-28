@@ -209,6 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_weapon: {fileID: 3681870973683369609}
+  m_laserSight: {fileID: 5930945502564489931}
 --- !u!114 &3681870973683369609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,4 +222,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56ea7c17c1454bb9ba5b410171ad11e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_barrelTipTransform: {fileID: 1580711458172413197}

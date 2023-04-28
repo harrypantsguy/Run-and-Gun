@@ -8,6 +8,9 @@ namespace _Project.Codebase.Gameplay.Shooter
     public class ShooterController : MonoBehaviour
     {
         [SerializeField] private Weapon m_weapon;
+        [SerializeField] private LaserSight m_laserSight;
+        public bool IsProjectileActive => m_weapon.Projectiles.Count > 0;
+        private bool m_active;
         private AimController m_aimController;
         private bool m_shooterOnSide;
         private Vector2 m_oldMousePos;
@@ -30,6 +33,8 @@ namespace _Project.Codebase.Gameplay.Shooter
 
         private void Update()
         {
+            if (!m_active) return;
+            
             m_clampedWorldMousePos = MathUtilities.ClampVector(MiscUtilities.WorldMousePos, -m_worldRegions.aimTargetRegionExtents,
                 m_worldRegions.aimTargetRegionExtents);
 
@@ -48,6 +53,12 @@ namespace _Project.Codebase.Gameplay.Shooter
             }
             
             m_oldMousePos = m_clampedWorldMousePos;
+        }
+
+        public void SetActivityState(bool state)
+        {
+            m_active = state;
+            m_laserSight.SetActivityState(state);
         }
 
         public void Reload() => m_shotsRemaining = c_max_shots;

@@ -11,11 +11,13 @@ namespace _Project.Codebase.Gameplay.Shooter
 
         private Building m_building;
         
-        private void Start()
+        private void Awake()
         {
             m_lineRenderer = GetComponent<LineRenderer>();
             m_building = ModuleUtilities.Get<GameModule>().Building;
         }
+
+        public bool SetActivityState(bool state) => m_lineRenderer.enabled = state;
 
         private void LateUpdate()
         {

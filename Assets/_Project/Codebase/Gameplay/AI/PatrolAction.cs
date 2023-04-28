@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.Gameplay.World;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.AI
@@ -15,7 +16,7 @@ namespace _Project.Codebase.Gameplay.AI
             ActionPointCost = 1;
         }
         
-        public override async Task Update()
+        public override async UniTask Update()
         {
             Vector2Int targetPos = worldContext.building.GetRandomOpenFloorInRadius(
                 character.transform.position, MAX_PATROL_RANGE, true).position;
