@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CHR.UI
+namespace _Project.Codebase.UI
 {
     public abstract class ButtonGraphicsController : MonoBehaviour
     {

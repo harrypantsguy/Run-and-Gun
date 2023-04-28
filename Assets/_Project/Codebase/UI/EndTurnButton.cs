@@ -1,14 +1,15 @@
 ﻿using _Project.Codebase.Gameplay;
+using _Project.Codebase.Gameplay.Player;
 using _Project.Codebase.Modules;
-using CHR.UI;
 using Cysharp.Threading.Tasks;
 using DanonFramework.Runtime.Core.Utilities;
 
 namespace _Project.Codebase.UI
 {
-    public class EndTurnButton : CustomButton
+    public class EndTurnButton : ToggleButton
     {
         private TurnController m_turnController;
+        private PlayerTurnController m_playerTurnController;
         protected override async void Start()
         {
             base.Start();
@@ -16,8 +17,15 @@ namespace _Project.Codebase.UI
             onClick += OnClick;
             await UniTask.WaitWhile(() => !ModuleUtilities.TryGet(out GameModule gameModule));
             m_turnController = ModuleUtilities.Get<GameModule>().TurnController;
-            m_turnController.OnTurnChange += OnTurnChange;
             SetEnabledState(m_turnController.Turn == Turn.Player);
+            m_playerTurnController = ModuleUtilities.Get<GameModule>().PlayerManager.PlayerTurnController;
+            m_turnController.OnTurnChange += OnTurnChange;
+        }
+
+        private void OnTurnChange(Turn turn)
+        {
+            if (Toggled && turn == Turn.Player)
+                ForceSetToggleState(false);
         }
 
         protected override void OnDestroy()
@@ -28,14 +36,7 @@ namespace _Project.Codebase.UI
         private async void OnClick()
         {
             if (m_turnController.Turn == Turn.Player)
-            {
-                m_turnController.NextTurn();
-            }
-        }
-
-        private void OnTurnChange(Turn turn)
-        {
-            SetEnabledState(turn == Turn.Player);
+                m_playerTurnController.QueueEndTurn();
         }
     }
 }

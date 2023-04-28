@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CHR.UI
+namespace _Project.Codebase.UI
 {
     public interface IGraphicTarget
     {

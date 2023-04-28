@@ -1,13 +1,13 @@
 ﻿using JetBrains.Annotations;
 using NaughtyAttributes;
 using TMPro;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+#endif
 
-namespace CHR.UI
+namespace _Project.Codebase.UI
 {
     public class TintButtonController : ButtonGraphicsController
     {

@@ -11,6 +11,7 @@ namespace _Project.Codebase.Gameplay.Player
         public IPlayerSelectable Selection { get; private set; }
 
         public ShooterController ShooterController { get; private set; }
+        public PlayerTurnController PlayerTurnController { get; private set; }
         
         public bool ShooterActive { get; private set; }
 
@@ -25,7 +26,7 @@ namespace _Project.Codebase.Gameplay.Player
             ShooterController = Instantiate(
                 ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.SHOOTER)).GetComponent<ShooterController>();
             
-            gameObject.AddComponent<PlayerTurnController>();
+            PlayerTurnController = gameObject.AddComponent<PlayerTurnController>();
 
             SetShooterActiveState(false);
         }

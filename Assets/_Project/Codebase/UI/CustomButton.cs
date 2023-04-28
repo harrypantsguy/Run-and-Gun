@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace CHR.UI
+namespace _Project.Codebase.UI
 {
     public class CustomButton : MonoBehaviour, IGraphicTarget
     {

@@ -31,6 +31,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
         private SurfaceType m_surfaceTypeInside;
         private Vector2 m_lastTransformPos;
         private Vector2 m_lastEventLocation;
+        private WorldRegions m_worldRegions;
 
         private const float c_default_speed = 40f;
         private const float c_max_travel_dist = 300f;
@@ -40,17 +41,26 @@ namespace _Project.Codebase.Gameplay.Projectiles
         {
             m_currentPosition = pos;
             m_travelDir = dir;
-            m_building = ModuleUtilities.Get<GameModule>().Building;
+            var gameModule = ModuleUtilities.Get<GameModule>();
+            m_building = gameModule.Building;
+            m_worldRegions = gameModule.WorldRegions;
             StartCoroutine(Tick());
         }
 
         private void LateUpdate()
         {
+            HandleInterpolationAndGraphics();
+        }
+
+        private void HandleInterpolationAndGraphics()
+        {
             if (m_currentEvent != null)
             {
                 Time.timeScale =
                     m_currentEvent.type is ProjectileEventType.StartPierce or ProjectileEventType.EndPierce
-                    || m_hittableInside != null ? .025f : 1f;
+                    || m_hittableInside != null
+                        ? .025f
+                        : 1f;
             }
 
             if (m_currentEvent != null && Time.time >= m_currentEvent.time)
@@ -92,10 +102,6 @@ namespace _Project.Codebase.Gameplay.Projectiles
             m_lastTransformPos = transform.position;
         }
 
-        /// <summary>
-        /// Returns whether or not the object was destroyed
-        /// </summary>
-        /// <returns></returns>
         private bool HandleEventAndReturnDestroyState()
         {
             if (m_currentEvent.time > m_currentEventStartTime)
@@ -148,16 +154,6 @@ namespace _Project.Codebase.Gameplay.Projectiles
             pierceParticles.transform.right = direction;
         }
 
-        private void Update()
-        {
-            //QueueEvents(Time.deltaTime);
-        }
-
-        private void FixedUpdate()
-        {
-            //QueueEvents(Time.fixedTime, Time.fixedDeltaTime);
-        }
-
         private void QueueEvents(float time, float deltaTime)
         {
             float travelDist = c_default_speed * deltaTime;
@@ -196,9 +192,11 @@ namespace _Project.Codebase.Gameplay.Projectiles
                 UpdateCurrentPosition(m_currentPosition + offset);
                 time += CalcInterpolationTimeFromLastAndCurrentPos();
 
+                bool outsideScreenRegion = !m_worldRegions.IsPointInsideRegion(m_currentPosition, m_worldRegions.shooterRegionExtents);
+                
                 m_queuedEvents.Enqueue(
                     new ProjectileEvent(ProjectileEventType.Position, m_currentPosition, time,
-                        m_travelDir, m_distanceTraveled >= c_max_travel_dist));
+                        m_travelDir, m_distanceTraveled >= c_max_travel_dist || outsideScreenRegion));
             } while (remainingTravelDist > 0f);
         }
 

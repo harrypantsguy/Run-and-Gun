@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace CHR.UI
+namespace _Project.Codebase.UI
 {
     public static class GraphicTargetUtilities
     {
