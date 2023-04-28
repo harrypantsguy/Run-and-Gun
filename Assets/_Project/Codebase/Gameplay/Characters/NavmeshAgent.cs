@@ -11,17 +11,18 @@ namespace _Project.Codebase.Gameplay.Characters
         [SerializeField] private bool m_debugPath;
         [SerializeField] private float m_moveSpeed;
         [SerializeField] private float m_nodeReachedDist;
-        private WorldSpacePathController m_pathController;
+        public WorldSpacePathController PathController { get; private set; } 
         public Action<Vector2, Vector2Int> onReachPathEnd;
+        public bool followPath;
 
-        public bool AtPathEnd => m_pathController.AtPathEnd;
+        public bool AtPathEnd => PathController.AtPathEnd;
 
         private void Awake()
         {
             GameModule gameModule = ModuleUtilities.Get<GameModule>();
-            m_pathController = new WorldSpacePathController(gameModule.Building.navmesh, gameModule.Building.WorldToGrid,
+            PathController = new WorldSpacePathController(gameModule.Building.navmesh, gameModule.Building.WorldToGrid,
                 gameModule.Building.GridToWorld, false);
-            m_pathController.onReachPathEnd += OnReachPathEnd;
+            PathController.onReachPathEnd += OnReachPathEnd;
         }
 
         private void OnReachPathEnd(Vector2 worldPos, Vector2Int gridPos)
@@ -32,35 +33,43 @@ namespace _Project.Codebase.Gameplay.Characters
 
         private void FixedUpdate()
         {
-            float distToNode = Vector2.Distance(transform.position, m_pathController.NextNode);
+            if (!followPath) return;
+            
+            float distToNode = Vector2.Distance(transform.position, PathController.NextNode);
             if (distToNode < m_nodeReachedDist)
-                m_pathController.TryProgressToNextNode();
+                PathController.TryProgressToNextNode();
 
-            if (!m_pathController.AtPathEnd)
-                transform.position = Vector2.MoveTowards(transform.position, m_pathController.NextNode,
+            if (!PathController.AtPathEnd)
+                transform.position = Vector2.MoveTowards(transform.position, PathController.NextNode,
                     Time.fixedDeltaTime * m_moveSpeed);
         }
 
-        public void SetTargetPosition(Vector2Int pos)
+        public PathResults SetTargetPosition(Vector2Int pos, bool startMoving = true)
         {
-            m_pathController.GenerateAndSetPath(transform.position, pos);
+            PathResults results = PathController.GenerateAndSetPath(transform.position, pos);
+            followPath = startMoving;
+            return results;
         }
         
-        public void SetTargetPosition(Vector2 pos)
+        public PathResults SetTargetPosition(Vector2 pos, bool startMoving = true)
         {
-            m_pathController.GenerateAndSetPath(transform.position, pos);
+            PathResults results = PathController.GenerateAndSetPath(transform.position, pos);
+            followPath = startMoving;
+            return results;
         }
-        
+
+        public PathResults GeneratePathTo(Vector2 pos) => PathController.GeneratePath(transform.position, pos);
+
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying || !m_debugPath) return;
 
-            if (m_pathController == null) return;
+            if (PathController == null) return;
             
-            for (var i = 1; i < m_pathController.Path.Count; i++)
+            for (var i = 1; i < PathController.Path.Count; i++)
             {
-                Vector2 last = m_pathController.Path[i - 1];
-                Vector2 current = m_pathController.Path[i];
+                Vector2 last = PathController.Path[i - 1];
+                Vector2 current = PathController.Path[i];
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawLine(last, current);
             }

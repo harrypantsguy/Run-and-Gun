@@ -20,8 +20,14 @@ namespace _Project.Codebase.Gameplay.AI
             agent.SetTargetPosition(pos);
         }
 
+        public MoveBehaviour(NavmeshAgent agent)
+        {
+            m_agent = agent;
+        }
+
         public override async Task RunBehaviour()
         {
+            m_agent.followPath = true;
             await UniTask.WaitWhile(() => !m_agent.AtPathEnd);
         }
     }

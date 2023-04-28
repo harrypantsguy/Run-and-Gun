@@ -6,15 +6,15 @@ namespace _Project.Codebase.Gameplay.AI
 {
     public abstract class CharacterAction
     {
-        protected readonly AIController controller;
-
         protected readonly Character character;
         protected readonly WorldScreenshot worldContext;
-        public CharacterAction(AIController controller, WorldScreenshot worldContext)
+        public int ActionPointCost { get; protected set; }
+        
+        public CharacterAction(Character character, WorldScreenshot worldContext)
         {
-            this.controller = controller;
             this.worldContext = worldContext;
-            character = controller.Character;
+            this.character = character;
+            ActionPointCost = 0;
         }
         
         public virtual Task OnStartAction() => Task.CompletedTask;

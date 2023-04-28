@@ -8,28 +8,30 @@ namespace _Project.Codebase.NavigationMesh
     {
         private readonly Dictionary<Vector2Int, PathNode> m_openNodes = new();
         private readonly Dictionary<Vector2Int, PathNode> m_closedNodes = new();
-        private Navmesh m_navmesh;
-        
+        private readonly Navmesh m_navmesh;
+
+        private const float c_diagonal_dist = 1.41421f;
+
         public Pathfinder(Navmesh navmesh)
         {
             m_navmesh = navmesh;
         }
 
-        public PathResult FindPath(in Vector2Int start, in Vector2Int end, in bool cardinalOnly, in List<Vector2Int> path,
+        public PathResults FindPath(in Vector2Int start, in Vector2Int end, in bool cardinalOnly, in List<Vector2Int> path,
             in bool allowPartialPaths = false, in Heuristic heuristic = Heuristic.Euclidean)
         {
             path.Clear();
             m_openNodes.Clear();
             m_closedNodes.Clear();
 
-            var startNode = new PathNode(start);
+            var startNode = new PathNode(start, 0f);
             m_openNodes.Add(start, startNode);
 
             var nodesVisited = 0;
             
             while (m_openNodes.Count > 0)
             {
-                var currentNode = m_openNodes.Values.OrderBy(node => node.F).First();
+                PathNode currentNode = m_openNodes.Values.OrderBy(node => node.F).First();
                 
                 m_openNodes.Remove(currentNode.Pos);
                 m_closedNodes.Add(currentNode.Pos, currentNode);
@@ -37,19 +39,20 @@ namespace _Project.Codebase.NavigationMesh
                 if (currentNode.Pos == end)
                 {
                     TracePathNonAlloc(currentNode, path);
-                    return PathResult.FullPath;
+                    return new PathResults(PathResultType.FullPath, currentNode.distance);
                 }
 
                 if (nodesVisited > Navmesh.SEARCH_LIMIT)
                 {
                     if (allowPartialPaths)
                     {
-                        TracePathNonAlloc(GetNodeClosestToCell(end, m_closedNodes.Values), path);
-                        return PathResult.PartialPath;
+                        PathNode closestNode = GetNodeClosestToCell(end, m_closedNodes.Values);
+                        TracePathNonAlloc(closestNode, path);
+                        return new PathResults(PathResultType.PartialPath, closestNode.distance);
                     }
                     
                     TracePathNonAlloc(null, path);
-                    return PathResult.NoPath;
+                    return new PathResults(PathResultType.NoPath, 0f);
                 }
 
                 for (var x = -1; x <= 1; x++)
@@ -76,7 +79,7 @@ namespace _Project.Codebase.NavigationMesh
                         if (!m_navmesh.IsWalkableNode(cell))
                             continue;
 
-                        var child = new PathNode(cell);
+                        PathNode child = new PathNode(cell, currentNode.distance + (isDiagonal ? c_diagonal_dist : 1f));
                         var additiveGCost = 0f;//m_navmesh.GetNodeAdditiveGCost(cell);
                         
                         child.G = currentNode.G + additiveGCost + (isDiagonal ? Navmesh.DIAGONAL_COST : Navmesh.CARDINAL_COST);
@@ -94,7 +97,7 @@ namespace _Project.Codebase.NavigationMesh
                 nodesVisited++;
             }
 
-            return PathResult.NoPath;
+            return new PathResults(PathResultType.NoPath, 0f);
         }
 
         private static PathNode GetNodeClosestToCell(in Vector2Int cell, in IEnumerable<PathNode> nodes)

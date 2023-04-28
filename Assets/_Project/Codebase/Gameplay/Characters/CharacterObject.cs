@@ -3,7 +3,7 @@
 namespace _Project.Codebase.Gameplay.Characters
 {
     [RequireComponent(typeof(CharacterRenderer))]
-    public class CharacterObject : MonoBehaviour
+    public abstract class CharacterObject : MonoBehaviour
     {
         public Character Character { get; protected set; }
 

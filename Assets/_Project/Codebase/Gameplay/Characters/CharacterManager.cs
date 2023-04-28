@@ -39,11 +39,11 @@ namespace _Project.Codebase.Gameplay.Characters
                 {
                     enemy.actionPoints = enemy.MaxMaxActionPoints;
                 }
-                
-                WorldScreenshot worldScreenshot = new WorldScreenshot(ModuleUtilities.Get<GameModule>().Building);
+
+                WorldScreenshot world = ModuleUtilities.Get<GameModule>().World;
                 foreach (EnemyCharacter enemy in m_enemies)
                 {
-                   await enemy.TakeTurn(worldScreenshot);
+                   await enemy.TakeTurn(world);
                 }
                 
                 m_turnController.NextTurn();

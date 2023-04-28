@@ -13,7 +13,7 @@ namespace _Project.Codebase.Gameplay.AI
         {
             bool playerInVision = false;
             if (!playerInVision)
-                return new PatrolAction(this, worldContext);
+                return new PatrolAction(Character, worldContext);
             return null;
         }
     }

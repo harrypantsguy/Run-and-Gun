@@ -33,43 +33,48 @@ namespace _Project.Codebase.NavigationMesh
             AtPathEnd = true;
         }
 
-        public PathResult GenerateAndSetPath(Vector2Int source, Vector2Int target)
+        public PathResults GenerateAndSetPath(Vector2Int source, Vector2Int target)
         {
-            PathResult result = GeneratePath(source, target, Path, m_gridPath);
+            PathResults results = GeneratePath(source, target, Path, m_gridPath);
             m_pathIndex = 0;
-            if (result is PathResult.FullPath or PathResult.PartialPath)
+            if (results.type is PathResultType.FullPath or PathResultType.PartialPath)
                 UpdateData();
-            return result;
+            return results;
         }
 
-        public PathResult GenerateAndSetPath(Vector2 source, Vector2Int target)
+        public PathResults GenerateAndSetPath(Vector2 source, Vector2Int target)
         {
             return GenerateAndSetPath(m_worldToGrid(source), target);
         }
         
-        public PathResult GenerateAndSetPath(Vector2 source, Vector2 target)
+        public PathResults GenerateAndSetPath(Vector2 source, Vector2 target)
         {
             return GenerateAndSetPath(m_worldToGrid(source), m_worldToGrid(target));
         }
 
-        public PathResult GeneratePath(Vector2 source, Vector2 target, in List<Vector2> path)
+        public PathResults GeneratePath(Vector2 source, Vector2 target)
+        {
+            return GeneratePath(source, target, new List<Vector2>(), new List<Vector2Int>());
+        }
+        
+        public PathResults GeneratePath(Vector2 source, Vector2 target, in List<Vector2> path)
         {
             List<Vector2Int> gridPath = new List<Vector2Int>();
             return GeneratePath(source, target, path, gridPath);
         }
 
-        private PathResult GeneratePath(Vector2 source, Vector2 target, in List<Vector2> path, in List<Vector2Int> gridPath)
+        private PathResults GeneratePath(Vector2 source, Vector2 target, in List<Vector2> path, in List<Vector2Int> gridPath)
         {
             return GeneratePath(m_worldToGrid(source), m_worldToGrid(target), path, gridPath);
         }
 
-        private PathResult GeneratePath(Vector2Int source, Vector2Int target, in List<Vector2> path, in List<Vector2Int> gridPath)
+        private PathResults GeneratePath(Vector2Int source, Vector2Int target, in List<Vector2> path, in List<Vector2Int> gridPath)
         {
-            PathResult result = m_pathfinder.FindPath(source, target, m_cardinalOnly, gridPath);
+            PathResults results = m_pathfinder.FindPath(source, target, m_cardinalOnly, gridPath);
             path.Clear();
             gridPath.Reverse();
             path.AddRange(gridPath.ConvertAll(m_gridToWorldConverter));
-            return result;
+            return results;
         }
 
         public bool TryProgressToNextNode()

@@ -1,4 +1,6 @@
-﻿using _Project.Codebase.Gameplay.Player;
+﻿using System.Threading.Tasks;
+using _Project.Codebase.Gameplay.AI;
+using _Project.Codebase.Gameplay.Player;
 using _Project.Codebase.Gameplay.Projectiles;
 using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
@@ -14,12 +16,14 @@ namespace _Project.Codebase.Gameplay.Characters
 
         public Vector2Int FloorPos { get; set; }
         public int actionPoints = DEFAULT_MAX_ACTION_POINTS;
+        public int moveDistancePerActionPoint = DEFAULT_MOVE_DISTANCE_PER_ACTION_POINT;
 
         public int MaxMaxActionPoints => DEFAULT_MAX_ACTION_POINTS;
 
         private CharacterRenderer m_renderer;
         
         protected const int DEFAULT_MAX_ACTION_POINTS = 1;
+        protected const int DEFAULT_MOVE_DISTANCE_PER_ACTION_POINT = 6;
 
         public Character(Vector2Int position, NavmeshAgent agent, CharacterRenderer characterRenderer)  
         {
@@ -28,6 +32,17 @@ namespace _Project.Codebase.Gameplay.Characters
             transform = agent.transform;
             agent.onReachPathEnd += OnReachPathEnd;
             UpdateFloorPosition(position, true);
+        }
+        
+        public async Task PerformAction(CharacterAction action)
+        {
+            if (action != null)
+            {
+                actionPoints -= action.ActionPointCost;
+                await action.OnStartAction();
+                await action.Update();
+                await action.OnEndAction();
+            }
         }
 
         private void UpdateFloorPosition(Vector2Int gridPos, bool teleportToPos = false)
@@ -50,5 +65,7 @@ namespace _Project.Codebase.Gameplay.Characters
         {
             m_renderer.SelectionRenderer.SetSelectionState(state);
         }
+
+        public virtual PlayerSelectableType SelectableType { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace _Project.Codebase.NavigationMesh
 {
-    public enum PathResult
+    public enum PathResultType
     {
         FullPath,
         PartialPath,

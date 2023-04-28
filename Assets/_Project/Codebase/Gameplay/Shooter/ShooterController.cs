@@ -7,34 +7,29 @@ namespace _Project.Codebase.Gameplay.Shooter
 {
     public class ShooterController : MonoBehaviour
     {
-        private AimController m_aimController;
         [SerializeField] private Weapon m_weapon;
-        private Camera m_cam;
+        private AimController m_aimController;
         private bool m_shooterOnSide;
         private Vector2 m_oldMousePos;
 
         private Vector2 m_clampedWorldMousePos;
-        private TurnController m_turnController;
         private WorldRegions m_worldRegions;
+        private int m_shotsRemaining;
+
+        private const int c_max_shots = 1;
         
         private void Start()
         {
             m_aimController = GetComponent<AimController>();
-            m_cam = Camera.main;
 
             m_worldRegions = ModuleUtilities.Get<GameModule>().WorldRegions;
 
             MoveShooterToClosestEdge(new Vector2(-10, 0), m_worldRegions.shooterRegionExtents);
             m_aimController.SetAimTarget(Vector2.zero);
-            
-            m_turnController = ModuleUtilities.Get<GameModule>().TurnController;
         }
 
         private void Update()
         {
-            if (m_turnController.Turn == Turn.Player && Input.GetKeyDown(KeyCode.Space))
-                m_weapon.Fire();
-
             m_clampedWorldMousePos = MathUtilities.ClampVector(MiscUtilities.WorldMousePos, -m_worldRegions.aimTargetRegionExtents,
                 m_worldRegions.aimTargetRegionExtents);
 
@@ -53,6 +48,16 @@ namespace _Project.Codebase.Gameplay.Shooter
             }
             
             m_oldMousePos = m_clampedWorldMousePos;
+        }
+
+        public void Reload() => m_shotsRemaining = c_max_shots;
+        
+        public void Fire()
+        {
+            if (m_shotsRemaining == 0) return;
+            
+            m_weapon.Fire();
+            m_shotsRemaining--;
         }
 
         private void AimShooterAtMouse() => m_aimController.SetAimTarget(m_clampedWorldMousePos);

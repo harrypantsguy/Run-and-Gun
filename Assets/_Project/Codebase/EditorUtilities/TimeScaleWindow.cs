@@ -1,17 +1,15 @@
-﻿using System;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEditor;
 
 namespace _Project.Codebase.EditorUtilities
 {
     public class TimeScaleWindow : EditorWindow
     {
+        /*
         private float m_timeScale = 1.0f;
         private float m_timeScaleBefore;
         private float m_minTimeScale;
         private float m_maxTimeScale = 1f;
         
-        /*
         [MenuItem("Tools/Time Scale Window")]
         public static void OpenWindow()
         {

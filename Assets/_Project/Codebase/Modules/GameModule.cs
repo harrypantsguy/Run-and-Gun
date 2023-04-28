@@ -18,7 +18,9 @@ namespace _Project.Codebase.Modules
         public TurnController TurnController { get; private set; }
         public CharacterManager CharacterManager { get; private set; }
         public WorldRegions WorldRegions { get; private set; }
-        
+        public WorldScreenshot World { get; private set; }
+        public PlayerManager PlayerManager { get; private set; }
+
         public async UniTask LoadAsync()
         {
             SceneUtilities.CreateScene(c_scene_name);
@@ -32,11 +34,12 @@ namespace _Project.Codebase.Modules
             
             TurnController = new TurnController();
             
-            Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.SHOOTER));
             CharacterManager = new CharacterManager(TurnController, Building);
 
-            new GameObject("PlayerManager").AddComponent<PlayerManager>();
+            World = new WorldScreenshot(Building);
             
+            PlayerManager = new GameObject("PlayerManager").AddComponent<PlayerManager>();
+
             TurnController.StartGame();
         }
         
