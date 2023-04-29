@@ -168,7 +168,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
             do
             {
                 loops++;
-                if (loops >= 30)
+                if (loops >= 999)
                 {
                     Debug.LogWarning("fixed update infinite loop");
                     return;

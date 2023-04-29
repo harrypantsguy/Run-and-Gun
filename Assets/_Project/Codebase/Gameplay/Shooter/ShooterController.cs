@@ -19,6 +19,9 @@ namespace _Project.Codebase.Gameplay.Shooter
         private WorldRegions m_worldRegions;
         private int m_shotsRemaining;
 
+        public int ShotsRemaining => m_shotsRemaining;
+        public int MaxShots => c_max_shots;
+        
         private const int c_max_shots = 1;
         
         private void Start()
