@@ -59,7 +59,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
                 Time.timeScale =
                     m_currentEvent.type is ProjectileEventType.StartPierce or ProjectileEventType.EndPierce
                     || m_hittableInside != null
-                        ? .025f
+                        ? .05f
                         : 1f;
             }
 
@@ -248,7 +248,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
 
         private bool ProcessHitAndReturnDestroyState(RaycastHit2D hit, ref float remainingTravelDist, ref float time)
         {
-            UpdateCurrentPosition(hit.point + m_travelDir * .003f);
+            UpdateCurrentPosition(hit.point + m_travelDir * .0005f);
             remainingTravelDist -= hit.distance;
             m_distanceTraveled += hit.distance;
             time += CalcInterpolationTimeFromLastAndCurrentPos();
