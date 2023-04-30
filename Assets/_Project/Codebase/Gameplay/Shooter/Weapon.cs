@@ -7,7 +7,6 @@ namespace _Project.Codebase.Gameplay.Shooter
     public class Weapon : MonoBehaviour
     {
         public List<Projectile> Projectiles { get; private set; }
-        private float m_lastFireTime;
 
         private void Awake()
         {
@@ -16,7 +15,7 @@ namespace _Project.Codebase.Gameplay.Shooter
 
         public void Fire()
         {
-            Projectile newProjectile = Projectile.SpawnProjectile(transform.position, transform.right);
+            Projectile newProjectile = Projectile.SpawnProjectile(transform.position, transform.right, 25);
             Projectiles.Add(newProjectile);
             newProjectile.OnDestroyProjectile += (projectile => Projectiles.Remove(projectile));
         }

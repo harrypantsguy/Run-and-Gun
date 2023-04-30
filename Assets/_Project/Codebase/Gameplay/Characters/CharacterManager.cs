@@ -9,7 +9,7 @@ namespace _Project.Codebase.Gameplay.Characters
 {
     public class CharacterManager
     {
-        private List<EnemyCharacter> m_enemies = new();
+        private readonly List<EnemyCharacter> m_enemies = new();
         private Runner m_runner;
         private TurnController m_turnController;
 
@@ -23,7 +23,9 @@ namespace _Project.Codebase.Gameplay.Characters
             {
                 EnemyObject enemyObj = 
                     ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.ENEMY).GetComponent<EnemyObject>();
-                m_enemies.Add((EnemyCharacter)enemyObj.Initialize(building.GetRandomOpenFloor().position));
+                EnemyCharacter enemy = (EnemyCharacter)enemyObj.Initialize(building.GetRandomOpenFloor().position);
+                enemy.OnCharacterDeath += () => m_enemies.Remove(enemy);
+                m_enemies.Add(enemy);
             }
 
             RunnerObject runnerObj = 

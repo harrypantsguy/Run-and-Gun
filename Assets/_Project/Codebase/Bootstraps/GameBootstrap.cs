@@ -18,10 +18,12 @@ namespace _Project.Codebase.Bootstraps
             var contentService = services.Get<ContentService>();
             await contentService.LoadAssetGroupAsync<PrefabAssetGroup, GameObject>();
             await contentService.LoadAssetGroupAsync<ScriptableAssetGroup, ScriptableObject>();
-            //await modules.LoadAsync(new BuildingTestModule());
             services.Add(new UIKeycodeOverrideService());
-            await modules.LoadAsync(new GameModule());
+            
+            GameModule game = new GameModule();
+            await modules.LoadAsync(game);
             await modules.LoadAsync(new GameUIModule());
+            await game.SetSceneActive();
         }
     }
 }

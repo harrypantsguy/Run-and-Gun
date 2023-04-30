@@ -7,7 +7,8 @@ namespace _Project.Codebase.Gameplay.Characters
     {
         public override PlayerSelectableType SelectableType => PlayerSelectableType.Runner;
 
-        public Runner(Vector2Int position, NavmeshAgent agent, CharacterRenderer renderer) : base(position, agent, renderer)
+        public Runner(Vector2Int position, NavmeshAgent agent, CharacterRenderer renderer, int maxHealth) 
+            : base(position, agent, renderer, maxHealth)
         {
             
         }

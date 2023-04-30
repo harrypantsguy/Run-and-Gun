@@ -19,7 +19,14 @@ namespace _Project.Codebase.UI
             m_turnController = ModuleUtilities.Get<GameModule>().TurnController;
             SetEnabledState(m_turnController.Turn == Turn.Player);
             m_playerTurnController = ModuleUtilities.Get<GameModule>().PlayerManager.PlayerTurnController;
+            m_playerTurnController.OnQueueEndTurn += OnQueueEndTurn;
             m_turnController.OnTurnChange += OnTurnChange;
+        }
+
+        private void OnQueueEndTurn()
+        {
+            if (!Toggled)
+                ForceSetToggleState(true);
         }
 
         private void OnTurnChange(Turn turn)

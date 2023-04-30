@@ -1,8 +1,7 @@
-﻿using System.Threading.Tasks;
-using _Project.Codebase.Gameplay.AI;
+﻿using System.Collections.Generic;
+using _Project.Codebase.AssetGroups;
 using _Project.Codebase.Gameplay.Characters;
-using _Project.Codebase.Modules;
-using Cysharp.Threading.Tasks;
+using _Project.Codebase.NavigationMesh;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
@@ -12,10 +11,16 @@ namespace _Project.Codebase.Gameplay.Player
     {
         private PlayerManager m_playerManager;
         private IPlayerSelectable Selection => m_playerManager.Selection;
-        
-        private void Start()
+        public readonly List<Vector2> desiredMovePath = new();
+        public PathResults PathResults { get; private set; }
+        public int PathActionPointCost { get; private set; }
+        private NavPathRenderer m_pathRenderer;
+
+        private void Awake()
         {
             m_playerManager = GetComponent<PlayerManager>();
+            m_pathRenderer = ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.NAV_PATH_RENDERER)
+                .GetComponent<NavPathRenderer>();
         }
 
         private void Update()
@@ -34,6 +39,25 @@ namespace _Project.Codebase.Gameplay.Player
                 
                 m_playerManager.SetSelection(null);
             }
+            
+            
+            if (Selection != null && Selection.SelectableType is PlayerSelectableType.Runner or PlayerSelectableType.Enemy)
+            {
+                Character character = (Character)Selection;
+                character.UpdateDisplayedMovementRange();
+                
+                if (Selection.SelectableType is PlayerSelectableType.Runner)
+                {
+                    m_pathRenderer.Enabled = true;
+                    Runner runner = (Runner)character;
+
+                    PathResults = runner.agent.GeneratePathTo(MiscUtilities.WorldMousePos, desiredMovePath);
+                    PathActionPointCost = runner.CalcActionPointCostOfMove(PathResults.distance);
+                    m_pathRenderer.SetPath(desiredMovePath, PathActionPointCost <= runner.actionPoints);
+                }
+            }
+            else if (Selection == null && m_pathRenderer.Enabled)
+                m_pathRenderer.Enabled = false;
         }
     }
 }

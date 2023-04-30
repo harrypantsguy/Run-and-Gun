@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using _Project.Codebase.Gameplay.AI;
+﻿using _Project.Codebase.Gameplay.AI;
 using _Project.Codebase.Gameplay.Player;
 using _Project.Codebase.Gameplay.World;
 using Cysharp.Threading.Tasks;
@@ -12,7 +11,8 @@ namespace _Project.Codebase.Gameplay.Characters
         private readonly AIController m_AIController;
         public override PlayerSelectableType SelectableType => PlayerSelectableType.Enemy;
 
-        public EnemyCharacter(Vector2Int position, NavmeshAgent agent, CharacterRenderer renderer) : base(position, agent, renderer)
+        public EnemyCharacter(Vector2Int position, NavmeshAgent agent, CharacterRenderer renderer, int maxHealth)
+            : base(position, agent, renderer, maxHealth)
         {
             m_AIController = new GruntAIController(this);
         }

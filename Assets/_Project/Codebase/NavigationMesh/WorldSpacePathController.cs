@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace _Project.Codebase.NavigationMesh
 {
@@ -20,6 +21,7 @@ namespace _Project.Codebase.NavigationMesh
         private readonly Func<Vector2, Vector2Int> m_worldToGrid;
         private Func<Vector2Int, Vector2> m_gridToWorld;
         private readonly Converter<Vector2Int, Vector2> m_gridToWorldConverter;
+        private readonly Converter<Vector2, Vector2Int> m_worldToGridConverter;
 
         public WorldSpacePathController(Navmesh navmesh, Func<Vector2, Vector2Int> worldToGrid, 
             Func<Vector2Int, Vector2> gridToWorld, bool cardinalOnly)
@@ -28,6 +30,7 @@ namespace _Project.Codebase.NavigationMesh
             m_worldToGrid = worldToGrid;
             m_gridToWorld = gridToWorld;
             m_gridToWorldConverter = new Converter<Vector2Int, Vector2>(gridToWorld);
+            m_worldToGridConverter = new Converter<Vector2, Vector2Int>(worldToGrid);
             m_cardinalOnly = cardinalOnly;
             Path = new List<Vector2>();
             AtPathEnd = true;
@@ -61,6 +64,16 @@ namespace _Project.Codebase.NavigationMesh
         {
             List<Vector2Int> gridPath = new List<Vector2Int>();
             return GeneratePath(source, target, path, gridPath);
+        }
+
+        public void ForceSetPath(in List<Vector2> worldPath)
+        {
+            Path.Clear();
+            Path.AddRange(worldPath);
+            m_gridPath.Clear();
+            m_gridPath.AddRange(Path.ConvertAll(m_worldToGridConverter));
+            m_pathIndex = 0;
+            UpdateData();
         }
 
         private PathResults GeneratePath(Vector2 source, Vector2 target, in List<Vector2> path, in List<Vector2Int> gridPath)

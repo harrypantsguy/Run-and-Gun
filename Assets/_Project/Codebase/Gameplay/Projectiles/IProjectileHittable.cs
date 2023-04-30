@@ -2,6 +2,6 @@
 {
     public interface IProjectileHittable
     {
-        public void OnProjectileHit();
+        public void OnProjectileHit(int damage);
     }
 }

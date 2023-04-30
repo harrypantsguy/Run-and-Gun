@@ -47,5 +47,10 @@ namespace _Project.Codebase.Modules
         {
             await SceneUtilities.UnloadSceneAsync(c_scene_name);
         }
+
+        public async UniTask SetSceneActive()
+        {
+            await SceneUtilities.SetActiveSceneAsync(c_scene_name);
+        }
     }
 }

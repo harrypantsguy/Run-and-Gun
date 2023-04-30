@@ -9,7 +9,8 @@ namespace _Project.Codebase.Gameplay.Characters
 
         public virtual Character Initialize(Vector2Int position)
         {
-            return Character = new Character(position, GetComponent<NavmeshAgent>(), GetComponent<CharacterRenderer>());
+            return Character = new Character(position, GetComponent<NavmeshAgent>(), GetComponent<CharacterRenderer>(), 
+                0);
         }
     }
 }

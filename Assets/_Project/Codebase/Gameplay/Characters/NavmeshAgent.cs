@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using _Project.Codebase.Modules;
 using _Project.Codebase.NavigationMesh;
 using DanonFramework.Runtime.Core.Utilities;
@@ -58,7 +59,11 @@ namespace _Project.Codebase.Gameplay.Characters
             return results;
         }
 
+        public void ForceSetPath(in List<Vector2> positions) => PathController.ForceSetPath(positions);
+
         public PathResults GeneratePathTo(Vector2 pos) => PathController.GeneratePath(transform.position, pos);
+        public PathResults GeneratePathTo(Vector2 pos, in List<Vector2> positions) 
+            => PathController.GeneratePath(transform.position, pos, positions);
 
         private void OnDrawGizmos()
         {

@@ -17,6 +17,6 @@ namespace _Project.Codebase.Gameplay.World
             this.ricochetInfluence = ricochetInfluence;
         }
 
-        public void OnProjectileHit() {}
+        public void OnProjectileHit(int damage) {}
     }
 }

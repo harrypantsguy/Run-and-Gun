@@ -14,5 +14,10 @@ namespace _Project.Codebase.AssetGroups
         public const string ENEMY = "Enemy";
         public const string RUNNER = "Runner";
         public const string GAME_UI_CANVAS = "GameUICanvas";
+        public const string NAV_PATH_RENDERER = "NavPathRenderer";
+        public const string CHARACTER_SELECTION_RENDERER = "CharacterSelectionRenderer"; 
+        public const string CHARACTER_RANGE_RENDERER = "CharacterRangeRenderer"; 
+        public const string CHARACTER_HEALTH_RENDERER = "CharacterHealthRenderer";
+        public const string DOOR = "Door";
     }
 }

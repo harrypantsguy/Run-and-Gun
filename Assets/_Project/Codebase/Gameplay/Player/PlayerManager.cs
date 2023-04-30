@@ -12,17 +12,17 @@ namespace _Project.Codebase.Gameplay.Player
 
         public ShooterController ShooterController { get; private set; }
         public PlayerTurnController PlayerTurnController { get; private set; }
+        public PlayerSelectionController SelectionController { get; private set; }
         
         public bool ShooterActive { get; private set; }
 
         public event Action<IPlayerSelectable> OnSelectSelectable; 
         public event Action<bool> OnShooterActivationStateChange; 
             
-        private PlayerSelectionController m_selectionController;
         
         private void Awake()
         {
-            m_selectionController = gameObject.AddComponent<PlayerSelectionController>();
+            SelectionController = gameObject.AddComponent<PlayerSelectionController>();
             ShooterController = Instantiate(
                 ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.SHOOTER)).GetComponent<ShooterController>();
             

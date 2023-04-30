@@ -45,6 +45,7 @@ namespace _Project.Codebase.Gameplay.World
                 Vector2Int pos = new Vector2Int(x, y);
                 Tile wallTile = wallMap.GetTile<Tile>((Vector3Int)pos);
                 Tile floorTile = floorMap.GetTile<Tile>((Vector3Int)pos);
+                Tile doorTile = doorMap.GetTile<Tile>((Vector3Int)pos);
                 bool walkable = false;
                 bool tileAtPos = true;
                 if (wallTile != null)
@@ -60,6 +61,11 @@ namespace _Project.Codebase.Gameplay.World
                 else
                     tileAtPos = false;
 
+                if (doorTile != null)
+                {
+                    //m_doorCells.Add(pos);
+                }
+                
                 if (tileAtPos)
                     nodes[new Vector2Int(x, y)] = walkable;
             }

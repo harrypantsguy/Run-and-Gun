@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Timers;
 using _Project.Codebase.AssetGroups;
 using _Project.Codebase.EditorUtilities;
 using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
 using DanonFramework.Runtime.Core.Utilities;
-using Mono.CecilX.Cil;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -17,6 +15,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
     public class Projectile : MonoBehaviour
     {
         public event Action<Projectile> OnDestroyProjectile;
+        private int m_damage;
         private Vector2 m_currentPosition;
         private Vector2 m_lastPosition;
         private float m_distanceTraveled;
@@ -37,10 +36,11 @@ namespace _Project.Codebase.Gameplay.Projectiles
         private const float c_max_travel_dist = 300f;
         private const float c_tick_rate = 1f / 50f;
         
-        private void Initialize(Vector2 pos, Vector2 dir)
+        private void Initialize(Vector2 pos, Vector2 dir, int damage)
         {
             m_currentPosition = pos;
             m_travelDir = dir;
+            m_damage = damage;
             var gameModule = ModuleUtilities.Get<GameModule>();
             m_building = gameModule.Building;
             m_worldRegions = gameModule.WorldRegions;
@@ -119,6 +119,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
                     debugColor = Color.green;
                     SpawnPierceParticleSystem(hitEvent.surfaceType, 
                         hitEvent.location + -hitEvent.travelDir * .005f, -hitEvent.travelDir);
+                    hitEvent.hitTarget.OnProjectileHit(m_damage);
                     break;
                 case ProjectileEventType.EndPierce:
                     debugColor = Color.red;
@@ -219,7 +220,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
                     if (reverseHit.collider != null && reverseHit.collider == m_colliderInside &&
                         Vector2.Distance(reverseHit.point, hit.point) > .001f)
                     {
-                        UpdateCurrentPosition(reverseHit.point + m_travelDir * .003f);
+                        UpdateCurrentPosition(reverseHit.point + m_travelDir * .0005f);
                         float distFromLastToHit = Vector2.Distance(m_lastPosition, m_currentPosition);
                         m_distanceTraveled += distFromLastToHit;
                         remainingTravelDist -= distFromLastToHit;
@@ -314,13 +315,13 @@ namespace _Project.Codebase.Gameplay.Projectiles
         private float CalcInterpolationTime(Vector2 pos1, Vector2 pos2, float speed = c_default_speed) => 
             Vector2.Distance(pos1, pos2) / speed;
 
-        public static Projectile SpawnProjectile(Vector2 pos, Vector2 direction)
+        public static Projectile SpawnProjectile(Vector2 pos, Vector2 direction, int damage)
         {
             GameObject newProjectileObj = ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.BASIC_PROJECTILE);
             newProjectileObj.transform.position = pos;
             newProjectileObj.transform.right = direction;
             Projectile projectile = newProjectileObj.GetComponent<Projectile>();
-            projectile.Initialize(pos, direction);
+            projectile.Initialize(pos, direction, damage);
             return projectile;
         }
     }
