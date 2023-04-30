@@ -13,6 +13,7 @@ namespace _Project.Codebase.Gameplay.Characters
         private void Awake()
         {
             SelectionRenderer = Instantiate<SelectionRenderer>(PrefabAssetGroup.CHARACTER_SELECTION_RENDERER);
+            SelectionRenderer.transform.localPosition = Vector3.zero;
             RangeRenderer = Instantiate<NavmeshRangeRenderer>(PrefabAssetGroup.CHARACTER_RANGE_RENDERER);
             HealthRenderer = Instantiate<HealthRenderer>(PrefabAssetGroup.CHARACTER_HEALTH_RENDERER);
             HealthRenderer.transform.localPosition = new Vector3(0f, .6f);
