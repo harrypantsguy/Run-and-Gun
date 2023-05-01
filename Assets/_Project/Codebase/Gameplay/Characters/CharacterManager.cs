@@ -39,7 +39,7 @@ namespace _Project.Codebase.Gameplay.Characters
             {
                 foreach (EnemyCharacter enemy in m_enemies)
                 {
-                    enemy.actionPoints = enemy.MaxMaxActionPoints;
+                    enemy.actionPoints = enemy.MaxActionPoints;
                 }
 
                 WorldScreenshot world = ModuleUtilities.Get<GameModule>().World;
@@ -52,7 +52,7 @@ namespace _Project.Codebase.Gameplay.Characters
             }
             else
             {
-                m_runner.actionPoints = m_runner.MaxMaxActionPoints;
+                m_runner.actionPoints = m_runner.MaxActionPoints;
             }
         }
     }

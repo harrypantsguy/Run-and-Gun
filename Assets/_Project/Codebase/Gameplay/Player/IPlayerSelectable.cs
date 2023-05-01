@@ -4,5 +4,6 @@
     {
         public void SetPlayerSelectState(bool state);
         public PlayerSelectableType SelectableType { get; }
+        public bool Selectable { get; }
     }
 }

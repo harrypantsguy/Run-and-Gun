@@ -6,6 +6,8 @@ namespace _Project.Codebase.Gameplay.Characters
 {
     public class CharacterRenderer : MonoBehaviour
     {
+        [field: SerializeField] public CharacterAnimator Animator { get; private set; }
+        public Transform GraphicsTransform => transform;
         public SelectionRenderer SelectionRenderer { get; private set; }
         public NavmeshRangeRenderer RangeRenderer { get; private set; }
         public HealthRenderer HealthRenderer { get; private set; }
@@ -22,7 +24,7 @@ namespace _Project.Codebase.Gameplay.Characters
         private T Instantiate<T>(string address)
         {
             GameObject obj = ContentUtilities.Instantiate<GameObject>(address);
-            obj.transform.SetParent(transform);
+            obj.transform.SetParent(transform.parent);
             return obj.GetComponent<T>();
         }
     }

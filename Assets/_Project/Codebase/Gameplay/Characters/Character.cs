@@ -7,7 +7,6 @@ using _Project.Codebase.Modules;
 using Cysharp.Threading.Tasks;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace _Project.Codebase.Gameplay.Characters
 {
@@ -16,38 +15,55 @@ namespace _Project.Codebase.Gameplay.Characters
         public event Action OnCharacterDeath;
         public readonly NavmeshAgent agent;
         public readonly Transform transform;
+        public bool Dead { get; private set; }
+        public virtual PlayerSelectableType SelectableType { get; set; }
+        public bool Selectable => !Dead;
 
         public Vector2Int FloorPos { get; set; }
-        public int actionPoints = DEFAULT_MAX_ACTION_POINTS;
-        public int moveDistancePerActionPoint = DEFAULT_MOVE_DISTANCE_PER_ACTION_POINT;
-        public int MaxMaxActionPoints => DEFAULT_MAX_ACTION_POINTS;
+        public int actionPoints = c_default_max_action_points;
+        public int moveDistancePerActionPoint = c_default_move_distance_per_action_point;
+        public int MaxActionPoints => c_default_max_action_points;
         public int Health { get; private set; }
         public int MaxHealth { get; private set; }
+        public Vector2 FacingDirection { get; private set; }
 
-        private CharacterRenderer m_renderer;
-        
-        protected const int DEFAULT_MAX_ACTION_POINTS = 1;
-        protected const int DEFAULT_MOVE_DISTANCE_PER_ACTION_POINT = 6;
+        private readonly CharacterRenderer m_renderer;
+
+        private const int c_default_max_action_points = 1;
+        private const int c_default_move_distance_per_action_point = 6;
 
         public Character(Vector2Int position, NavmeshAgent agent, CharacterRenderer characterRenderer, int maxHealth)  
         {
             this.agent = agent;
             m_renderer = characterRenderer;
+            m_renderer.Animator.Initialize(this);
             transform = agent.transform;
-            agent.onReachPathEnd += OnReachPathEnd;
+            agent.OnReachPathEnd += OnReachPathEnd;
             MaxHealth = maxHealth;
             Health = MaxHealth;
             UpdateFloorPosition(position, true);
         }
 
+        public void SetFacingDir(Vector2 dir)
+        {
+            FacingDirection = dir;
+            m_renderer.GraphicsTransform.right = dir;
+        }
+        
         public async UniTask PerformAction(CharacterAction action)
         {
+            if (Dead) return;
+            
             if (action != null)
             {
                 actionPoints -= action.ActionPointCost;
-                await action.OnStartAction();
-                await action.Update();
-                await action.OnEndAction();
+                action.Run().Forget();
+                while (!action.finished)
+                {
+                    m_renderer.Animator.SetLegsAnimationState(true);
+                    await UniTask.Yield();
+                }
+                m_renderer.Animator.SetLegsAnimationState(false);
             }
         }
 
@@ -82,8 +98,6 @@ namespace _Project.Codebase.Gameplay.Characters
         {
             m_renderer.RangeRenderer.CalculateAtPositionWithRange(FloorPos, moveDistancePerActionPoint * actionPoints);
         }
-
-        public virtual PlayerSelectableType SelectableType { get; set; }
         public void TakeDamage(int damage)
         {
             Health = Mathf.Max(Health - damage, 0);
@@ -95,7 +109,7 @@ namespace _Project.Codebase.Gameplay.Characters
         public void Die()
         {
             OnCharacterDeath?.Invoke();
-            Object.Destroy(transform.gameObject);
+            Dead = true;
         }
     }
 }

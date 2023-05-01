@@ -32,7 +32,7 @@ namespace _Project.Codebase.UI
                     for (var i = 0; i < m_actionPointSlots.Count; i++)
                     {
                         var slot = m_actionPointSlots[i];
-                        slot.gameObject.SetActive(i < m_selectedCharacter.MaxMaxActionPoints);
+                        slot.gameObject.SetActive(i < m_selectedCharacter.MaxActionPoints);
                         slot.fillImage.enabled = i < m_selectedCharacter.actionPoints;
                     }
                 }

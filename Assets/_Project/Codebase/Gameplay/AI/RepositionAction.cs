@@ -25,9 +25,9 @@ namespace _Project.Codebase.Gameplay.AI
             ActionPointCost = actionPointCost;
         }
 
-        public override async UniTask Update()
+        protected override async UniTask Update()
         {
-            await new MoveBehaviour(character.agent).RunBehaviour();
+            await new MoveBehaviour(character).RunBehaviour();
         }
     }
 }

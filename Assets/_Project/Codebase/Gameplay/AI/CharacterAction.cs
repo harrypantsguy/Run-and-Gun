@@ -9,6 +9,7 @@ namespace _Project.Codebase.Gameplay.AI
         protected readonly Character character;
         protected readonly WorldScreenshot worldContext;
         public int ActionPointCost { get; protected set; }
+        public bool finished;
         
         public CharacterAction(Character character, WorldScreenshot worldContext)
         {
@@ -16,11 +17,20 @@ namespace _Project.Codebase.Gameplay.AI
             this.character = character;
             ActionPointCost = 0;
         }
+
+        public virtual async UniTask Run()
+        {
+            finished = false;
+            await OnStartAction();
+            await Update();
+            await OnEndAction();
+            finished = true;
+        }
         
-        public virtual UniTask OnStartAction() => UniTask.CompletedTask;
+        protected virtual UniTask OnStartAction() => UniTask.CompletedTask;
 
-        public virtual UniTask Update() => UniTask.CompletedTask;
+        protected virtual UniTask Update() => UniTask.CompletedTask;
 
-        public virtual UniTask OnEndAction() => UniTask.CompletedTask;
+        protected virtual UniTask OnEndAction() => UniTask.CompletedTask;
     }
 }

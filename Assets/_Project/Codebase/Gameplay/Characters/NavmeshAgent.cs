@@ -13,8 +13,9 @@ namespace _Project.Codebase.Gameplay.Characters
         [SerializeField] private float m_moveSpeed;
         [SerializeField] private float m_nodeReachedDist;
         public WorldSpacePathController PathController { get; private set; } 
-        public Action<Vector2, Vector2Int> onReachPathEnd;
-        public bool followPath;
+        public event Action<Vector2, Vector2Int> OnReachPathEnd;
+        public Vector2 PathDir => PathController.DirToNextNode;
+        [HideInInspector] public bool followPath;
 
         public bool AtPathEnd => PathController.AtPathEnd;
 
@@ -23,19 +24,19 @@ namespace _Project.Codebase.Gameplay.Characters
             GameModule gameModule = ModuleUtilities.Get<GameModule>();
             PathController = new WorldSpacePathController(gameModule.Building.navmesh, gameModule.Building.WorldToGrid,
                 gameModule.Building.GridToWorld, false);
-            PathController.onReachPathEnd += OnReachPathEnd;
+            PathController.onReachPathEnd += OnArriveAtPathEnd;
         }
 
-        private void OnReachPathEnd(Vector2 worldPos, Vector2Int gridPos)
+        private void OnArriveAtPathEnd(Vector2 worldPos, Vector2Int gridPos)
         {
-            onReachPathEnd?.Invoke(worldPos, gridPos);
+            OnReachPathEnd?.Invoke(worldPos, gridPos);
             transform.position = worldPos;
         }
 
         private void FixedUpdate()
         {
             if (!followPath) return;
-            
+
             float distToNode = Vector2.Distance(transform.position, PathController.NextNode);
             if (distToNode < m_nodeReachedDist)
                 PathController.TryProgressToNextNode();

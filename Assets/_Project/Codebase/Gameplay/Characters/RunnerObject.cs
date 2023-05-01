@@ -7,7 +7,7 @@ namespace _Project.Codebase.Gameplay.Characters
         [SerializeField] private int m_maxHealth;
         public override Character Initialize(Vector2Int position)
         {
-            return Character = new Runner(position, GetComponent<NavmeshAgent>(), GetComponent<CharacterRenderer>(), m_maxHealth);
+            return Character = new Runner(position, GetComponent<NavmeshAgent>(), characterRenderer, m_maxHealth);
         }
     }
 }

@@ -27,13 +27,18 @@ namespace _Project.Codebase.Gameplay.Player
         {
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
+                m_pathRenderer.Enabled = false;
+                
                 Collider2D mouseHitCollider = Physics2D.OverlapPoint(MiscUtilities.WorldMousePos);
                 if (mouseHitCollider != null)
                 {
                     if (mouseHitCollider.TryGetComponent(out CharacterObject characterObject))  
                     {
-                        m_playerManager.SetSelection(characterObject.Character);
-                        return;
+                        if (characterObject.Character.Selectable)
+                        {
+                            m_playerManager.SetSelection(characterObject.Character);
+                            return;
+                        }
                     }
                 }
                 

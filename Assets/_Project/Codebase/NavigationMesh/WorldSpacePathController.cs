@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace _Project.Codebase.NavigationMesh
 {
@@ -109,7 +108,7 @@ namespace _Project.Codebase.NavigationMesh
             LastNode = Path[m_pathIndex];
             if (!AtPathEnd)
                 NextNode = Path[m_pathIndex + 1];
-            DirToNextNode = Path[m_pathIndex] - NextNode;
+            DirToNextNode = NextNode - Path[m_pathIndex];
             DistFromLastToNextNode = DirToNextNode.magnitude;
             DirToNextNode.Normalize();
         }
