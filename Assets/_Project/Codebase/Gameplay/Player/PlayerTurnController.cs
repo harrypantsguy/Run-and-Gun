@@ -86,12 +86,10 @@ namespace _Project.Codebase.Gameplay.Player
                 {
                     Runner runner = (Runner)Selection;
                     
-                    if (m_selectionController.PathResults.type is PathResultType.FullPath 
-                        && m_selectionController.PathActionPointCost <= runner.actionPoints)
+                    if (m_selectionController.IsValidSelectedPath)
                     {
                         await runner.PerformAction(new RepositionAction(runner, ModuleUtilities.Get<GameModule>().World,
-                            m_selectionController.desiredMovePath, m_selectionController.PathResults, 
-                            m_selectionController.PathActionPointCost));
+                            m_selectionController.desiredMovePath, m_selectionController.PathActionPointCost));
                     }
                 }
 

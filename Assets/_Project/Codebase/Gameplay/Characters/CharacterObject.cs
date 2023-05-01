@@ -7,10 +7,6 @@ namespace _Project.Codebase.Gameplay.Characters
         [SerializeField] protected CharacterRenderer characterRenderer;
         public Character Character { get; protected set; }
 
-        public virtual Character Initialize(Vector2Int position)
-        {
-            return Character = new Character(position, GetComponent<NavmeshAgent>(), characterRenderer, 
-                0);
-        }
+        public abstract Character Initialize(Vector2Int position);
     }
 }

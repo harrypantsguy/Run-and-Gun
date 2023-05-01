@@ -22,9 +22,11 @@ namespace _Project.Codebase.Gameplay.Characters
         public Vector2Int FloorPos { get; set; }
         public int actionPoints = c_default_max_action_points;
         public int moveDistancePerActionPoint = c_default_move_distance_per_action_point;
+        public int LargestPossibleTravelDistance => moveDistancePerActionPoint * actionPoints;
         public int MaxActionPoints => c_default_max_action_points;
         public int Health { get; private set; }
         public int MaxHealth { get; private set; }
+        
         public Vector2 FacingDirection { get; private set; }
 
         private readonly CharacterRenderer m_renderer;
@@ -52,19 +54,16 @@ namespace _Project.Codebase.Gameplay.Characters
         
         public async UniTask PerformAction(CharacterAction action)
         {
-            if (Dead) return;
-            
-            if (action != null)
+            if (Dead || action == null) return;
+
+            actionPoints -= action.ActionPointCost;
+            action.Run().Forget();
+            while (!action.finished)
             {
-                actionPoints -= action.ActionPointCost;
-                action.Run().Forget();
-                while (!action.finished)
-                {
-                    m_renderer.Animator.SetLegsAnimationState(true);
-                    await UniTask.Yield();
-                }
-                m_renderer.Animator.SetLegsAnimationState(false);
+                m_renderer.Animator.SetLegsAnimationState(true);
+                await UniTask.Yield();
             }
+            m_renderer.Animator.SetLegsAnimationState(false);
         }
 
         private void UpdateFloorPosition(Vector2Int gridPos, bool teleportToPos = false)
@@ -96,7 +95,7 @@ namespace _Project.Codebase.Gameplay.Characters
 
         public void UpdateDisplayedMovementRange()
         {
-            m_renderer.RangeRenderer.CalculateAtPositionWithRange(FloorPos, moveDistancePerActionPoint * actionPoints);
+            m_renderer.RangeRenderer.CalculateAtPositionWithRange(FloorPos, LargestPossibleTravelDistance);
         }
         public void TakeDamage(int damage)
         {

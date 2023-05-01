@@ -18,9 +18,13 @@ namespace _Project.Codebase.NavigationMesh
         }
 
         public PathResults FindPath(in Vector2Int start, in Vector2Int end, in bool cardinalOnly, in List<Vector2Int> path,
-            in bool allowPartialPaths = false, in Heuristic heuristic = Heuristic.Euclidean)
+            in bool allowPartialPaths = false, float maxDistance = Mathf.Infinity, in Heuristic heuristic = Heuristic.Euclidean)
         {
             path.Clear();
+            
+            if (maxDistance == 0f)
+                return new PathResults(PathResultType.NoPath, 0f);
+            
             m_openNodes.Clear();
             m_closedNodes.Clear();
 
@@ -38,8 +42,11 @@ namespace _Project.Codebase.NavigationMesh
 
                 if (currentNode.Pos == end)
                 {
-                    TracePathNonAlloc(currentNode, path);
-                    return new PathResults(PathResultType.FullPath, currentNode.distance);
+                    bool isPartialPath = TracePathAndReturnPartialPathState(currentNode, path, maxDistance, out float dist);
+                    if (allowPartialPaths || !isPartialPath)
+                        return new PathResults(isPartialPath ? PathResultType.PartialPath : PathResultType.FullPath, dist);
+                    
+                    return new PathResults(PathResultType.NoPath, 0f);
                 }
 
                 if (nodesVisited > Navmesh.SEARCH_LIMIT)
@@ -47,11 +54,11 @@ namespace _Project.Codebase.NavigationMesh
                     if (allowPartialPaths)
                     {
                         PathNode closestNode = GetNodeClosestToCell(end, m_closedNodes.Values);
-                        TracePathNonAlloc(closestNode, path);
-                        return new PathResults(PathResultType.PartialPath, closestNode.distance);
+                        TracePathAndReturnPartialPathState(closestNode, path, maxDistance, out float dist);
+                        return new PathResults(PathResultType.PartialPath, dist);
                     }
                     
-                    TracePathNonAlloc(null, path);
+                    TracePathAndReturnPartialPathState(null, path, maxDistance, out float dist2);
                     return new PathResults(PathResultType.NoPath, 0f);
                 }
 
@@ -61,7 +68,7 @@ namespace _Project.Codebase.NavigationMesh
                     {
                         var isDiagonal = Mathf.Abs(x) == 1 && Mathf.Abs(y) == 1;
                         if (x == 0 && y == 0 || (cardinalOnly && isDiagonal)) continue;
-
+                        
                         if (isDiagonal)
                         {
                             if (!m_navmesh.IsWalkableNode(currentNode.Pos + new Vector2Int(x, 0)) ||
@@ -78,8 +85,11 @@ namespace _Project.Codebase.NavigationMesh
 
                         if (!m_navmesh.IsWalkableNode(cell))
                             continue;
+                        
+                        float newDistance = currentNode.distance + (isDiagonal ? c_diagonal_dist : 1f);
+                        if (!allowPartialPaths && newDistance > maxDistance) continue;
 
-                        PathNode child = new PathNode(cell, currentNode.distance + (isDiagonal ? c_diagonal_dist : 1f));
+                        PathNode child = new PathNode(cell, newDistance);
                         var additiveGCost = 0f;//m_navmesh.GetNodeAdditiveGCost(cell);
                         
                         child.G = currentNode.G + additiveGCost + (isDiagonal ? Navmesh.DIAGONAL_COST : Navmesh.CARDINAL_COST);
@@ -118,18 +128,33 @@ namespace _Project.Codebase.NavigationMesh
             return closestNode;
         }
 
-        private void TracePathNonAlloc(in PathNode fromNode, in List<Vector2Int> path)
+        private bool TracePathAndReturnPartialPathState(in PathNode fromNode, in List<Vector2Int> path, float maxDistance, 
+            out float pathDistance)
         {
             path.Clear();
+            
+            pathDistance = 0f;
+            
+            if (fromNode == null) return false;
 
-            if (fromNode == null) return;
-
+            bool isPartialPath = false;
+            
             PathNode node = fromNode;
             while (node != null)
             {
-                path.Add(node.Pos);
+                if (node.distance < maxDistance)
+                {
+                    if (pathDistance == 0f)
+                        pathDistance = node.distance;
+                    path.Add(node.Pos);
+                }
+                else
+                    isPartialPath = true;
+
                 node = node.parent;
             }
+
+            return isPartialPath;
         }
 
         private static float CalculateHeuristic(in Heuristic heuristic, in Vector2Int cell, in Vector2Int goalCell)

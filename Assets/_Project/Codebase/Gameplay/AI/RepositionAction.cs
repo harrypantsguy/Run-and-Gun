@@ -10,17 +10,17 @@ namespace _Project.Codebase.Gameplay.AI
     public class RepositionAction : CharacterAction
     {
         private Vector2 m_targetPosition;
-        public readonly PathResults pathResults; 
-        public RepositionAction(Character character, WorldScreenshot worldContext, Vector2 newPosition) : base(character, worldContext)
+        public RepositionAction(Character character, WorldScreenshot worldContext, Vector2 newPosition, 
+            bool pickClosestPoint = false) : base(character, worldContext)
         {
-            pathResults = character.agent.SetTargetPosition(newPosition, false);
+            PathResults pathResults = character.agent.SetTargetPosition(newPosition, false, pickClosestPoint, 
+                character.LargestPossibleTravelDistance);
             ActionPointCost = character.CalcActionPointCostOfMove(pathResults.distance);
         }
         
-        public RepositionAction(Character character, WorldScreenshot worldContext, List<Vector2> path, PathResults pathResults, 
+        public RepositionAction(Character character, WorldScreenshot worldContext, List<Vector2> path, 
             int actionPointCost) : base(character, worldContext)
         {
-            this.pathResults = pathResults;
             character.agent.ForceSetPath(path);
             ActionPointCost = actionPointCost;
         }

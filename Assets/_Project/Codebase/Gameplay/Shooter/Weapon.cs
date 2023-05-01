@@ -4,20 +4,16 @@ using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Shooter
 {
-    public class Weapon : MonoBehaviour
+    public class Weapon
     {
-        public List<Projectile> Projectiles { get; private set; }
+        private readonly List<Projectile> m_projectiles = new();
+        public bool IsProjectileActive => m_projectiles.Count > 0;
 
-        private void Awake()
+        public void Fire(Vector2 position, Vector2 direction)
         {
-            Projectiles = new List<Projectile>();
-        }
-
-        public void Fire()
-        {
-            Projectile newProjectile = Projectile.SpawnProjectile(transform.position, transform.right, 25);
-            Projectiles.Add(newProjectile);
-            newProjectile.OnDestroyProjectile += (projectile => Projectiles.Remove(projectile));
+            Projectile newProjectile = Projectile.SpawnProjectile(position, direction, 25);
+            m_projectiles.Add(newProjectile);
+            newProjectile.OnDestroyProjectile += (projectile => m_projectiles.Remove(projectile));
         }
     }
 }

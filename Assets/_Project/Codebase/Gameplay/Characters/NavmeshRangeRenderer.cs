@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _Project.Codebase.EditorUtilities;
 using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
@@ -24,7 +25,6 @@ namespace _Project.Codebase.Gameplay.Characters
         public void CalculateAtPositionWithRange(Vector2Int position, int range)
         {
             return;
-            
             m_closedPositions.Clear();
 
             m_openTiles.Enqueue(new Tile(position, 0f));
@@ -40,11 +40,15 @@ namespace _Project.Codebase.Gameplay.Characters
 
                         Vector2Int newPosition = tile.pos + new Vector2Int(x, y);
                         if (m_navmesh.IsWalkableNode(newPosition) && m_navmesh.IsValidNode(newPosition) && 
-                            !m_closedPositions.Contains(newPosition))
+                            !m_closedPositions.Contains(newPosition) && !m_openTiles.Contains(new Tile(newPosition, 0f)))
                         {
                             float distance = tile.distance + (isDiagonal ? 1.41421f : 1f);
                             if (distance < range)
+                            {
+                                //if (distance > range - 1)
+                                // navmesh path to point and see if is reached
                                 m_openTiles.Enqueue(new Tile(newPosition, distance));
+                            }
                         }
                     }
                 }
@@ -54,7 +58,7 @@ namespace _Project.Codebase.Gameplay.Characters
                 GizmoUtilities.DrawXAtPos(m_building.GridToWorld(pos), 1f, Color.blue);
         }
 
-        private struct Tile
+        private readonly struct Tile : IEquatable<Tile>
         {
             public readonly Vector2Int pos;
             public readonly float distance;
@@ -63,6 +67,21 @@ namespace _Project.Codebase.Gameplay.Characters
             {
                 this.pos = pos;
                 this.distance = distance;
+            }
+
+            public bool Equals(Tile other)
+            {
+                return pos.Equals(other.pos);
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is Tile other && Equals(other);
+            }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(pos);
             }
         }
 

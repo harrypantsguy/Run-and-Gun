@@ -14,6 +14,7 @@ namespace _Project.Codebase.Gameplay.Player
         public readonly List<Vector2> desiredMovePath = new();
         public PathResults PathResults { get; private set; }
         public int PathActionPointCost { get; private set; }
+        public bool IsValidSelectedPath { get; private set; }
         private NavPathRenderer m_pathRenderer;
 
         private void Awake()
@@ -56,9 +57,11 @@ namespace _Project.Codebase.Gameplay.Player
                     m_pathRenderer.Enabled = true;
                     Runner runner = (Runner)character;
 
-                    PathResults = runner.agent.GeneratePathTo(MiscUtilities.WorldMousePos, desiredMovePath);
+                    PathResults = runner.agent.GeneratePathTo(MiscUtilities.WorldMousePos, desiredMovePath, true, 
+                        character.LargestPossibleTravelDistance);
                     PathActionPointCost = runner.CalcActionPointCostOfMove(PathResults.distance);
-                    m_pathRenderer.SetPath(desiredMovePath, PathActionPointCost <= runner.actionPoints);
+                    IsValidSelectedPath = PathResults.type is not PathResultType.NoPath;
+                    m_pathRenderer.SetPath(desiredMovePath, IsValidSelectedPath);
                 }
             }
             else if (Selection == null && m_pathRenderer.Enabled)

@@ -36,7 +36,7 @@ namespace _Project.Codebase.Modules
             
             CharacterManager = new CharacterManager(TurnController, Building);
 
-            World = new WorldScreenshot(Building);
+            World = new WorldScreenshot(Building, CharacterManager.runner);
             
             PlayerManager = new GameObject("PlayerManager").AddComponent<PlayerManager>();
 

@@ -7,9 +7,9 @@ namespace _Project.Codebase.Gameplay.Shooter
 {
     public class ShooterController : MonoBehaviour
     {
-        [SerializeField] private Weapon m_weapon;
         [SerializeField] private LaserSight m_laserSight;
-        public bool IsProjectileActive => m_weapon.Projectiles.Count > 0;
+        public bool IsProjectileActive => m_weapon.IsProjectileActive;
+        private Weapon m_weapon;
         private bool m_active;
         private AimController m_aimController;
         private bool m_shooterOnSide;
@@ -29,6 +29,7 @@ namespace _Project.Codebase.Gameplay.Shooter
             m_aimController = GetComponent<AimController>();
 
             m_worldRegions = ModuleUtilities.Get<GameModule>().WorldRegions;
+            m_weapon = new Weapon();
 
             MoveShooterToClosestEdge(new Vector2(-10, 0), m_worldRegions.shooterRegionExtents);
             m_aimController.SetAimTarget(Vector2.zero);
@@ -70,7 +71,7 @@ namespace _Project.Codebase.Gameplay.Shooter
         {
             if (m_shotsRemaining == 0) return;
             
-            m_weapon.Fire();
+            m_weapon.Fire(transform.position, transform.right);
             m_shotsRemaining--;
         }
 

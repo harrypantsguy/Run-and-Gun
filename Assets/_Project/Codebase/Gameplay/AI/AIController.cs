@@ -7,17 +7,17 @@ namespace _Project.Codebase.Gameplay.AI
 {
     public abstract class AIController
     {
-        public Character Character { get; }
+        protected readonly EnemyCharacter character;
 
         protected AIController(Character character)
         {
-            Character = character;
+            this.character = (EnemyCharacter)character;
         }
 
         public async UniTask TakeTurn(WorldScreenshot worldContext)
         {
             CharacterAction action = DetermineAction(worldContext);
-            await Character.PerformAction(action);
+            await character.PerformAction(action);
         }
 
         protected abstract CharacterAction DetermineAction(WorldScreenshot worldContext);

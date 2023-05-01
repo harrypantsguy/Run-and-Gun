@@ -10,7 +10,7 @@ namespace _Project.Codebase.Gameplay.Characters
     public class CharacterManager
     {
         private readonly List<EnemyCharacter> m_enemies = new();
-        private Runner m_runner;
+        public readonly Runner runner;
         private TurnController m_turnController;
 
         public CharacterManager(TurnController turnController, Building building)
@@ -24,13 +24,12 @@ namespace _Project.Codebase.Gameplay.Characters
                 EnemyObject enemyObj = 
                     ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.ENEMY).GetComponent<EnemyObject>();
                 EnemyCharacter enemy = (EnemyCharacter)enemyObj.Initialize(building.GetRandomOpenFloor().position);
-                enemy.OnCharacterDeath += () => m_enemies.Remove(enemy);
                 m_enemies.Add(enemy);
             }
 
             RunnerObject runnerObj = 
                 ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.RUNNER).GetComponent<RunnerObject>();
-            m_runner = (Runner)runnerObj.Initialize(Vector2Int.zero);
+            runner = (Runner)runnerObj.Initialize(Vector2Int.zero);
         }
 
         private async void OnTurnChange(Turn turn)
@@ -52,7 +51,7 @@ namespace _Project.Codebase.Gameplay.Characters
             }
             else
             {
-                m_runner.actionPoints = m_runner.MaxActionPoints;
+                runner.actionPoints = runner.MaxActionPoints;
             }
         }
     }

@@ -46,25 +46,36 @@ namespace _Project.Codebase.Gameplay.Characters
                     Time.fixedDeltaTime * m_moveSpeed);
         }
 
-        public PathResults SetTargetPosition(Vector2Int pos, bool startMoving = true)
+        public PathResults SetTargetPosition(Vector2Int pos, bool startMoving = true, bool allowPartialPaths = false,
+            float maxDistance = Mathf.Infinity)
         {
-            PathResults results = PathController.GenerateAndSetPath(transform.position, pos);
+            PathResults results = PathController.GenerateAndSetPath(transform.position, pos, allowPartialPaths, maxDistance);
             followPath = startMoving;
             return results;
         }
         
-        public PathResults SetTargetPosition(Vector2 pos, bool startMoving = true)
+        public PathResults SetTargetPosition(Vector2 pos, bool startMoving = true, bool allowPartialPaths = false,
+            float maxDistance = Mathf.Infinity)
         {
-            PathResults results = PathController.GenerateAndSetPath(transform.position, pos);
+            PathResults results = PathController.GenerateAndSetPath(transform.position, pos, allowPartialPaths,
+                maxDistance);
             followPath = startMoving;
             return results;
         }
 
         public void ForceSetPath(in List<Vector2> positions) => PathController.ForceSetPath(positions);
 
-        public PathResults GeneratePathTo(Vector2 pos) => PathController.GeneratePath(transform.position, pos);
-        public PathResults GeneratePathTo(Vector2 pos, in List<Vector2> positions) 
-            => PathController.GeneratePath(transform.position, pos, positions);
+        public PathResults GeneratePathTo(Vector2 pos, bool allowPartialPaths = false,
+            float maxDistance = Mathf.Infinity)
+        {
+            return PathController.GeneratePath(transform.position, pos, allowPartialPaths, maxDistance);
+        }
+
+        public PathResults GeneratePathTo(Vector2 pos, in List<Vector2> positions, bool allowPartialPaths = false,
+            float maxDistance = Mathf.Infinity)
+        {
+            return PathController.GeneratePath(transform.position, pos, positions, allowPartialPaths, maxDistance);
+        }
 
         private void OnDrawGizmos()
         {

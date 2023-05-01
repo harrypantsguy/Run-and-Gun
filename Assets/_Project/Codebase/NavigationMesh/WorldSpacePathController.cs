@@ -35,34 +35,38 @@ namespace _Project.Codebase.NavigationMesh
             AtPathEnd = true;
         }
 
-        public PathResults GenerateAndSetPath(Vector2Int source, Vector2Int target)
+        public PathResults GenerateAndSetPath(Vector2Int source, Vector2Int target, bool allowPartialPaths = false, 
+            float maxDistance = Mathf.Infinity)
         {
-            PathResults results = GeneratePath(source, target, Path, m_gridPath);
+            PathResults results = GeneratePath(source, target, Path, m_gridPath, allowPartialPaths, maxDistance);
             m_pathIndex = 0;
             if (results.type is PathResultType.FullPath or PathResultType.PartialPath)
                 UpdateData();
             return results;
         }
 
-        public PathResults GenerateAndSetPath(Vector2 source, Vector2Int target)
+        public PathResults GenerateAndSetPath(Vector2 source, Vector2Int target, bool allowPartialPaths = false, 
+            float maxDistance = Mathf.Infinity)
         {
-            return GenerateAndSetPath(m_worldToGrid(source), target);
+            return GenerateAndSetPath(m_worldToGrid(source), target, allowPartialPaths, maxDistance);
         }
         
-        public PathResults GenerateAndSetPath(Vector2 source, Vector2 target)
+        public PathResults GenerateAndSetPath(Vector2 source, Vector2 target, bool allowPartialPaths = false, 
+            float maxDistance = Mathf.Infinity)
         {
-            return GenerateAndSetPath(m_worldToGrid(source), m_worldToGrid(target));
+            return GenerateAndSetPath(m_worldToGrid(source), m_worldToGrid(target), allowPartialPaths, maxDistance);
         }
 
-        public PathResults GeneratePath(Vector2 source, Vector2 target)
+        public PathResults GeneratePath(Vector2 source, Vector2 target, bool allowPartialPaths = false, float maxDistance = Mathf.Infinity)
         {
-            return GeneratePath(source, target, new List<Vector2>(), new List<Vector2Int>());
+            return GeneratePath(source, target, new List<Vector2>(), new List<Vector2Int>(), allowPartialPaths, maxDistance);
         }
         
-        public PathResults GeneratePath(Vector2 source, Vector2 target, in List<Vector2> path)
+        public PathResults GeneratePath(Vector2 source, Vector2 target, in List<Vector2> path, bool allowPartialPaths = false, 
+            float maxDistance = Mathf.Infinity)
         {
             List<Vector2Int> gridPath = new List<Vector2Int>();
-            return GeneratePath(source, target, path, gridPath);
+            return GeneratePath(source, target, path, gridPath, allowPartialPaths, maxDistance);
         }
 
         public void ForceSetPath(in List<Vector2> worldPath)
@@ -75,14 +79,16 @@ namespace _Project.Codebase.NavigationMesh
             UpdateData();
         }
 
-        private PathResults GeneratePath(Vector2 source, Vector2 target, in List<Vector2> path, in List<Vector2Int> gridPath)
+        private PathResults GeneratePath(Vector2 source, Vector2 target, in List<Vector2> path, in List<Vector2Int> gridPath,
+            bool allowPartialPaths = false, float maxDistance = Mathf.Infinity)
         {
-            return GeneratePath(m_worldToGrid(source), m_worldToGrid(target), path, gridPath);
+            return GeneratePath(m_worldToGrid(source), m_worldToGrid(target), path, gridPath, allowPartialPaths, maxDistance);
         }
 
-        private PathResults GeneratePath(Vector2Int source, Vector2Int target, in List<Vector2> path, in List<Vector2Int> gridPath)
+        private PathResults GeneratePath(Vector2Int source, Vector2Int target, in List<Vector2> path, in List<Vector2Int> gridPath,
+            bool allowPartialPaths = false, float maxDistance = Mathf.Infinity)
         {
-            PathResults results = m_pathfinder.FindPath(source, target, m_cardinalOnly, gridPath);
+            PathResults results = m_pathfinder.FindPath(source, target, m_cardinalOnly, gridPath, allowPartialPaths, maxDistance);
             path.Clear();
             gridPath.Reverse();
             path.AddRange(gridPath.ConvertAll(m_gridToWorldConverter));
