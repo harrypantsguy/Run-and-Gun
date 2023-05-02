@@ -1,4 +1,6 @@
-﻿namespace _Project.Codebase.NavigationMesh
+﻿using UnityEngine;
+
+namespace _Project.Codebase.NavigationMesh
 {
     public struct PathResults
     {

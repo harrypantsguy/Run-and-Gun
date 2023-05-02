@@ -9,8 +9,10 @@ namespace _Project.Codebase.Gameplay.Characters
         [SerializeField] private Transform m_projectileSpawnPos;
         public override Character Initialize(Vector2Int position)
         { 
-            return Character = new EnemyCharacter(position, GetComponent<NavmeshAgent>(), characterRenderer, 
+            Character = new EnemyCharacter(position, GetComponent<NavmeshAgent>(), characterRenderer, 
                 m_maxHealth, m_firingRange, m_projectileSpawnPos);
+            base.Initialize(position);
+            return Character;
         }
     }
 }

@@ -12,16 +12,18 @@ namespace _Project.Codebase.Gameplay.Player
         private PlayerManager m_playerManager;
         private IPlayerSelectable Selection => m_playerManager.Selection;
         public readonly List<Vector2> desiredMovePath = new();
-        public PathResults PathResults { get; private set; }
         public int PathActionPointCost { get; private set; }
         public bool IsValidSelectedPath { get; private set; }
         private NavPathRenderer m_pathRenderer;
+        private SpriteRenderer m_tileBoxOutline;
 
         private void Awake()
         {
             m_playerManager = GetComponent<PlayerManager>();
             m_pathRenderer = ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.NAV_PATH_RENDERER)
                 .GetComponent<NavPathRenderer>();
+            m_tileBoxOutline = ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.TILE_BOX_OUTLINE)
+                .GetComponent<SpriteRenderer>();
         }
 
         private void Update()
@@ -49,23 +51,29 @@ namespace _Project.Codebase.Gameplay.Player
             
             if (Selection != null && Selection.SelectableType is PlayerSelectableType.Runner or PlayerSelectableType.Enemy)
             {
-                Character character = (Character)Selection;
-                character.UpdateDisplayedMovementRange();
-                
                 if (Selection.SelectableType is PlayerSelectableType.Runner)
                 {
                     m_pathRenderer.Enabled = true;
-                    Runner runner = (Runner)character;
 
-                    PathResults = runner.agent.GeneratePathTo(MiscUtilities.WorldMousePos, desiredMovePath, true, 
-                        character.LargestPossibleTravelDistance);
-                    PathActionPointCost = runner.CalcActionPointCostOfMove(PathResults.distance);
-                    IsValidSelectedPath = PathResults.type is not PathResultType.NoPath;
-                    m_pathRenderer.SetPath(desiredMovePath, IsValidSelectedPath);
+                    Runner runner = (Runner)Selection;
+
+                    Vector2 targetPos = runner.agent.GetClosestTilePosInRange(MiscUtilities.WorldMousePos, out float distFromRunner);
+                    
+                    runner.agent.GeneratePathTo(targetPos, desiredMovePath);
+                    PathActionPointCost = runner.CalcActionPointCostOfMove(distFromRunner);
+                    IsValidSelectedPath = runner.actionPoints >= PathActionPointCost;
+                    m_pathRenderer.SetPath(desiredMovePath);
+                    m_tileBoxOutline.gameObject.SetActive(desiredMovePath.Count > 0);
+                    //m_tileBoxOutline.color = IsValidSelectedPath ? Color.white : Color.red;
+                    if (desiredMovePath.Count > 0)
+                        m_tileBoxOutline.transform.position = desiredMovePath[^1];
                 }
             }
-            else if (Selection == null && m_pathRenderer.Enabled)
+            else if (Selection == null)
+            {
                 m_pathRenderer.Enabled = false;
+                m_tileBoxOutline.gameObject.SetActive(false);
+            }
         }
     }
 }

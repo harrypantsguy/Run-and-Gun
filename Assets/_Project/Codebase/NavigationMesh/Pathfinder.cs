@@ -17,6 +17,14 @@ namespace _Project.Codebase.NavigationMesh
             m_navmesh = navmesh;
         }
 
+        private PathResults FindPath(in Vector2Int start, in Vector2Int end, in bool cardinalOnly, in List<Vector2Int> path, 
+            PathResultType forcedResultType, in bool allowPartialPaths = false, float maxDistance = Mathf.Infinity,
+            in Heuristic heuristic = Heuristic.Euclidean)
+        {
+            PathResults results = FindPath(start, end, cardinalOnly, path, allowPartialPaths, maxDistance, heuristic);
+            return new PathResults(forcedResultType, results.distance);
+        }
+        
         public PathResults FindPath(in Vector2Int start, in Vector2Int end, in bool cardinalOnly, in List<Vector2Int> path,
             in bool allowPartialPaths = false, float maxDistance = Mathf.Infinity, in Heuristic heuristic = Heuristic.Euclidean)
         {
@@ -42,10 +50,16 @@ namespace _Project.Codebase.NavigationMesh
 
                 if (currentNode.Pos == end)
                 {
-                    bool isPartialPath = TracePathAndReturnPartialPathState(currentNode, path, maxDistance, out float dist);
+                    bool isPartialPath = TracePathAndReturnPartialPathState(currentNode, path, maxDistance, out PathNode endNode);
                     if (allowPartialPaths || !isPartialPath)
-                        return new PathResults(isPartialPath ? PathResultType.PartialPath : PathResultType.FullPath, dist);
-                    
+                    {
+                        if (isPartialPath)
+                            return FindPath(start, endNode.Pos, cardinalOnly, path, PathResultType.PartialPath, 
+                                true, maxDistance, heuristic);
+                        
+                        return new PathResults(PathResultType.FullPath, endNode.distance);
+                    }
+
                     return new PathResults(PathResultType.NoPath, 0f);
                 }
 
@@ -54,11 +68,11 @@ namespace _Project.Codebase.NavigationMesh
                     if (allowPartialPaths)
                     {
                         PathNode closestNode = GetNodeClosestToCell(end, m_closedNodes.Values);
-                        TracePathAndReturnPartialPathState(closestNode, path, maxDistance, out float dist);
-                        return new PathResults(PathResultType.PartialPath, dist);
+                        TracePathAndReturnPartialPathState(closestNode, path, maxDistance, out PathNode endNode);
+                        return new PathResults(PathResultType.PartialPath, endNode.distance);
                     }
                     
-                    TracePathAndReturnPartialPathState(null, path, maxDistance, out float dist2);
+                    TracePathAndReturnPartialPathState(null, path, maxDistance, out PathNode endNode2);
                     return new PathResults(PathResultType.NoPath, 0f);
                 }
 
@@ -129,11 +143,11 @@ namespace _Project.Codebase.NavigationMesh
         }
 
         private bool TracePathAndReturnPartialPathState(in PathNode fromNode, in List<Vector2Int> path, float maxDistance, 
-            out float pathDistance)
+            out PathNode endNode)
         {
             path.Clear();
             
-            pathDistance = 0f;
+            endNode = null;
             
             if (fromNode == null) return false;
 
@@ -144,8 +158,8 @@ namespace _Project.Codebase.NavigationMesh
             {
                 if (node.distance < maxDistance)
                 {
-                    if (pathDistance == 0f)
-                        pathDistance = node.distance;
+                    if (endNode == null)
+                        endNode = node;
                     path.Add(node.Pos);
                 }
                 else

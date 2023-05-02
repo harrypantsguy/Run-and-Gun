@@ -14,7 +14,7 @@ namespace _Project.Codebase.Gameplay.AI
             bool pickClosestPoint = false) : base(character, worldContext)
         {
             PathResults pathResults = character.agent.SetTargetPosition(newPosition, false, pickClosestPoint, 
-                character.LargestPossibleTravelDistance);
+                character.CurrentLargestPossibleTravelDistance);
             ActionPointCost = character.CalcActionPointCostOfMove(pathResults.distance);
         }
         

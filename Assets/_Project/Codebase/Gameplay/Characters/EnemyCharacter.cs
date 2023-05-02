@@ -12,8 +12,8 @@ namespace _Project.Codebase.Gameplay.Characters
         private readonly AIController m_AIController;
         public readonly float firingRange;
         public override PlayerSelectableType SelectableType => PlayerSelectableType.Enemy;
-        private Transform m_projectileSpawnPos;
-        private Weapon m_weapon;
+        private readonly Transform m_projectileSpawnPos;
+        private readonly Weapon m_weapon;
 
         public EnemyCharacter(Vector2Int position, NavmeshAgent agent, CharacterRenderer renderer, int maxHealth, 
             float firingRange, Transform projectileSpawnPos)

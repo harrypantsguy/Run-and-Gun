@@ -19,5 +19,6 @@ namespace _Project.Codebase.AssetGroups
         public const string CHARACTER_RANGE_RENDERER = "CharacterRangeRenderer"; 
         public const string CHARACTER_HEALTH_RENDERER = "CharacterHealthRenderer";
         public const string DOOR = "Door";
+        public const string TILE_BOX_OUTLINE = "TileBoxOutline";
     }
 }

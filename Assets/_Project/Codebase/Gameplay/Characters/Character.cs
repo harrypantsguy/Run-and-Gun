@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using _Project.Codebase.Gameplay.AI;
 using _Project.Codebase.Gameplay.Player;
 using _Project.Codebase.Gameplay.Projectiles;
@@ -20,13 +21,14 @@ namespace _Project.Codebase.Gameplay.Characters
         public bool Selectable => !Dead;
 
         public Vector2Int FloorPos { get; set; }
-        public int actionPoints = c_default_max_action_points;
-        public int moveDistancePerActionPoint = c_default_move_distance_per_action_point;
-        public int LargestPossibleTravelDistance => moveDistancePerActionPoint * actionPoints;
+        public int actionPoints;
         public int MaxActionPoints => c_default_max_action_points;
+        public int moveDistancePerActionPoint = c_default_move_distance_per_action_point;
+        public int CurrentLargestPossibleTravelDistance => moveDistancePerActionPoint * actionPoints;
+        public int LargestPossibleTravelDistance => moveDistancePerActionPoint * MaxActionPoints;
         public int Health { get; private set; }
         public int MaxHealth { get; private set; }
-        
+
         public Vector2 FacingDirection { get; private set; }
 
         private readonly CharacterRenderer m_renderer;
@@ -37,10 +39,12 @@ namespace _Project.Codebase.Gameplay.Characters
         public Character(Vector2Int position, NavmeshAgent agent, CharacterRenderer characterRenderer, int maxHealth)  
         {
             this.agent = agent;
+            actionPoints = MaxActionPoints;
             m_renderer = characterRenderer;
             m_renderer.Animator.Initialize(this);
             transform = agent.transform;
             agent.OnReachPathEnd += OnReachPathEnd;
+            actionPoints = MaxActionPoints;
             MaxHealth = maxHealth;
             Health = MaxHealth;
             UpdateFloorPosition(position, true);
@@ -73,11 +77,13 @@ namespace _Project.Codebase.Gameplay.Characters
             building.SetFloorObjectAtPos(gridPos, this);
             if (teleportToPos)
                 transform.position = building.GridToWorld(FloorPos);
+            agent.UpdateCalculateTilesInRange(gridPos, LargestPossibleTravelDistance);
         }
 
         protected virtual void OnReachPathEnd(Vector2 worldPos, Vector2Int gridPos)
         {
             UpdateFloorPosition(gridPos, true);
+            //CalculateTilesInRange(gridPos, LargestPossibleTravelDistance);
         }
         
         public int CalcActionPointCostOfMove(float distance) => Mathf.CeilToInt(distance / moveDistancePerActionPoint);
@@ -92,11 +98,7 @@ namespace _Project.Codebase.Gameplay.Characters
             m_renderer.SelectionRenderer.SetSelectionState(state);
             m_renderer.RangeRenderer.SetDisplayedState(state);
         }
-
-        public void UpdateDisplayedMovementRange()
-        {
-            m_renderer.RangeRenderer.CalculateAtPositionWithRange(FloorPos, LargestPossibleTravelDistance);
-        }
+        
         public void TakeDamage(int damage)
         {
             Health = Mathf.Max(Health - damage, 0);

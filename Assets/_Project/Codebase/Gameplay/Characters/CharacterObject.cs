@@ -7,6 +7,10 @@ namespace _Project.Codebase.Gameplay.Characters
         [SerializeField] protected CharacterRenderer characterRenderer;
         public Character Character { get; protected set; }
 
-        public abstract Character Initialize(Vector2Int position);
+        public virtual Character Initialize(Vector2Int position)
+        {
+            characterRenderer.Initialize(Character);
+            return null;
+        }
     }
 }
