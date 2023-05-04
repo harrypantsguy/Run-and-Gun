@@ -14,12 +14,15 @@ namespace _Project.Codebase.Gameplay.Characters
         [SerializeField] private bool m_debugPath;
         [SerializeField] private float m_moveSpeed;
         [SerializeField] private float m_nodeReachedDist;
-        public WorldSpacePathController PathController { get; private set; } 
+        private PathIterator m_pathIterator;
+        private WorldSpacePathController PathController { get; set; }
+        private DijkstrkaPathfinder m_dijkstrkaPathfinder;
         public event Action<Vector2, Vector2Int> OnReachPathEnd;
         public Vector2 PathDir => PathController.DirToNextNode;
         [HideInInspector] public bool followPath;
         private Building m_building;
-        
+
+        public readonly Dictionary<Vector2Int, ShortestPathTree> pathTrees = new();
         public readonly Dictionary<Vector2Int, RangeFillTile> tilesInRange = new();
 
         public bool AtPathEnd => PathController.AtPathEnd;
@@ -28,11 +31,27 @@ namespace _Project.Codebase.Gameplay.Characters
         {
             GameModule gameModule = ModuleUtilities.Get<GameModule>();
             m_building = gameModule.Building;
+            m_pathIterator = new PathIterator();
+            m_pathIterator.OnReachPathEnd += OnArriveAtPathEnd;
+            m_dijkstrkaPathfinder = new DijkstrkaPathfinder(m_building.navmesh);
             PathController = new WorldSpacePathController(m_building.navmesh, gameModule.Building.WorldToGrid,
                 gameModule.Building.GridToWorld, false);
-            PathController.onReachPathEnd += OnArriveAtPathEnd;
+            //PathController.onReachPathEnd += OnArriveAtPathEnd;
         }
 
+        private void FixedUpdate()
+        {
+            if (!followPath) return;
+
+            float distToNode = Vector2.Distance(transform.position, PathController.NextNode);
+            if (distToNode < m_nodeReachedDist)
+                PathController.TryProgressToNextNode();
+
+            if (!PathController.AtPathEnd)
+                transform.position = Vector2.MoveTowards(transform.position, PathController.NextNode,
+                    Time.fixedDeltaTime * m_moveSpeed);
+        }
+        
         public void UpdateCalculateTilesInRange(Vector2 pos, float range)
         {
             UpdateCalculateTilesInRange(m_building.WorldToGrid(pos), range);
@@ -40,6 +59,8 @@ namespace _Project.Codebase.Gameplay.Characters
         
         public void UpdateCalculateTilesInRange(Vector2Int gridPos, float range)
         {
+            pathTrees[gridPos] = new ShortestPathTree(gridPos, m_dijkstrkaPathfinder.FindPaths(gridPos, (int)range));
+            /*
             Queue<RangeFillTile> openTiles = new();
             tilesInRange.Clear();
 
@@ -65,14 +86,15 @@ namespace _Project.Codebase.Gameplay.Characters
                     }
                 }
             }
+            */
         }
 
         public Vector2 GetClosestTilePosInRange(Vector2 pos, out float distanceFromAgent)
         {
             Vector2Int gridPos = m_building.WorldToGrid(pos);
-            if (tilesInRange.TryGetValue(gridPos, out RangeFillTile tile))
+            if (pathTrees.TryGetValue(m_building.WorldToGrid(transform.position), out ShortestPathTree tree))
             {
-                distanceFromAgent = tile.distance;
+                distanceFromAgent = tree.nodes[gridPos].distance;
                 return pos;
             }
 
@@ -83,23 +105,10 @@ namespace _Project.Codebase.Gameplay.Characters
             return m_building.GridToWorld(closestTile.pos);
         }
 
-        private void OnArriveAtPathEnd(Vector2 worldPos, Vector2Int gridPos)
+        private void OnArriveAtPathEnd(Vector2 worldPos)
         {
-            OnReachPathEnd?.Invoke(worldPos, gridPos);
+            OnReachPathEnd?.Invoke(worldPos, m_building.WorldToGrid(worldPos));
             transform.position = worldPos;
-        }
-
-        private void FixedUpdate()
-        {
-            if (!followPath) return;
-
-            float distToNode = Vector2.Distance(transform.position, PathController.NextNode);
-            if (distToNode < m_nodeReachedDist)
-                PathController.TryProgressToNextNode();
-
-            if (!PathController.AtPathEnd)
-                transform.position = Vector2.MoveTowards(transform.position, PathController.NextNode,
-                    Time.fixedDeltaTime * m_moveSpeed);
         }
 
         public PathResults SetTargetPosition(Vector2Int pos, bool startMoving = true, bool allowPartialPaths = false,

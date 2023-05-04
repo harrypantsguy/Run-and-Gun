@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _Project.Codebase.NavigationMesh
 {
-    public sealed class Pathfinder
+    public sealed class AstarPathfinder
     {
         private readonly Dictionary<Vector2Int, PathNode> m_openNodes = new();
         private readonly Dictionary<Vector2Int, PathNode> m_closedNodes = new();
@@ -12,7 +12,7 @@ namespace _Project.Codebase.NavigationMesh
 
         private const float c_diagonal_dist = 1.41421f;
 
-        public Pathfinder(Navmesh navmesh)
+        public AstarPathfinder(Navmesh navmesh)
         {
             m_navmesh = navmesh;
         }
@@ -45,16 +45,16 @@ namespace _Project.Codebase.NavigationMesh
             {
                 PathNode currentNode = m_openNodes.Values.OrderBy(node => node.F).First();
                 
-                m_openNodes.Remove(currentNode.Pos);
-                m_closedNodes.Add(currentNode.Pos, currentNode);
+                m_openNodes.Remove(currentNode.pos);
+                m_closedNodes.Add(currentNode.pos, currentNode);
 
-                if (currentNode.Pos == end)
+                if (currentNode.pos == end)
                 {
                     bool isPartialPath = TracePathAndReturnPartialPathState(currentNode, path, maxDistance, out PathNode endNode);
                     if (allowPartialPaths || !isPartialPath)
                     {
                         if (isPartialPath)
-                            return FindPath(start, endNode.Pos, cardinalOnly, path, PathResultType.PartialPath, 
+                            return FindPath(start, endNode.pos, cardinalOnly, path, PathResultType.PartialPath, 
                                 true, maxDistance, heuristic);
                         
                         return new PathResults(PathResultType.FullPath, endNode.distance);
@@ -85,11 +85,11 @@ namespace _Project.Codebase.NavigationMesh
                         
                         if (isDiagonal)
                         {
-                            if (!m_navmesh.IsWalkableNode(currentNode.Pos + new Vector2Int(x, 0)) ||
-                                !m_navmesh.IsWalkableNode(currentNode.Pos + new Vector2Int(0, y))) continue;
+                            if (!m_navmesh.IsWalkableNode(currentNode.pos + new Vector2Int(x, 0)) ||
+                                !m_navmesh.IsWalkableNode(currentNode.pos + new Vector2Int(0, y))) continue;
                         }
                         
-                        var cell = currentNode.Pos + new Vector2Int(x, y);
+                        var cell = currentNode.pos + new Vector2Int(x, y);
 
                         if (m_closedNodes.ContainsKey(cell))
                             continue;
@@ -131,7 +131,7 @@ namespace _Project.Codebase.NavigationMesh
             
             foreach (var node in nodes)
             {
-                var dist = Vector2.SqrMagnitude(node.Pos - cell);
+                var dist = Vector2.SqrMagnitude(node.pos - cell);
 
                 if (dist > closestDist) continue;
 
@@ -160,7 +160,7 @@ namespace _Project.Codebase.NavigationMesh
                 {
                     if (endNode == null)
                         endNode = node;
-                    path.Add(node.Pos);
+                    path.Add(node.pos);
                 }
                 else
                     isPartialPath = true;

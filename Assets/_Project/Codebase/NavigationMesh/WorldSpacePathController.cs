@@ -6,7 +6,7 @@ namespace _Project.Codebase.NavigationMesh
 {
     public sealed class WorldSpacePathController
     {
-        private readonly Pathfinder m_pathfinder;
+        private readonly AstarPathfinder m_astarPathfinder;
         public List<Vector2> Path { get; }
         public Vector2 NextNode { get; private set; }
         public Vector2 LastNode { get; private set; }
@@ -25,7 +25,7 @@ namespace _Project.Codebase.NavigationMesh
         public WorldSpacePathController(Navmesh navmesh, Func<Vector2, Vector2Int> worldToGrid, 
             Func<Vector2Int, Vector2> gridToWorld, bool cardinalOnly)
         {
-            m_pathfinder = new Pathfinder(navmesh);
+            m_astarPathfinder = new AstarPathfinder(navmesh);
             m_worldToGrid = worldToGrid;
             m_gridToWorld = gridToWorld;
             m_gridToWorldConverter = new Converter<Vector2Int, Vector2>(gridToWorld);
@@ -88,7 +88,7 @@ namespace _Project.Codebase.NavigationMesh
         private PathResults GeneratePath(Vector2Int source, Vector2Int target, in List<Vector2> path, in List<Vector2Int> gridPath,
             bool allowPartialPaths = false, float maxDistance = Mathf.Infinity)
         {
-            PathResults results = m_pathfinder.FindPath(source, target, m_cardinalOnly, gridPath, allowPartialPaths, maxDistance);
+            PathResults results = m_astarPathfinder.FindPath(source, target, m_cardinalOnly, gridPath, allowPartialPaths, maxDistance);
             path.Clear();
             gridPath.Reverse();
             path.AddRange(gridPath.ConvertAll(m_gridToWorldConverter));

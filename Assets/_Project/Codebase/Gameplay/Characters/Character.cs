@@ -33,7 +33,7 @@ namespace _Project.Codebase.Gameplay.Characters
 
         private readonly CharacterRenderer m_renderer;
 
-        private const int c_default_max_action_points = 1;
+        private const int c_default_max_action_points = 2;
         private const int c_default_move_distance_per_action_point = 6;
 
         public Character(Vector2Int position, NavmeshAgent agent, CharacterRenderer characterRenderer, int maxHealth)  
@@ -83,7 +83,6 @@ namespace _Project.Codebase.Gameplay.Characters
         protected virtual void OnReachPathEnd(Vector2 worldPos, Vector2Int gridPos)
         {
             UpdateFloorPosition(gridPos, true);
-            //CalculateTilesInRange(gridPos, LargestPossibleTravelDistance);
         }
         
         public int CalcActionPointCostOfMove(float distance) => Mathf.CeilToInt(distance / moveDistancePerActionPoint);

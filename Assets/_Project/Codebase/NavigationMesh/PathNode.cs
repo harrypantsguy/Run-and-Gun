@@ -1,25 +1,41 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace _Project.Codebase.NavigationMesh
 {
     public sealed class PathNode
     {
-        public Vector2Int Pos { get; }
+        public readonly Vector2Int pos;
         public float G { get; set; }
         public float H { get; set; }
         public float F { get; private set; }
         public PathNode parent;
-        public readonly float distance;
+        public float distance;
 
-        public PathNode(Vector2Int pos, float distance)
+        public PathNode(Vector2Int pos, float distance, PathNode parent = null)
         {
-            Pos = pos;
+            this.pos = pos;
             this.distance = distance;
         }
 
         public void UpdateF()
         {
             F = G + H;
+        }
+        
+        public bool Equals(PathNode other)
+        {
+            return pos.Equals(other.pos);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PathNode other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(pos);
         }
     }
 }

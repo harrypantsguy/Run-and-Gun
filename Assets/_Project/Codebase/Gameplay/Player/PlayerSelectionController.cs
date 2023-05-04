@@ -57,7 +57,8 @@ namespace _Project.Codebase.Gameplay.Player
 
                     Runner runner = (Runner)Selection;
 
-                    Vector2 targetPos = runner.agent.GetClosestTilePosInRange(MiscUtilities.WorldMousePos, out float distFromRunner);
+                    /*
+                    //Vector2 targetPos = runner.agent.GetClosestTilePosInRange(MiscUtilities.WorldMousePos, out float distFromRunner);
                     
                     runner.agent.GeneratePathTo(targetPos, desiredMovePath);
                     PathActionPointCost = runner.CalcActionPointCostOfMove(distFromRunner);
@@ -67,6 +68,7 @@ namespace _Project.Codebase.Gameplay.Player
                     //m_tileBoxOutline.color = IsValidSelectedPath ? Color.white : Color.red;
                     if (desiredMovePath.Count > 0)
                         m_tileBoxOutline.transform.position = desiredMovePath[^1];
+                        */
                 }
             }
             else if (Selection == null)

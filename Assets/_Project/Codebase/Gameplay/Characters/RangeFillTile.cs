@@ -29,5 +29,4 @@ namespace _Project.Codebase.Gameplay.Characters
             return HashCode.Combine(pos);
         }
     }
-
 }

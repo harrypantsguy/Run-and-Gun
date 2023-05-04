@@ -1,4 +1,5 @@
-﻿using _Project.Codebase.Gameplay.World;
+﻿using System.Linq;
+using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
@@ -22,7 +23,9 @@ namespace _Project.Codebase.Gameplay.Characters
             if (!m_active) return;
             
             Gizmos.color = Color.blue;
-            foreach (var tile in character.agent.tilesInRange)
+
+            if (character.agent.pathTrees.Values.Count == 0) return;
+            foreach (var tile in character.agent.pathTrees.Values.ToList()[0].nodes)
             {
                 Gizmos.DrawWireCube(m_building.GridToWorld(tile.Key), Vector3.one);
             }
