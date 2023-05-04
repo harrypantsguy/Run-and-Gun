@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Project.Codebase.AssetGroups;
 using _Project.Codebase.Gameplay.Characters;
-using _Project.Codebase.NavigationMesh;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
@@ -51,24 +50,20 @@ namespace _Project.Codebase.Gameplay.Player
             
             if (Selection != null && Selection.SelectableType is PlayerSelectableType.Runner or PlayerSelectableType.Enemy)
             {
-                if (Selection.SelectableType is PlayerSelectableType.Runner)
+                if (Selection is Runner runner && !runner.agent.followPath)
                 {
                     m_pathRenderer.Enabled = true;
-
-                    Runner runner = (Runner)Selection;
-
-                    /*
-                    //Vector2 targetPos = runner.agent.GetClosestTilePosInRange(MiscUtilities.WorldMousePos, out float distFromRunner);
                     
-                    runner.agent.GeneratePathTo(targetPos, desiredMovePath);
+                    Vector2 targetPos = runner.agent.GetClosestTilePosInRange(MiscUtilities.WorldMousePos, out float distFromRunner);
+
+                    runner.agent.TryGetPath(targetPos, desiredMovePath);
                     PathActionPointCost = runner.CalcActionPointCostOfMove(distFromRunner);
                     IsValidSelectedPath = runner.actionPoints >= PathActionPointCost;
                     m_pathRenderer.SetPath(desiredMovePath);
                     m_tileBoxOutline.gameObject.SetActive(desiredMovePath.Count > 0);
                     //m_tileBoxOutline.color = IsValidSelectedPath ? Color.white : Color.red;
                     if (desiredMovePath.Count > 0)
-                        m_tileBoxOutline.transform.position = desiredMovePath[^1];
-                        */
+                        m_tileBoxOutline.transform.position = targetPos;
                 }
             }
             else if (Selection == null)

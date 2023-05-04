@@ -11,13 +11,13 @@ namespace _Project.Codebase.Gameplay.AI
         public MoveBehaviour(Character character, Vector2 pos) : base(character)
         {
             m_agent = character.agent;
-            m_agent.SetTargetPosition(pos);
+            m_agent.SetPathTo(pos, false);
         }
         
         public MoveBehaviour(Character character, Vector2Int pos) : base(character)
         {
             m_agent = character.agent;
-            m_agent.SetTargetPosition(pos);
+            m_agent.SetPathTo(pos, false);
         }
 
         public MoveBehaviour(Character character) : base(character)

@@ -77,7 +77,7 @@ namespace _Project.Codebase.Gameplay.Characters
             building.SetFloorObjectAtPos(gridPos, this);
             if (teleportToPos)
                 transform.position = building.GridToWorld(FloorPos);
-            agent.UpdateCalculateTilesInRange(gridPos, LargestPossibleTravelDistance);
+            agent.CalculateAllPathsFromSource(gridPos, LargestPossibleTravelDistance);
         }
 
         protected virtual void OnReachPathEnd(Vector2 worldPos, Vector2Int gridPos)

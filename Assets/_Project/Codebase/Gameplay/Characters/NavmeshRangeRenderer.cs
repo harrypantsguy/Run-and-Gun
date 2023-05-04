@@ -22,12 +22,16 @@ namespace _Project.Codebase.Gameplay.Characters
         {
             if (!m_active) return;
             
-            Gizmos.color = Color.blue;
+            //Gizmos.color = Color.blue;
 
             if (character.agent.pathTrees.Values.Count == 0) return;
             foreach (var tile in character.agent.pathTrees.Values.ToList()[0].nodes)
             {
+                Gizmos.color = Color.Lerp(Color.green, Color.red, tile.Value.distance / character.LargestPossibleTravelDistance);
                 Gizmos.DrawWireCube(m_building.GridToWorld(tile.Key), Vector3.one);
+                Gizmos.color = Color.white;
+                //if (tile.Value.parent != null)
+                // Gizmos.DrawLine(m_building.GridToWorld(tile.Value.pos), m_building.GridToWorld(tile.Value.parent.pos));
             }
         }
 

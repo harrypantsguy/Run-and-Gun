@@ -16,6 +16,7 @@ namespace _Project.Codebase.NavigationMesh
         {
             this.pos = pos;
             this.distance = distance;
+            this.parent = parent;
         }
 
         public void UpdateF()

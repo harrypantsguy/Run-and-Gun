@@ -6,7 +6,7 @@ namespace _Project.Codebase.NavigationMesh
 {
     public class PathIterator
     {
-        public List<Vector2> Path { get; private set; }
+        public List<Vector2> Path { get; private set; } = new();
         public Vector2 NextNode { get; private set; }
         public Vector2 LastNode { get; private set; }
         public Vector2 DirToNextNode { get; private set; }

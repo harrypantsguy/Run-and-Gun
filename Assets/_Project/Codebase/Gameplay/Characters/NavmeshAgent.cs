@@ -15,17 +15,17 @@ namespace _Project.Codebase.Gameplay.Characters
         [SerializeField] private float m_moveSpeed;
         [SerializeField] private float m_nodeReachedDist;
         private PathIterator m_pathIterator;
-        private WorldSpacePathController PathController { get; set; }
         private DijkstrkaPathfinder m_dijkstrkaPathfinder;
         public event Action<Vector2, Vector2Int> OnReachPathEnd;
-        public Vector2 PathDir => PathController.DirToNextNode;
+        public Vector2 PathDir => m_pathIterator.DirToNextNode;
         [HideInInspector] public bool followPath;
         private Building m_building;
+        private Converter<Vector2Int, Vector2> m_gridToWorldConverter;
+        private Converter<Vector2, Vector2Int> m_worldToGridConverter;
 
         public readonly Dictionary<Vector2Int, ShortestPathTree> pathTrees = new();
-        public readonly Dictionary<Vector2Int, RangeFillTile> tilesInRange = new();
 
-        public bool AtPathEnd => PathController.AtPathEnd;
+        public bool AtPathEnd => m_pathIterator.AtPathEnd;
 
         private void Awake()
         {
@@ -34,72 +34,57 @@ namespace _Project.Codebase.Gameplay.Characters
             m_pathIterator = new PathIterator();
             m_pathIterator.OnReachPathEnd += OnArriveAtPathEnd;
             m_dijkstrkaPathfinder = new DijkstrkaPathfinder(m_building.navmesh);
-            PathController = new WorldSpacePathController(m_building.navmesh, gameModule.Building.WorldToGrid,
-                gameModule.Building.GridToWorld, false);
-            //PathController.onReachPathEnd += OnArriveAtPathEnd;
+            m_gridToWorldConverter = m_building.GridToWorld;
+            m_worldToGridConverter = m_building.WorldToGrid;
         }
 
         private void FixedUpdate()
         {
             if (!followPath) return;
 
-            float distToNode = Vector2.Distance(transform.position, PathController.NextNode);
+            float distToNode = Vector2.Distance(transform.position, m_pathIterator.NextNode);
             if (distToNode < m_nodeReachedDist)
-                PathController.TryProgressToNextNode();
+                m_pathIterator.ProgressToNextNode();
 
-            if (!PathController.AtPathEnd)
-                transform.position = Vector2.MoveTowards(transform.position, PathController.NextNode,
+            if (!m_pathIterator.AtPathEnd)
+                transform.position = Vector2.MoveTowards(transform.position, m_pathIterator.NextNode,
                     Time.fixedDeltaTime * m_moveSpeed);
         }
         
-        public void UpdateCalculateTilesInRange(Vector2 pos, float range)
+        public void CalculateAllPathsFromSource(Vector2 pos, float range)
         {
-            UpdateCalculateTilesInRange(m_building.WorldToGrid(pos), range);
+            CalculateAllPathsFromSource(m_building.WorldToGrid(pos), range);
         }
         
-        public void UpdateCalculateTilesInRange(Vector2Int gridPos, float range)
+        public void CalculateAllPathsFromSource(Vector2Int gridPos, float range)
         {
             pathTrees[gridPos] = new ShortestPathTree(gridPos, m_dijkstrkaPathfinder.FindPaths(gridPos, (int)range));
-            /*
-            Queue<RangeFillTile> openTiles = new();
-            tilesInRange.Clear();
-
-            openTiles.Enqueue(new RangeFillTile(gridPos, 0f));
-            while (openTiles.TryDequeue(out RangeFillTile tile))
-            {
-                tilesInRange.Add(tile.pos, tile);
-                for (var x = -1; x <= 1; x++)
-                for (var y = -1; y <= 1; y++)
-                {
-                    if (x == 0 && y == 0) continue;
-                    bool isDiagonal = Mathf.Abs(x) == 1 && Mathf.Abs(y) == 1;
-
-                    Vector2Int newPosition = tile.pos + new Vector2Int(x, y);
-                    if (m_building.navmesh.IsWalkableNode(newPosition) && m_building.navmesh.IsValidNode(newPosition) &&
-                        !tilesInRange.ContainsKey(newPosition) && !openTiles.Contains(new RangeFillTile(newPosition, 0f)))
-                    {
-                        float distance = tile.distance + (isDiagonal ? 1.41421f : 1f);
-                        if (distance < range)
-                        {
-                            openTiles.Enqueue(new RangeFillTile(newPosition, distance));
-                        }
-                    }
-                }
-            }
-            */
         }
 
+        private bool TryGetPathTreeAtCurrentPosition(out ShortestPathTree tree) =>
+            TryGetPathTreeAtPosition(m_building.WorldToGrid(transform.position), out tree);    
+
+        private bool TryGetPathTreeAtPosition(Vector2Int pos, out ShortestPathTree tree) =>
+            pathTrees.TryGetValue(pos, out tree);
+        
         public Vector2 GetClosestTilePosInRange(Vector2 pos, out float distanceFromAgent)
         {
             Vector2Int gridPos = m_building.WorldToGrid(pos);
-            if (pathTrees.TryGetValue(m_building.WorldToGrid(transform.position), out ShortestPathTree tree))
+            if (TryGetPathTreeAtCurrentPosition(out ShortestPathTree tree) && tree.nodes.TryGetValue(gridPos, out PathNode node))
             {
-                distanceFromAgent = tree.nodes[gridPos].distance;
+                distanceFromAgent = node.distance;
+                return m_building.GridToWorld(node.pos);
+            }
+            
+            if (tree == null)
+            {
+                Debug.LogWarning("Failed to locate tree at current position, try updating paths.");
+                distanceFromAgent = 0f;
                 return pos;
             }
 
-            RangeFillTile closestTile = 
-                tilesInRange.OrderBy(tilePos => 
+            PathNode closestTile = 
+                tree.nodes.OrderBy(tilePos => 
                     Vector2.Distance(gridPos, tilePos.Key)).ToList()[0].Value;
             distanceFromAgent = closestTile.distance;
             return m_building.GridToWorld(closestTile.pos);
@@ -110,6 +95,57 @@ namespace _Project.Codebase.Gameplay.Characters
             OnReachPathEnd?.Invoke(worldPos, m_building.WorldToGrid(worldPos));
             transform.position = worldPos;
         }
+        
+        public PathResults TryGetPath(Vector2 target, in List<Vector2> path)
+        {
+            return TryGetPath(transform.position, target, path);
+        }
+        
+        public PathResults TryGetPath(Vector2Int target, in List<Vector2> path)
+        {
+            return TryGetPath(transform.position, m_building.GridToWorld(target), path);
+        }
+
+        public PathResults TryGetPath(Vector2 source, Vector2 target, in List<Vector2> path)
+        {
+            List<Vector2Int> gridPath = new List<Vector2Int>();
+            PathResults results = TryGetPath(m_building.WorldToGrid(source), m_building.WorldToGrid(target), gridPath);
+            path.Clear();
+            path.AddRange(gridPath.ConvertAll(m_gridToWorldConverter));
+            return results;
+        }
+
+        public PathResults TryGetPath(Vector2Int source, Vector2Int target, in List<Vector2Int> path)
+        {
+            path.Clear();
+            if (!TryGetPathTreeAtPosition(source, out ShortestPathTree tree))
+                return new PathResults(PathResultType.NoPath, 0f);
+            return tree.TryTracePath(target, path);
+        }
+
+        public PathResults SetPathTo(Vector2Int target, bool startFollowingPath)
+        {
+            return SetPathTo(m_building.GridToWorld(target), startFollowingPath);
+        }
+        
+        public PathResults SetPathTo(Vector2 target, bool startFollowingPath)
+        {
+            List<Vector2> path = new List<Vector2>();
+            PathResults results = TryGetPath(target, path);
+            if (results.type == PathResultType.FullPath)
+            {
+                SetPathTo(path, startFollowingPath);
+            }
+                
+            return results;
+        }
+
+        public void SetPathTo(List<Vector2> path, bool startFollowingPath)
+        {
+            m_pathIterator.SetPath(path);
+            followPath = startFollowingPath;
+        }
+        /*
 
         public PathResults SetTargetPosition(Vector2Int pos, bool startMoving = true, bool allowPartialPaths = false,
             float maxDistance = Mathf.Infinity)
@@ -160,17 +196,18 @@ namespace _Project.Codebase.Gameplay.Characters
             Vector2Int gridPos = ModuleUtilities.Get<GameModule>().Building.WorldToGrid(pos);
             return tilesInRange.ContainsKey(gridPos);
         }
+        */
 
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying || !m_debugPath) return;
 
-            if (PathController == null) return;
+            if (m_pathIterator == null) return;
             
-            for (var i = 1; i < PathController.Path.Count; i++)
+            for (var i = 1; i < m_pathIterator.Path.Count; i++)
             {
-                Vector2 last = PathController.Path[i - 1];
-                Vector2 current = PathController.Path[i];
+                Vector2 last = m_pathIterator.Path[i - 1];
+                Vector2 current = m_pathIterator.Path[i];
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawLine(last, current);
             }
