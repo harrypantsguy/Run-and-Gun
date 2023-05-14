@@ -1,4 +1,5 @@
-﻿using _Project.Codebase.Gameplay.Characters;
+﻿using System.Linq;
+using _Project.Codebase.Gameplay.Characters;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
@@ -24,7 +25,9 @@ namespace _Project.Codebase.Gameplay.AI
             {
                 Vector2Int newPos;
                 if (character.nodesInRangeOfPlayer.Count > 0)
-                    newPos = character.nodesInRangeOfPlayer.GetRandom().pos;
+                {
+                    newPos = character.nodesInRangeOfPlayer[0].pos;
+                }
                 else
                     newPos = character.FloorPos;
                 return new RepositionAction(character, worldContext, newPos);

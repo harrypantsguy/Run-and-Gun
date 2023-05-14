@@ -57,6 +57,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
 
         private void HandleInterpolationAndGraphics()
         {
+            /*
             if (m_currentEvent != null)
             {
                 Time.timeScale =
@@ -65,6 +66,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
                         ? .05f
                         : 1f;
             }
+            */
 
             if (m_currentEvent != null && Time.time >= m_currentEvent.time)
             {

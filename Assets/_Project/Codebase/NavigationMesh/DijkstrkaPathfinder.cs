@@ -49,6 +49,11 @@ namespace _Project.Codebase.NavigationMesh
                     if (x == 0 && y == 0) continue;
 
                     bool isDiagonal = Mathf.Abs(x) == 1 && Mathf.Abs(y) == 1;
+                    if (isDiagonal)
+                    {
+                        if (!m_navmesh.IsWalkableNode(currentNode.pos + new Vector2Int(x, 0)) ||
+                            !m_navmesh.IsWalkableNode(currentNode.pos + new Vector2Int(0, y))) continue;
+                    }
                     Vector2Int nodePos = currentNode.pos + new Vector2Int(x, y);
 
                     if (!IsWalkable(nodePos)) continue;
