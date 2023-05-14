@@ -3,14 +3,13 @@ using _Project.Codebase.Gameplay.Characters;
 
 namespace _Project.Codebase.Gameplay.World
 {
-    public class WorldScreenshot
+    public class WorldRef
     {
         public readonly Building building;
-        public readonly Runner runner; 
-        public WorldScreenshot(Building building, Runner runner)
+        public Runner runner;
+        public WorldRef(Building building)
         {
             this.building = building;
-            this.runner = runner;
         }
     }
 }

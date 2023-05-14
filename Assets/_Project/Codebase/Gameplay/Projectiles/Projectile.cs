@@ -31,16 +31,19 @@ namespace _Project.Codebase.Gameplay.Projectiles
         private Vector2 m_lastTransformPos;
         private Vector2 m_lastEventLocation;
         private WorldRegions m_worldRegions;
+        private int m_maxBounces;
+        private int m_bounceCount;
 
         private const float c_default_speed = 40f;
         private const float c_max_travel_dist = 300f;
         private const float c_tick_rate = 1f / 50f;
         
-        private void Initialize(Vector2 pos, Vector2 dir, int damage)
+        private void Initialize(Vector2 pos, Vector2 dir, int damage, int maxBounces)
         {
             m_currentPosition = pos;
             m_travelDir = dir;
             m_damage = damage;
+            m_maxBounces = maxBounces;
             var gameModule = ModuleUtilities.Get<GameModule>();
             m_building = gameModule.Building;
             m_worldRegions = gameModule.WorldRegions;
@@ -268,10 +271,12 @@ namespace _Project.Codebase.Gameplay.Projectiles
 
                     return false;
                 }
+
                 
                 m_queuedEvents.Enqueue(new HitEvent(ProjectileEventType.Ricochet, hit.point, time,
-                    hitWall, SurfaceType.Concrete, hit.normal, m_travelDir));
+                    hitWall, SurfaceType.Concrete, hit.normal, m_travelDir, m_bounceCount == m_maxBounces));
                 m_travelDir = Vector2.Reflect(m_travelDir, hit.normal);
+                m_bounceCount++;
                 return false;
             }
 
@@ -315,13 +320,13 @@ namespace _Project.Codebase.Gameplay.Projectiles
         private float CalcInterpolationTime(Vector2 pos1, Vector2 pos2, float speed = c_default_speed) => 
             Vector2.Distance(pos1, pos2) / speed;
 
-        public static Projectile SpawnProjectile(Vector2 pos, Vector2 direction, int damage)
+        public static Projectile SpawnProjectile(Vector2 pos, Vector2 direction, int damage, int maxBounces = -1)
         {
             GameObject newProjectileObj = ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.BASIC_PROJECTILE);
             newProjectileObj.transform.position = pos;
             newProjectileObj.transform.right = direction;
             Projectile projectile = newProjectileObj.GetComponent<Projectile>();
-            projectile.Initialize(pos, direction, damage);
+            projectile.Initialize(pos, direction, damage, maxBounces);
             return projectile;
         }
     }

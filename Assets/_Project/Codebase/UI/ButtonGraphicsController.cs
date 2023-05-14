@@ -5,7 +5,7 @@ namespace _Project.Codebase.UI
     public abstract class ButtonGraphicsController : MonoBehaviour
     {
         protected CustomButton button;
-        public void LinkButton(CustomButton targetButton) => this.button = targetButton;
+        public void LinkButton(CustomButton targetButton) => button = targetButton;
         public abstract void OnStartHover();
         public abstract void OnEndHover();
         public abstract void OnPress();

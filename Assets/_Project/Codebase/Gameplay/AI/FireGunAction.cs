@@ -9,7 +9,7 @@ namespace _Project.Codebase.Gameplay.AI
     {
         private readonly EnemyCharacter m_enemy;
         private readonly Vector2 m_target;
-        public FireGunAction(Character character, WorldScreenshot worldContext, Vector2 target) : base(character, worldContext)
+        public FireGunAction(Character character, WorldRef worldContext, Vector2 target) : base(character, worldContext)
         {
             m_enemy = (EnemyCharacter)character;
             m_target = target;

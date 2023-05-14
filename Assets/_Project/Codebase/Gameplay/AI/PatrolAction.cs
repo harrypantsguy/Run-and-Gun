@@ -10,7 +10,7 @@ namespace _Project.Codebase.Gameplay.AI
     {
         private const int MAX_PATROL_RANGE = 4; 
         
-        public PatrolAction(Character character, WorldScreenshot worldContext) 
+        public PatrolAction(Character character, WorldRef worldContext) 
             : base(character, worldContext)
         {
             ActionPointCost = 1;

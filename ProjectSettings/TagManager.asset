@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Building
   - Character
+  - Runner
   layers:
   - Default
   - TransparentFX

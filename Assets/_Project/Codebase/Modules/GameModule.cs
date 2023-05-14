@@ -18,7 +18,7 @@ namespace _Project.Codebase.Modules
         public TurnController TurnController { get; private set; }
         public CharacterManager CharacterManager { get; private set; }
         public WorldRegions WorldRegions { get; private set; }
-        public WorldScreenshot World { get; private set; }
+        public WorldRef World { get; private set; }
         public PlayerManager PlayerManager { get; private set; }
 
         public async UniTask LoadAsync()
@@ -34,10 +34,10 @@ namespace _Project.Codebase.Modules
             
             TurnController = new TurnController();
             
-            CharacterManager = new CharacterManager(TurnController, Building);
-
-            World = new WorldScreenshot(Building, CharacterManager.runner);
+            World = new WorldRef(Building);
             
+            CharacterManager = new CharacterManager(TurnController, World);
+
             PlayerManager = new GameObject("PlayerManager").AddComponent<PlayerManager>();
 
             TurnController.StartGame();

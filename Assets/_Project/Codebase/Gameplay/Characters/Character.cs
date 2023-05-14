@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using _Project.Codebase.Gameplay.AI;
 using _Project.Codebase.Gameplay.Player;
 using _Project.Codebase.Gameplay.Projectiles;
 using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
+using _Project.Codebase.NavigationMesh;
 using Cysharp.Threading.Tasks;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace _Project.Codebase.Gameplay.Characters
 {
@@ -47,8 +48,13 @@ namespace _Project.Codebase.Gameplay.Characters
             actionPoints = MaxActionPoints;
             MaxHealth = maxHealth;
             Health = MaxHealth;
+            agent.OnGeneratePathTree += OnAgentGeneratePathTree;
             UpdateFloorPosition(position, true);
         }
+
+        public void ResetActionPointsToMax() => actionPoints = MaxActionPoints;
+        
+        protected virtual void OnAgentGeneratePathTree(ShortestPathTree tree) {}
 
         public void SetFacingDir(Vector2 dir)
         {
@@ -70,19 +76,19 @@ namespace _Project.Codebase.Gameplay.Characters
             m_renderer.Animator.SetLegsAnimationState(false);
         }
 
-        private void UpdateFloorPosition(Vector2Int gridPos, bool teleportToPos = false)
+        private void UpdateFloorPosition(Vector2Int gridPos,bool teleportToPos = false)
         {
             FloorPos = gridPos;
             Building building = ModuleUtilities.Get<GameModule>().Building;
             building.SetFloorObjectAtPos(gridPos, this);
             if (teleportToPos)
                 transform.position = building.GridToWorld(FloorPos);
-            agent.CalculateAllPathsFromSource(gridPos, LargestPossibleTravelDistance);
         }
 
         protected virtual void OnReachPathEnd(Vector2 worldPos, Vector2Int gridPos)
         {
             UpdateFloorPosition(gridPos, true);
+            agent.CalculateAllPathsFromSource(gridPos, LargestPossibleTravelDistance);
         }
         
         public int CalcActionPointCostOfMove(float distance) => Mathf.CeilToInt(distance / moveDistancePerActionPoint);

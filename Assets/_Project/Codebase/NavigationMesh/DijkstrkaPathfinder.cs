@@ -22,8 +22,7 @@ namespace _Project.Codebase.NavigationMesh
         
         public void FindPaths(Vector2Int source, int range, in Dictionary<Vector2Int, PathNode> nodesInRange)
         {
-            //Debug.Log($"SOURCE: {source}");
-            SimplePriorityQueue<PathNode, float> nodes = new SimplePriorityQueue<PathNode, float>(); //GetNodeGraph(source, range);
+            SimplePriorityQueue<PathNode, float> nodes = new SimplePriorityQueue<PathNode, float>();
 
             PathNode startingNode = new PathNode(source, 0f);
             Dictionary<Vector2Int, PathNode> visitedNodes = new Dictionary<Vector2Int, PathNode>
@@ -42,7 +41,6 @@ namespace _Project.Codebase.NavigationMesh
                     Debug.LogWarning("Very bad");
                     return;
                 }
-                //.Log($"root: {currentNode.pos}");
                 GizmoUtilities.DrawXAtPos(currentNode.pos + new Vector2(.5f, .5f), 1f);
                 nodesInRange.Add(currentNode.pos, currentNode);
                 for (int x = -1; x <= 1; x++)
@@ -64,7 +62,6 @@ namespace _Project.Codebase.NavigationMesh
                     {
                         if (dist < node.distance)
                         {
-                           // Debug.Log($"updating: {nodePos}");
                             node.distance = dist;
                             node.parent = currentNode;
                             nodes.UpdatePriority(node, dist);
@@ -75,7 +72,6 @@ namespace _Project.Codebase.NavigationMesh
                         PathNode newNode = new PathNode(nodePos, dist, currentNode);
                         visitedNodes.Add(nodePos, newNode);
                         nodes.Enqueue(newNode, dist);
-                       // Debug.Log($"enqueueing: {newNode.pos}");
                     }
                 }
             }

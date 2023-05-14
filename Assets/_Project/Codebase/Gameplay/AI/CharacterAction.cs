@@ -7,11 +7,11 @@ namespace _Project.Codebase.Gameplay.AI
     public abstract class CharacterAction
     {
         protected readonly Character character;
-        protected readonly WorldScreenshot worldContext;
+        protected readonly WorldRef worldContext;
         public int ActionPointCost { get; protected set; }
         public bool finished;
         
-        public CharacterAction(Character character, WorldScreenshot worldContext)
+        public CharacterAction(Character character, WorldRef worldContext)
         {
             this.worldContext = worldContext;
             this.character = character;

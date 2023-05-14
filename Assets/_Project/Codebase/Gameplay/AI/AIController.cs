@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using _Project.Codebase.Gameplay.Characters;
+﻿using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.Gameplay.World;
 using Cysharp.Threading.Tasks;
 
@@ -14,12 +13,12 @@ namespace _Project.Codebase.Gameplay.AI
             this.character = (EnemyCharacter)character;
         }
 
-        public async UniTask TakeTurn(WorldScreenshot worldContext)
+        public async UniTask TakeTurn(WorldRef worldContext)
         {
             CharacterAction action = DetermineAction(worldContext);
             await character.PerformAction(action);
         }
 
-        protected abstract CharacterAction DetermineAction(WorldScreenshot worldContext);
+        protected abstract CharacterAction DetermineAction(WorldRef worldContext);
     }
 }

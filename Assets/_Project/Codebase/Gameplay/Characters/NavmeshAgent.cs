@@ -17,6 +17,7 @@ namespace _Project.Codebase.Gameplay.Characters
         private PathIterator m_pathIterator;
         private DijkstrkaPathfinder m_dijkstrkaPathfinder;
         public event Action<Vector2, Vector2Int> OnReachPathEnd;
+        public event Action<ShortestPathTree> OnGeneratePathTree;  
         public Vector2 PathDir => m_pathIterator.DirToNextNode;
         [HideInInspector] public bool followPath;
         private Building m_building;
@@ -58,7 +59,9 @@ namespace _Project.Codebase.Gameplay.Characters
         
         public void CalculateAllPathsFromSource(Vector2Int gridPos, float range)
         {
-            pathTrees[gridPos] = new ShortestPathTree(gridPos, m_dijkstrkaPathfinder.FindPaths(gridPos, (int)range));
+            ShortestPathTree newTree = new ShortestPathTree(gridPos, m_dijkstrkaPathfinder.FindPaths(gridPos, (int)range));
+            pathTrees[gridPos] = newTree;
+            OnGeneratePathTree?.Invoke(newTree);
         }
 
         private bool TryGetPathTreeAtCurrentPosition(out ShortestPathTree tree) =>
@@ -120,7 +123,9 @@ namespace _Project.Codebase.Gameplay.Characters
             path.Clear();
             if (!TryGetPathTreeAtPosition(source, out ShortestPathTree tree))
                 return new PathResults(PathResultType.NoPath, 0f);
-            return tree.TryTracePath(target, path);
+            if (tree.ContainsPoint(target))
+                return tree.TryTracePath(target, path);
+            return new PathResults(PathResultType.NoPath, 0f);
         }
 
         public PathResults SetPathTo(Vector2Int target, bool startFollowingPath)

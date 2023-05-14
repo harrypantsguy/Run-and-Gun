@@ -1,5 +1,5 @@
 ﻿using _Project.Codebase.Gameplay.Characters;
-using _Project.Codebase.Gameplay.World;
+using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.AI
@@ -10,24 +10,27 @@ namespace _Project.Codebase.Gameplay.AI
         {
         }
 
-        protected override CharacterAction DetermineAction(WorldScreenshot worldContext)
+        protected override CharacterAction DetermineAction(World.WorldRef worldContext)
         {
             RaycastHit2D hit = Physics2D.Raycast(character.transform.position,
                 worldContext.runner.transform.position - character.transform.position, character.firingRange);
             bool runnerCanBeShot = false;
             if (hit.collider != null)
             {
-                runnerCanBeShot = hit.collider.CompareTag("Player");
+                runnerCanBeShot = hit.collider.CompareTag("Runner");
             }
 
             if (!runnerCanBeShot)
             {
-                return new RepositionAction(character, worldContext, worldContext.runner.transform.position, true);
+                Vector2Int newPos;
+                if (character.nodesInRangeOfPlayer.Count > 0)
+                    newPos = character.nodesInRangeOfPlayer.GetRandom().pos;
+                else
+                    newPos = character.FloorPos;
+                return new RepositionAction(character, worldContext, newPos);
             }
 
             return new FireGunAction(character, worldContext, worldContext.runner.transform.position);
-
-            return null;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace _Project.Codebase.Gameplay.Characters
         public Runner(Vector2Int position, NavmeshAgent agent, CharacterRenderer renderer, int maxHealth) 
             : base(position, agent, renderer, maxHealth)
         {
-            
+            agent.CalculateAllPathsFromSource(FloorPos, LargestPossibleTravelDistance);
         }
     }
 }

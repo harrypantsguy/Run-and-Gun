@@ -11,6 +11,7 @@ namespace _Project.Codebase.NavigationMesh
         public float F { get; private set; }
         public PathNode parent;
         public float distance;
+        public bool inSightOfPlayer;
 
         public PathNode(Vector2Int pos, float distance, PathNode parent = null)
         {
