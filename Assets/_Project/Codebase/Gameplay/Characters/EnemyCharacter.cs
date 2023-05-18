@@ -32,6 +32,7 @@ namespace _Project.Codebase.Gameplay.Characters
 
         protected override void OnAgentGeneratePathTree(ShortestPathTree tree)
         {
+            base.OnAgentGeneratePathTree(tree);
             if (tree.source != FloorPos) return;
             WorldRef world = ModuleUtilities.Get<GameModule>().World;
             nodesInRangeOfPlayer.Clear();

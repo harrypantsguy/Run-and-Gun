@@ -76,10 +76,11 @@ namespace _Project.Codebase.Gameplay.Characters
             m_renderer.Animator.SetLegsAnimationState(false);
         }
 
-        private void UpdateFloorPosition(Vector2Int gridPos,bool teleportToPos = false)
+        private void UpdateFloorPosition(Vector2Int gridPos, bool teleportToPos = false)
         {
-            FloorPos = gridPos;
             Building building = ModuleUtilities.Get<GameModule>().Building;
+            building.SetFloorObjectAtPos(FloorPos, null);
+            FloorPos = gridPos;
             building.SetFloorObjectAtPos(gridPos, this);
             if (teleportToPos)
                 transform.position = building.GridToWorld(FloorPos);

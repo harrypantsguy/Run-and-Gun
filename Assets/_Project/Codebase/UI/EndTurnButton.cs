@@ -40,7 +40,7 @@ namespace _Project.Codebase.UI
             onClick -= OnClick;
         }
 
-        private async void OnClick()
+        private void OnClick()
         {
             if (m_turnController.Turn == Turn.Player)
                 m_playerTurnController.QueueEndTurn();

@@ -70,10 +70,11 @@ namespace _Project.Codebase.Gameplay.Characters
         private bool TryGetPathTreeAtPosition(Vector2Int pos, out ShortestPathTree tree) =>
             pathTrees.TryGetValue(pos, out tree);
         
-        public Vector2 GetClosestTilePosInRange(Vector2 pos, out float distanceFromAgent)
+        public Vector2 GetClosestTilePosInRange(Vector2 pos, float maxDistance, out float distanceFromAgent)
         {
             Vector2Int gridPos = m_building.WorldToGrid(pos);
-            if (TryGetPathTreeAtCurrentPosition(out ShortestPathTree tree) && tree.nodes.TryGetValue(gridPos, out PathNode node))
+            if (TryGetPathTreeAtCurrentPosition(out ShortestPathTree tree) && tree.nodes.TryGetValue(gridPos, out PathNode node) && 
+                node.distance <= maxDistance)
             {
                 distanceFromAgent = node.distance;
                 return m_building.GridToWorld(node.pos);
@@ -87,8 +88,7 @@ namespace _Project.Codebase.Gameplay.Characters
             }
 
             PathNode closestTile = 
-                tree.nodes.OrderBy(tilePos => 
-                    Vector2.Distance(gridPos, tilePos.Key)).ToList()[0].Value;
+                tree.GetNodesInRange(maxDistance).OrderBy(n => Vector2.Distance(n.pos, gridPos)).ToList()[0];
             distanceFromAgent = closestTile.distance;
             return m_building.GridToWorld(closestTile.pos);
         }
@@ -150,58 +150,6 @@ namespace _Project.Codebase.Gameplay.Characters
             m_pathIterator.SetPath(path);
             followPath = startFollowingPath;
         }
-        /*
-
-        public PathResults SetTargetPosition(Vector2Int pos, bool startMoving = true, bool allowPartialPaths = false,
-            float maxDistance = Mathf.Infinity)
-        {
-            PathResults results = PathController.GenerateAndSetPath(transform.position, pos, allowPartialPaths, maxDistance);
-            followPath = startMoving;
-            return results;
-        }
-        
-        public PathResults SetTargetPosition(Vector2 pos, bool startMoving = true, bool allowPartialPaths = false,
-            float maxDistance = Mathf.Infinity)
-        {
-            PathResults results = PathController.GenerateAndSetPath(transform.position, pos, allowPartialPaths,
-                maxDistance);
-            followPath = startMoving;
-            return results;
-        }
-
-        public void ForceSetPath(in List<Vector2> positions) => PathController.ForceSetPath(positions);
-
-        public PathResults GeneratePathTo(Vector2 pos, bool allowPartialPaths = false,
-            float maxDistance = Mathf.Infinity)
-        {
-            return PathController.GeneratePath(transform.position, pos, allowPartialPaths, maxDistance);
-        }
-
-        public PathResults GeneratePathTo(Vector2 pos, in List<Vector2> positions, bool allowPartialPaths = false,
-            float maxDistance = Mathf.Infinity)
-        {
-            return PathController.GeneratePath(transform.position, pos, positions, allowPartialPaths, maxDistance);
-        }
-
-        public PathResults GeneratePathTo(Vector2 pos, float range, in List<Vector2> positions)
-        {
-            UpdateCalculateTilesInRange(pos, range);
-            return GeneratePathTo(pos, positions);
-        }
-        
-        public PathResults GeneratePathTo(Vector2 pos, in List<Vector2> positions)
-        {
-            if (!PositionIsInTileRange(pos))
-                return new PathResults(PathResultType.NoPath, 0f);
-            return PathController.GeneratePath(transform.position, pos, positions);
-        }
-
-        private bool PositionIsInTileRange(Vector2 pos)
-        {
-            Vector2Int gridPos = ModuleUtilities.Get<GameModule>().Building.WorldToGrid(pos);
-            return tilesInRange.ContainsKey(gridPos);
-        }
-        */
 
         private void OnDrawGizmos()
         {

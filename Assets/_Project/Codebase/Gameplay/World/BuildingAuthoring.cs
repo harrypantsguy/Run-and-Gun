@@ -30,7 +30,13 @@ namespace _Project.Codebase.Gameplay.World
                 bool isValidAndWalkable = m_building.navmesh.IsValidNode(pos) && m_building.navmesh.IsWalkableNode(pos);
                 Gizmos.color = isValidAndWalkable
                     ? Color.green : Color.red;
-                Gizmos.DrawWireCube(m_building.GridToWorld(pos), new Vector3(.99f, .99f));
+                Vector2 worldPos = m_building.GridToWorld(pos);
+                Gizmos.DrawWireCube(worldPos, new Vector3(.99f, .99f));
+                if (m_building.IsFloorObjectAtPos(pos))
+                {
+                    Gizmos.color = Color.magenta;
+                    Gizmos.DrawWireSphere(worldPos, .3f);
+                }
             }
         }
     }

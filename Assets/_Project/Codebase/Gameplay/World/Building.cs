@@ -113,7 +113,8 @@ namespace _Project.Codebase.Gameplay.World
         }
 
         public bool TryGetFloorAtPos(Vector2Int pos, out Floor floor) => m_floorCells.TryGetValue(pos, out floor);
-        public bool IsFloorAtPos(Vector2 pos) => m_floorCells.ContainsKey(WorldToGrid(pos));
+        public bool IsFloorAtPos(Vector2 pos) => IsFloorAtPos(WorldToGrid(pos));
+        public bool IsFloorAtPos(Vector2Int pos) => m_floorCells.ContainsKey(pos);
         public void SetFloorObjectAtPos(Vector2Int pos, IFloorObject floorObject, bool walkable = true)
         {
             if (!m_floorCells.TryGetValue(pos, out Floor floor))
@@ -121,6 +122,23 @@ namespace _Project.Codebase.Gameplay.World
 
             floor.floorObject = floorObject;
             navmesh.SetWalkable(pos, walkable);
+        }
+
+        public bool IsFloorObjectAtPos(Vector2Int pos) => m_floorCells.TryGetValue(pos, out Floor floor) && floor.floorObject != null;
+
+        public IFloorObject GetFloorObjectAtPos(Vector2Int pos)
+        {
+            if (!m_floorCells.TryGetValue(pos, out Floor floor)) return null;
+            return floor.floorObject;
+        }
+
+        public bool TryGetFloorObjectAtPos(Vector2Int pos, out IFloorObject obj)
+        {
+            obj = null;
+            if (!m_floorCells.TryGetValue(pos, out Floor floor))
+                return false;
+            obj = floor.floorObject;
+            return obj == null;
         }
 
         public Vector2Int WorldToGrid(Vector2 pos) => (Vector2Int)m_grid.WorldToCell(pos);

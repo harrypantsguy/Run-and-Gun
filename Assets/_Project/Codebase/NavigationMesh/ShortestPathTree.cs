@@ -14,6 +14,15 @@ namespace _Project.Codebase.NavigationMesh
             this.nodes = nodes;
         }
 
+        public List<PathNode> GetNodesInRange(float range)
+        {
+            List<PathNode> nodesInRange = new List<PathNode>();
+            foreach (PathNode node in nodes.Values)
+                if (node.distance <= range)
+                    nodesInRange.Add(node);
+            return nodesInRange;
+        }
+
         public bool ContainsPoint(Vector2Int point) => nodes.ContainsKey(point);
 
         public PathResults TryTracePath(Vector2Int pathEnd, in List<Vector2Int> path, float maxRange = Mathf.Infinity)

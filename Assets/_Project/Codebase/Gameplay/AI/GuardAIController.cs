@@ -1,6 +1,5 @@
-﻿using System.Linq;
-using _Project.Codebase.Gameplay.Characters;
-using DanonFramework.Runtime.Core.Utilities;
+﻿using _Project.Codebase.Gameplay.Characters;
+using _Project.Codebase.NavigationMesh;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.AI
@@ -23,13 +22,27 @@ namespace _Project.Codebase.Gameplay.AI
 
             if (!runnerCanBeShot)
             {
-                Vector2Int newPos;
+                Vector2Int newPos = character.FloorPos;
+                bool foundPos = false;
                 if (character.nodesInRangeOfPlayer.Count > 0)
                 {
-                    newPos = character.nodesInRangeOfPlayer[0].pos;
+                    for (int i = 0; i < character.nodesInRangeOfPlayer.Count; i++)
+                    {
+                        PathNode node = character.nodesInRangeOfPlayer[i];
+                        if (node.distance > character.CurrentLargestPossibleTravelDistance || 
+                            worldContext.building.IsFloorObjectAtPos(node.pos))
+                            continue;
+                        newPos = character.nodesInRangeOfPlayer[i].pos;
+                        foundPos = true;
+                        break;
+                    }
                 }
-                else
-                    newPos = character.FloorPos;
+
+                if (!foundPos)
+                {
+                    
+                }
+                
                 return new RepositionAction(character, worldContext, newPos);
             }
 

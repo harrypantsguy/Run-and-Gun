@@ -54,7 +54,9 @@ namespace _Project.Codebase.Gameplay.Player
                 {
                     m_pathRenderer.Enabled = true;
                     
-                    Vector2 targetPos = runner.agent.GetClosestTilePosInRange(MiscUtilities.WorldMousePos, out float distFromRunner);
+                    Vector2 targetPos = runner.agent.GetClosestTilePosInRange(MiscUtilities.WorldMousePos,
+                        runner.CurrentLargestPossibleTravelDistance,
+                        out float distFromRunner);
 
                     runner.agent.TryGetPath(targetPos, desiredMovePath);
                     PathActionPointCost = runner.CalcActionPointCostOfMove(distFromRunner);
