@@ -1,4 +1,5 @@
-﻿using _Project.Codebase.Gameplay.Characters;
+﻿using System.Collections.Generic;
+using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.NavigationMesh;
 using UnityEngine;
 
@@ -38,12 +39,16 @@ namespace _Project.Codebase.Gameplay.AI
                     }
                 }
 
-                if (!foundPos)
-                {
-                    
-                }
+                if (foundPos)
+                    return new RepositionAction(character, worldContext, newPos);
                 
-                return new RepositionAction(character, worldContext, newPos);
+                List<Vector2> path = new List<Vector2>();
+                PathResults results = character.agent.TryGetPath(character.FloorPos, worldContext.runner.FloorPos, 
+                    path, character.CurrentLargestPossibleTravelDistance);
+                if (results.type == PathResultType.FullPath)
+                    return new RepositionAction(character, worldContext, path, character.CalcActionPointCostOfMove(results.distance));
+
+                return null;
             }
 
             return new FireGunAction(character, worldContext, worldContext.runner.transform.position);

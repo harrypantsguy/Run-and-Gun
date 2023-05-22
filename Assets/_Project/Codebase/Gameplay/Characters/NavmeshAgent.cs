@@ -59,9 +59,13 @@ namespace _Project.Codebase.Gameplay.Characters
         
         public void CalculateAllPathsFromSource(Vector2Int gridPos, float range)
         {
-            ShortestPathTree newTree = new ShortestPathTree(gridPos, m_dijkstrkaPathfinder.FindPaths(gridPos, (int)range));
-            pathTrees[gridPos] = newTree;
-            OnGeneratePathTree?.Invoke(newTree);
+            if (!pathTrees.ContainsKey(gridPos))
+            {
+                ShortestPathTree newTree = new ShortestPathTree(gridPos, m_dijkstrkaPathfinder.FindPaths(gridPos, (int)range));
+                pathTrees[gridPos] = newTree;
+            }
+
+            OnGeneratePathTree?.Invoke(pathTrees[gridPos]);
         }
 
         private bool TryGetPathTreeAtCurrentPosition(out ShortestPathTree tree) =>
@@ -111,21 +115,43 @@ namespace _Project.Codebase.Gameplay.Characters
 
         public PathResults TryGetPath(Vector2 source, Vector2 target, in List<Vector2> path)
         {
-            List<Vector2Int> gridPath = new List<Vector2Int>();
-            PathResults results = TryGetPath(m_building.WorldToGrid(source), m_building.WorldToGrid(target), gridPath);
-            path.Clear();
-            path.AddRange(gridPath.ConvertAll(m_gridToWorldConverter));
-            return results;
+            return TryGetPath(m_building.WorldToGrid(source), m_building.WorldToGrid(target), path);
         }
 
-        public PathResults TryGetPath(Vector2Int source, Vector2Int target, in List<Vector2Int> path)
+        public PathResults TryGetPath(Vector2Int source, Vector2Int target, in List<Vector2> path, float maxDistance = Mathf.Infinity)
         {
             path.Clear();
             if (!TryGetPathTreeAtPosition(source, out ShortestPathTree tree))
                 return new PathResults(PathResultType.NoPath, 0f);
             if (tree.ContainsPoint(target))
-                return tree.TryTracePath(target, path);
-            return new PathResults(PathResultType.NoPath, 0f);
+                return TracePath(tree, target, path, maxDistance);
+
+            if (!TryGenPath(source, target)) return new PathResults(PathResultType.NoPath, 0f);
+
+            return TracePath(pathTrees[source], target, path, maxDistance);
+        }
+
+        private PathResults TracePath(ShortestPathTree tree, Vector2Int target, in List<Vector2> path, float maxDistance = Mathf.Infinity)
+        {
+            List<Vector2Int> gridPath = new List<Vector2Int>();
+            PathResults results = tree.TryTracePath(target, gridPath, maxDistance);
+            path.AddRange(gridPath.ConvertAll(m_gridToWorldConverter));
+            return results;
+        }
+
+        public bool TryGenPath(Vector2Int source, Vector2Int target)
+        {
+            AstarPathfinder pathViabilityTester = new AstarPathfinder(m_building.navmesh);
+            if (pathViabilityTester.FindPath(source, target, false, new List<Vector2Int>()).type == PathResultType.NoPath)
+                return false;
+
+            Dictionary<Vector2Int, PathNode> nodes = m_dijkstrkaPathfinder.FindPathToTarget(source, target);
+            if (pathTrees.TryGetValue(source, out ShortestPathTree existingTree))
+                existingTree.AddNodes(nodes);
+            else
+                pathTrees[source] = new ShortestPathTree(source, nodes);
+            
+            return true;
         }
 
         public PathResults SetPathTo(Vector2Int target, bool startFollowingPath)

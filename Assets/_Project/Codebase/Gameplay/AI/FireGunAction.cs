@@ -13,6 +13,7 @@ namespace _Project.Codebase.Gameplay.AI
         {
             m_enemy = (EnemyCharacter)character;
             m_target = target;
+            ActionPointCost = 1;
         }
 
         protected override async UniTask OnStartAction()

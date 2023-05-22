@@ -23,6 +23,12 @@ namespace _Project.Codebase.NavigationMesh
             return nodesInRange;
         }
 
+        public void AddNodes(Dictionary<Vector2Int, PathNode> newNodes)
+        {
+            foreach (KeyValuePair<Vector2Int, PathNode> pair in newNodes)
+                nodes[pair.Key] = pair.Value;
+        }
+
         public bool ContainsPoint(Vector2Int point) => nodes.ContainsKey(point);
 
         public PathResults TryTracePath(Vector2Int pathEnd, in List<Vector2Int> path, float maxRange = Mathf.Infinity)
@@ -33,10 +39,22 @@ namespace _Project.Codebase.NavigationMesh
             }
 
             float distance = node.distance;
+            bool outsideOfRange = false;
 
             while (node != null)
             {
-                path.Add(node.pos);
+                if (node.distance <= maxRange)
+                {
+                    if (outsideOfRange)
+                    {
+                        outsideOfRange = false;
+                        distance = node.distance;
+                    }
+                    path.Add(node.pos);
+                }
+                else
+                    outsideOfRange = true;
+
                 node = node.parent;
             }
             

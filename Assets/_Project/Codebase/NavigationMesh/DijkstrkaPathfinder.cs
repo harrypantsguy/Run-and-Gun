@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _Project.Codebase.EditorUtilities;
 using Priority_Queue;
 using UnityEngine;
@@ -16,11 +17,19 @@ namespace _Project.Codebase.NavigationMesh
         public Dictionary<Vector2Int, PathNode> FindPaths(Vector2Int source, int range)
         {
             Dictionary<Vector2Int, PathNode> nodes = new Dictionary<Vector2Int, PathNode>();
-            FindPaths(source, range, nodes);
+            FindPathsInternal(source, range, nodes);
             return nodes;
         }
-        
-        public void FindPaths(Vector2Int source, int range, in Dictionary<Vector2Int, PathNode> nodesInRange)
+
+        public Dictionary<Vector2Int, PathNode> FindPathToTarget(Vector2Int source, Vector2Int target)
+        {
+            Dictionary<Vector2Int, PathNode> nodes = new Dictionary<Vector2Int, PathNode>();
+            FindPathsInternal(source, Int32.MaxValue, nodes, node => node.pos == target);
+            return nodes;
+        }
+
+        private void FindPathsInternal(Vector2Int source, int range, in Dictionary<Vector2Int, PathNode> nodesInRange, 
+            Func<PathNode, bool> stopSearchFunc = null)
         {
             SimplePriorityQueue<PathNode, float> nodes = new SimplePriorityQueue<PathNode, float>();
 
@@ -32,17 +41,20 @@ namespace _Project.Codebase.NavigationMesh
 
             nodes.Enqueue(startingNode, 0f);
 
+            bool hasStopSearchFunction = stopSearchFunc != null;
+            
             int loops = 0;
             while (nodes.TryDequeue(out PathNode currentNode))
             {
                 loops++;
                 if (loops > 99999)
                 {
-                    Debug.LogWarning("Very bad");
+                    Debug.LogWarning("Infinite loop inside dijkstra ");
                     return;
                 }
-                GizmoUtilities.DrawXAtPos(currentNode.pos + new Vector2(.5f, .5f), 1f);
+                //GizmoUtilities.DrawXAtPos(currentNode.pos + new Vector2(.5f, .5f), 1f);
                 nodesInRange.Add(currentNode.pos, currentNode);
+                if (hasStopSearchFunction && stopSearchFunc(currentNode)) return;
                 for (int x = -1; x <= 1; x++)
                 for (int y = -1; y <= 1; y++)
                 {

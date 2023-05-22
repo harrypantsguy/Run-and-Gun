@@ -8,7 +8,6 @@ using _Project.Codebase.NavigationMesh;
 using Cysharp.Threading.Tasks;
 using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace _Project.Codebase.Gameplay.Characters
 {
@@ -64,7 +63,7 @@ namespace _Project.Codebase.Gameplay.Characters
         
         public async UniTask PerformAction(CharacterAction action)
         {
-            if (Dead || action == null) return;
+            if (Dead) return;
 
             actionPoints -= action.ActionPointCost;
             action.Run().Forget();

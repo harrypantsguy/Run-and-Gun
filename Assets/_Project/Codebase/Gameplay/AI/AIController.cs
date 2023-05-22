@@ -1,6 +1,7 @@
 ﻿using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.Gameplay.World;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.AI
 {
@@ -15,8 +16,19 @@ namespace _Project.Codebase.Gameplay.AI
 
         public async UniTask TakeTurn(WorldRef worldContext)
         {
-            CharacterAction action = DetermineAction(worldContext);
-            await character.PerformAction(action);
+            int loops = 0;
+            while (character.actionPoints > 0)
+            {
+                loops++;
+                if (loops > 20)
+                {
+                    Debug.LogWarning("yeah, no good.");
+                    return;
+                } 
+                CharacterAction action = DetermineAction(worldContext);
+                if (action == null) return;
+                await character.PerformAction(action);
+            }
         }
 
         protected abstract CharacterAction DetermineAction(WorldRef worldContext);

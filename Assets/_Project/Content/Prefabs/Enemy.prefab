@@ -51,7 +51,7 @@ MonoBehaviour:
   characterRenderer: {fileID: 6063418332202759849}
   m_maxHealth: 100
   m_firingRange: 10
-  m_projectileSpawnPos: {fileID: 4630079004716964034}
+  m_projectileSpawnPos: {fileID: 4136598901500374017}
 --- !u!114 &360050816067291611
 MonoBehaviour:
   m_ObjectHideFlags: 0

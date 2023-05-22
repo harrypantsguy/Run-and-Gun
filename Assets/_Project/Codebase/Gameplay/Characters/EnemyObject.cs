@@ -14,13 +14,5 @@ namespace _Project.Codebase.Gameplay.Characters
             base.Initialize(position);
             return Character;
         }
-        
-        public Character Initialize(Vector2Int position, Runner runner)
-        { 
-            Character = new EnemyCharacter(position, GetComponent<NavmeshAgent>(), characterRenderer, 
-                m_maxHealth, m_firingRange, m_projectileSpawnPos);
-            base.Initialize(position);
-            return Character;
-        }
     }
 }
