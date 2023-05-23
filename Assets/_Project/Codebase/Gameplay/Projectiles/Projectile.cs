@@ -263,6 +263,7 @@ namespace _Project.Codebase.Gameplay.Projectiles
             {
                 Vector2 cellSamplePoint = hit.point - hit.normal * .003f;
                 Wall hitWall = m_building.GetWallAtPos(cellSamplePoint);
+                if (hitWall == null) return false;
                 if (hitWall.type == WallType.Glass)
                 {
                     m_queuedEvents.Enqueue(new HitEvent(m_hittableInside != null
