@@ -1,6 +1,4 @@
 ﻿using _Project.Codebase.Gameplay.World;
-using _Project.Codebase.Modules;
-using DanonFramework.Runtime.Core.Utilities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

@@ -1,7 +1,7 @@
 ﻿using _Project.Codebase.AssetGroups;
 using Cysharp.Threading.Tasks;
-using DanonFramework.Runtime.Core.ModuleLayer;
-using DanonFramework.Runtime.Core.Utilities;
+using DanonFramework.Core.ModuleLayer;
+using DanonFramework.Core.Utilities;
 using UnityEngine;
 
 namespace _Project.Codebase.Modules

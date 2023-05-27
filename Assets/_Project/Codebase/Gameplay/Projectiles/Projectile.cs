@@ -6,7 +6,7 @@ using _Project.Codebase.EditorUtilities;
 using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
-using DanonFramework.Runtime.Core.Utilities;
+using DanonFramework.Core.Utilities;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 

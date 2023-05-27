@@ -1,6 +1,6 @@
 ﻿using _Project.Codebase.Modules;
 using Cysharp.Threading.Tasks;
-using DanonFramework.Runtime.Core.Utilities;
+using DanonFramework.Core.Utilities;
 using UnityEngine;
 
 namespace _Project.Codebase.UI.Menus

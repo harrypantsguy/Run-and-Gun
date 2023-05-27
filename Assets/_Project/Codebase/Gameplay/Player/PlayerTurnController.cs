@@ -2,9 +2,8 @@
 using _Project.Codebase.Gameplay.AI;
 using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.Modules;
-using _Project.Codebase.NavigationMesh;
 using Cysharp.Threading.Tasks;
-using DanonFramework.Runtime.Core.Utilities;
+using DanonFramework.Core.Utilities;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Player

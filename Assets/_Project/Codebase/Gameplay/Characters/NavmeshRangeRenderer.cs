@@ -1,7 +1,6 @@
 ﻿using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
-using _Project.Codebase.NavigationMesh;
-using DanonFramework.Runtime.Core.Utilities;
+using DanonFramework.Core.Utilities;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Characters
@@ -22,19 +21,15 @@ namespace _Project.Codebase.Gameplay.Characters
         {
             if (!m_active) return;
             
-            //Gizmos.color = Color.blue;
-
-            if (character.agent.pathTrees.Values.Count == 0) return;
-            if (character.agent.pathTrees.TryGetValue(character.FloorPos, out ShortestPathTree tree))
+            if (character.agent.PathTree == null) return;
+            
+            foreach (var tile in character.agent.PathTree.nodes)
             {
-                foreach (var tile in tree.nodes)
-                {
-                    Gizmos.color = Color.Lerp(Color.green, Color.red, tile.Value.distance / character.LargestPossibleTravelDistance);
-                    Gizmos.DrawWireCube(m_building.GridToWorld(tile.Key), Vector3.one);
-                    Gizmos.color = Color.white;
-                    //if (tile.Value.parent != null)
-                    // Gizmos.DrawLine(m_building.GridToWorld(tile.Value.pos), m_building.GridToWorld(tile.Value.parent.pos));
-                }
+                Gizmos.color = Color.Lerp(Color.green, Color.red, tile.Value.distance / character.LargestPossibleTravelDistance);
+                Gizmos.DrawWireCube(m_building.GridToWorld(tile.Key), Vector3.one);
+                Gizmos.color = Color.white;
+                //if (tile.Value.parent != null)
+                // Gizmos.DrawLine(m_building.GridToWorld(tile.Value.pos), m_building.GridToWorld(tile.Value.parent.pos));
             }
         }
 

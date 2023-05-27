@@ -4,8 +4,8 @@ using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.Gameplay.Player;
 using _Project.Codebase.Gameplay.World;
 using Cysharp.Threading.Tasks;
-using DanonFramework.Runtime.Core.ModuleLayer;
-using DanonFramework.Runtime.Core.Utilities;
+using DanonFramework.Core.ModuleLayer;
+using DanonFramework.Core.Utilities;
 using UnityEngine;
 
 namespace _Project.Codebase.Modules
