@@ -44,3 +44,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: MapDecorations
+    uniqueID: 3299154989
+    locked: 0
+  - name: Character
+    uniqueID: 1950897417
+    locked: 0

@@ -4312,7 +4312,7 @@ GameObject:
   - component: {fileID: 4331514699868973751}
   - component: {fileID: 9152369520555671255}
   m_Layer: 0
-  m_Name: KeyItemMap
+  m_Name: ItemMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4463,8 +4463,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -995812307
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -4725,8 +4725,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -995812307
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -5010,11 +5010,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8486794430961185394}
   - {fileID: 827712882381095547}
   - {fileID: 1551937725029788297}
   - {fileID: 2311983363499292658}
   - {fileID: 937819008395517396}
-  - {fileID: 8486794430961185394}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5030,11 +5030,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92e12048482a4ac8903f9fb59948c747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 63846a1a50e50de45ae6df92ecf5ca37, type: 2}
+    - {fileID: 11400000, guid: 3551f077cdadea94aa6cf92d61ad7b81, type: 2}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: m_serializedTiles
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[_Project.Codebase.Gameplay.World.SerializedTile,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: _Project.Codebase.Gameplay.World.SerializedTile, Assembly-CSharp
+    - Name: tile
+      Entry: 10
+      Data: 0
+    - Name: serializedTile
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   m_wallMap: {fileID: 7895885288598946893}
   m_floorMap: {fileID: 4609458500736013813}
   m_doorMap: {fileID: 1526534265482731585}
   m_decorationMap: {fileID: 411695705310309312}
-  m_keyItemMap: {fileID: 4331514699868973751}
+  m_itemMap: {fileID: 4331514699868973751}
   m_debugNavmesh: 1
 --- !u!156049354 &851840098058855491
 Grid:
