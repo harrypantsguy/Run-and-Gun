@@ -5033,7 +5033,9 @@ MonoBehaviour:
   m_wallMap: {fileID: 7895885288598946893}
   m_floorMap: {fileID: 4609458500736013813}
   m_doorMap: {fileID: 1526534265482731585}
-  m_debugNavmesh: 0
+  m_decorationMap: {fileID: 411695705310309312}
+  m_keyItemMap: {fileID: 4331514699868973751}
+  m_debugNavmesh: 1
 --- !u!156049354 &851840098058855491
 Grid:
   m_ObjectHideFlags: 0

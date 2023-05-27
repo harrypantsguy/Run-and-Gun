@@ -29,7 +29,7 @@ namespace _Project.Codebase.Gameplay.World
             m_doorCells = new Dictionary<Vector2Int, Cell>(buildingToCopy.m_doorCells);
         }
         
-        public Building(Tilemap wallMap, Tilemap floorMap, Tilemap doorMap)
+        public Building(Tilemap wallMap, Tilemap floorMap, Tilemap doorMap, Tilemap decorationMap)
         {
             m_grid = wallMap.layoutGrid;
 
@@ -54,7 +54,7 @@ namespace _Project.Codebase.Gameplay.World
                 }
                 else if (floorTile != null)
                 {
-                    walkable = true;
+                    walkable = !decorationMap.HasTile((Vector3Int)pos);
                     m_floorCells.Add(pos, new Floor(pos));
                 }
                 else

@@ -8,13 +8,15 @@ namespace _Project.Codebase.Gameplay.World
         [SerializeField] private Tilemap m_wallMap;
         [SerializeField] private Tilemap m_floorMap;
         [SerializeField] private Tilemap m_doorMap;
+        [SerializeField] private Tilemap m_decorationMap;
+        [SerializeField] private Tilemap m_keyItemMap;
         [SerializeField] private bool m_debugNavmesh;
 
         private Building m_building;
         
         public Building Initialize()
         {
-            m_building = new Building(m_wallMap, m_floorMap, m_doorMap);
+            m_building = new Building(m_wallMap, m_floorMap, m_doorMap, m_decorationMap);
             return m_building;
         }
         
