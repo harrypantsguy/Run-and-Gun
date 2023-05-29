@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[assembly: InternalsVisibleTo("EditorAssembly")]
 namespace _Project.Codebase.Gameplay.World
 {
     public class BuildingAuthoring : SerializedMonoBehaviour
@@ -12,32 +13,16 @@ namespace _Project.Codebase.Gameplay.World
         [SerializeField] private Tilemap m_floorMap;
         [SerializeField] private Tilemap m_doorMap;
         [SerializeField] private Tilemap m_decorationMap;
-        [SerializeField] private Tilemap m_itemMap;
         [SerializeField] private bool m_debugNavmesh;
 
-        [OdinSerialize] private List<SerializedTile> m_serializedTiles = new();
+        [SerializeField] internal List<SpawnableInstance> spawnableObjects = new();
+        [SerializeField] internal List<SpawnTile> spawnTileLocations = new();
 
         private Building m_building;
         
         public Building Initialize()
         {
-            Dictionary<TileBase, SerializedTile> serializedTilesDictionary = new Dictionary<TileBase, SerializedTile>();
-
-            foreach (SerializedTile tile in m_serializedTiles)
-            {
-                serializedTilesDictionary.Add(tile.tile, tile);
-            }
-
-            foreach (TileBase tileBase in m_itemMap.GetTilesBlock(new BoundsInt(Vector3Int.zero,
-                         new Vector3Int(Building.WORLD_SIZE, Building.WORLD_SIZE))))
-            {
-                if (!serializedTilesDictionary.TryGetValue(tileBase, out SerializedTile serializedTile))
-                {
-                    Debug.LogWarning("Tilebase missing from building's serialized tiles");
-                    continue;
-                }
-                
-            }
+            
             
             m_building = new Building(m_wallMap, m_floorMap, m_doorMap, m_decorationMap);
             return m_building;

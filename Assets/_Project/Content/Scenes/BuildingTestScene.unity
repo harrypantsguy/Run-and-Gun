@@ -131,6 +131,229 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnableObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: m_serializedTiles.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: m_spawnableObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].debugColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].debugColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].debugColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].debugColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].debugColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].debugColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].debugColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].debugColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[2].debugColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[2].debugColor.g
+      value: 0.9982565
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[2].debugColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnableObjects.Array.data[0].maxOccurrences
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnableObjects.Array.data[0].minOccurrences
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: serializationData.PrefabModifications.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: serializationData.PrefabModifications.Array.data[0]
+      value: '"path":"m_serializedTiles.[0]","value":{"$id":0,"$type":"_Project.Codebase.Gameplay.World.SpawnTile,
+        Assembly-CSharp","spawnableTiles":{"$id":1,"$type":"System.Collections.Generic.List`1[[_Project.Codebase.Gameplay.World.TileScriptable,
+        Assembly-CSharp]], mscorlib","$rlength":0,"$rcontent":[]},"locations":null}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: serializationData.PrefabModifications.Array.data[1]
+      value: '"path":"m_serializedTiles.[0].spawnableTiles","value":{"$id":0,"$type":"System.Collections.Generic.List`1[[_Project.Codebase.Gameplay.World.TileScriptable,
+        Assembly-CSharp]], mscorlib","$rlength":0,"$rcontent":[]}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: m_serializedTiles.Array.data[0].locations.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].locations.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].locations.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[2].locations.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: m_serializedTiles.Array.data[0].spawnableTiles.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].locations.Array.data[0].x
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].locations.Array.data[0].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].locations.Array.data[1].x
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].locations.Array.data[1].y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].locations.Array.data[2].x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].locations.Array.data[2].y
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].locations.Array.data[3].x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].locations.Array.data[3].y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].locations.Array.data[4].x
+      value: -14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].locations.Array.data[4].y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].locations.Array.data[5].x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].locations.Array.data[5].y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].spawnableTiles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[0].x
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[0].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[1].x
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[1].y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[2].x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[2].y
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[3].x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[3].y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[4].x
+      value: -14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[4].y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[5].x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[5].y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].spawnableTiles.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[2].locations.Array.data[0].x
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[2].locations.Array.data[0].y
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3476567809078344408, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: m_Name
       value: Building

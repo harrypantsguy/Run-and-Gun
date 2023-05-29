@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace _Project.Codebase.Gameplay
+namespace _Project.Codebase.Gameplay.World
 {
-    [CreateAssetMenu(fileName = "data")]
-    public class TileScriptable : ScriptableObject
+    public abstract class TileScriptable : ScriptableObject
     {
         public TileBase tileBase;
     }

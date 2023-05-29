@@ -7,6 +7,7 @@ TagManager:
   - Building
   - Character
   - Runner
+  - Ground
   layers:
   - Default
   - TransparentFX
