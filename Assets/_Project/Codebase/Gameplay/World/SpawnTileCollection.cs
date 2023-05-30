@@ -5,10 +5,11 @@ using UnityEngine;
 namespace _Project.Codebase.Gameplay.World
 {
     [Serializable]
-    public struct SpawnTile 
+    public struct SpawnTileCollection 
     {
-        public List<TileScriptable> spawnableTiles;
-        public List<Vector2Int> locations;
+        //[HideInInspector] public SpawnTileType type;
         public Color debugColor;
+        public bool debug;
+        public List<Vector2Int> locations;
     }
 }

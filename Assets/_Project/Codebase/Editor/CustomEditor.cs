@@ -1,11 +1,12 @@
 ﻿using DanonFramework.Core.Utilities;
+using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace _Project.CodeBase.Editor
 {
-    public class CustomEditor<T> : UnityEditor.Editor where T : MonoBehaviour
+    public class CustomEditor<T> : OdinEditor where T : MonoBehaviour
     {
         protected bool debug = true;
         public T CastedTarget { get; private set; }
@@ -14,7 +15,7 @@ namespace _Project.CodeBase.Editor
         protected const float DEFAULT_CIRCLE_SIZE = .05f;
         protected const float DEFAULT_LINE_SIZE = 1f;
 
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             CastedTarget = (T)target;
             Tools.hidden = true;

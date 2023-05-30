@@ -15,8 +15,9 @@ namespace _Project.Codebase.Gameplay.World
         public readonly Navmesh navmesh;
         private readonly Grid m_grid;
         private readonly Dictionary<Vector2Int, Wall> m_wallCells = new();
-        private readonly Dictionary<Vector2Int, Floor> m_floorCells = new();
+        private readonly Dictionary<Vector2Int, Floor> m_floorCells = new();    
         private readonly Dictionary<Vector2Int, Cell> m_doorCells = new();
+        private readonly Dictionary<SpawnTileType, SpawnTileCollection> m_spawnTileCollections;
         
         public const int WORLD_SIZE = 50;
 
@@ -29,10 +30,13 @@ namespace _Project.Codebase.Gameplay.World
             m_doorCells = new Dictionary<Vector2Int, Cell>(buildingToCopy.m_doorCells);
         }
         
-        public Building(Tilemap wallMap, Tilemap floorMap, Tilemap doorMap, Tilemap decorationMap)
+        public Building(Tilemap wallMap, Tilemap floorMap, Tilemap doorMap, Tilemap decorationMap, 
+                        Dictionary<SpawnTileType, SpawnTileCollection> spawnTileCollections)
         {
             m_grid = wallMap.layoutGrid;
 
+            m_spawnTileCollections = spawnTileCollections;
+            
             var wallDataCollection = ContentUtilities.Instantiate<WallCellCollection>(ScriptableAssetGroup.WALL_COLLECTION);
 
             Dictionary<Vector2Int, bool> nodes = new();
@@ -70,6 +74,16 @@ namespace _Project.Codebase.Gameplay.World
             }
 
             navmesh = new Navmesh(nodes);
+
+            if (spawnTileCollections.TryGetValue(SpawnTileType.KeyItem, out SpawnTileCollection collection))
+            {
+                Vector2Int[] keyItemSpawnLocations = collection.locations.ToArray();
+                keyItemSpawnLocations.Shuffle();
+                for (int i = 0; i < keyItemSpawnLocations.Length; i++)
+                {
+
+                }
+            }
         }
 
         public Floor GetRandomOpenFloor()

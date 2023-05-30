@@ -149,7 +149,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].type
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[0].debug
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: spawnTileLocations.Array.data[1].debug
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[0].debugColor.a
@@ -161,7 +177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[0].debugColor.g
-      value: 0
+      value: 0.8563806
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[0].debugColor.r
@@ -173,7 +189,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[1].debugColor.b
-      value: 0
+      value: 0.052272797
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[1].debugColor.g
@@ -205,18 +221,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.size
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.data[0]
-      value: '"path":"m_serializedTiles.[0]","value":{"$id":0,"$type":"_Project.Codebase.Gameplay.World.SpawnTile,
-        Assembly-CSharp","spawnableTiles":{"$id":1,"$type":"System.Collections.Generic.List`1[[_Project.Codebase.Gameplay.World.TileScriptable,
-        Assembly-CSharp]], mscorlib","$rlength":0,"$rcontent":[]},"locations":null}'
+      value: '"path":"spawnTileLocations","add_keys":{"$id":0,"$type":"System.Object[],
+        mscorlib","$rlength":2,"$rcontent":[{"$id":1,"$type":"_Project.Codebase.Gameplay.World.SpawnTileType,
+        CodebaseAssembly",0},{"$id":2,"$type":"_Project.Codebase.Gameplay.World.SpawnTileType,
+        CodebaseAssembly",0}]},"remove_keys":null'
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.data[1]
-      value: '"path":"m_serializedTiles.[0].spawnableTiles","value":{"$id":0,"$type":"System.Collections.Generic.List`1[[_Project.Codebase.Gameplay.World.TileScriptable,
-        Assembly-CSharp]], mscorlib","$rlength":0,"$rcontent":[]}'
+      value: '"path":"spawnTileLocations.{0es}","value":{"$id":0,"$type":"_Project.Codebase.Gameplay.World.SpawnTileCollection,
+        CodebaseAssembly","debugColor":{"$type":"UnityEngine.Color, UnityEngine.CoreModule",0,0,0,0},"debug":false,"locations":{"$id":1,"$type":"System.Collections.Generic.List`1[[UnityEngine.Vector2Int,
+        UnityEngine.CoreModule]], mscorlib","$rlength":0,"$rcontent":[]}}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: serializationData.PrefabModifications.Array.data[2]
+      value: '"path":"spawnTileLocations.{0es}.debug","value":{"$id":0,"$type":"System.Boolean,
+        mscorlib",false}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: serializationData.PrefabModifications.Array.data[3]
+      value: '"path":"spawnTileLocations.{0es}.debugColor","value":{"$id":0,"$type":"UnityEngine.Color,
+        UnityEngine.CoreModule",0,0,0,0}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
+      propertyPath: serializationData.PrefabModifications.Array.data[4]
+      value: '"path":"spawnTileLocations.{0es}.locations","value":{"$id":0,"$type":"System.Collections.Generic.List`1[[UnityEngine.Vector2Int,
+        UnityEngine.CoreModule]], mscorlib","$rlength":0,"$rcontent":[]}'
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: m_serializedTiles.Array.data[0].locations.Array.size
@@ -228,7 +261,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[1].locations.Array.size
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[2].locations.Array.size
@@ -288,23 +321,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[0].spawnableTiles.Array.size
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[0].x
-      value: -10
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[0].y
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[1].x
-      value: 13
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[1].y
-      value: 1
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[2].x
@@ -312,15 +345,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[2].y
-      value: -7
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[3].x
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[3].y
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2486852284267055173, guid: f0bc5971b4353a64a93674758953f9de, type: 3}
       propertyPath: spawnTileLocations.Array.data[1].locations.Array.data[4].x

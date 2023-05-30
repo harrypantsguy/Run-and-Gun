@@ -26,13 +26,9 @@ namespace _Project.Codebase.Gameplay.Characters
             bool followingPath = m_character.agent.followPath;
             m_legsRenderer.enabled = followingPath;
             if (followingPath)
-            {
                 m_animancer.Play(m_legWalk);
-            }
             else
-            {
                 m_animancer.Stop(m_legWalk);
-            }
         }
 
         public void SetLegsAnimationState(bool state)

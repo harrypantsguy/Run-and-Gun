@@ -15,16 +15,14 @@ namespace _Project.Codebase.Gameplay.World
         [SerializeField] private Tilemap m_decorationMap;
         [SerializeField] private bool m_debugNavmesh;
 
-        [SerializeField] internal List<SpawnableInstance> spawnableObjects = new();
-        [SerializeField] internal List<SpawnTile> spawnTileLocations = new();
+        // ReSharper disable once CollectionNeverUpdated.Global
+        [SerializeField] internal readonly Dictionary<SpawnTileType, SpawnTileCollection> spawnTileLocations = new();
 
         private Building m_building;
         
         public Building Initialize()
         {
-            
-            
-            m_building = new Building(m_wallMap, m_floorMap, m_doorMap, m_decorationMap);
+            m_building = new Building(m_wallMap, m_floorMap, m_doorMap, m_decorationMap, spawnTileLocations);
             return m_building;
         }
         

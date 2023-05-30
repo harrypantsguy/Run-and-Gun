@@ -5033,30 +5033,118 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 11400000, guid: 63846a1a50e50de45ae6df92ecf5ca37, type: 2}
-    - {fileID: 11400000, guid: 3551f077cdadea94aa6cf92d61ad7b81, type: 2}
+    ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: m_serializedTiles
+    - Name: spawnTileLocations
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[_Project.Codebase.Gameplay.World.SerializedTile,
-        Assembly-CSharp]], mscorlib
+      Data: 0|System.Collections.Generic.Dictionary`2[[_Project.Codebase.Gameplay.World.SpawnTileType,
+        CodebaseAssembly],[_Project.Codebase.Gameplay.World.SpawnTileCollection,
+        CodebaseAssembly]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[_Project.Codebase.Gameplay.World.SpawnTileType,
+        CodebaseAssembly]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: _Project.Codebase.Gameplay.World.SerializedTile, Assembly-CSharp
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: serializedTile
-      Entry: 10
+      Data: 
+    - Name: $k
+      Entry: 3
       Data: 1
+    - Name: $v
+      Entry: 7
+      Data: _Project.Codebase.Gameplay.World.SpawnTileCollection, CodebaseAssembly
+    - Name: type
+      Entry: 3
+      Data: 0
+    - Name: debugColor
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.9846988
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: debug
+      Entry: 5
+      Data: true
+    - Name: locations
+      Entry: 7
+      Data: 2|System.Collections.Generic.List`1[[UnityEngine.Vector2Int, UnityEngine.CoreModule]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: UnityEngine.Vector2Int, UnityEngine.CoreModule
+    - Name: 
+      Entry: 3
+      Data: 13
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: UnityEngine.Vector2Int, UnityEngine.CoreModule
+    - Name: 
+      Entry: 3
+      Data: 10
+    - Name: 
+      Entry: 3
+      Data: -7
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: UnityEngine.Vector2Int, UnityEngine.CoreModule
+    - Name: 
+      Entry: 3
+      Data: -10
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -5070,8 +5158,7 @@ MonoBehaviour:
   m_floorMap: {fileID: 4609458500736013813}
   m_doorMap: {fileID: 1526534265482731585}
   m_decorationMap: {fileID: 411695705310309312}
-  m_itemMap: {fileID: 4331514699868973751}
-  m_debugNavmesh: 1
+  m_debugNavmesh: 0
 --- !u!156049354 &851840098058855491
 Grid:
   m_ObjectHideFlags: 0
