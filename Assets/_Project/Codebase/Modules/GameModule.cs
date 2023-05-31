@@ -27,10 +27,9 @@ namespace _Project.Codebase.Modules
             await SceneUtilities.SetActiveSceneAsync(c_scene_name);
 
             WorldRegions = new WorldRegions();
-            
-            GameObject building = 
-                Object.Instantiate(ContentUtilities.GetCachedAsset<GameObject>(PrefabAssetGroup.BUILDING));
-            Building = building.GetComponent<BuildingAuthoring>().Initialize();
+
+            Building = new Building(
+                ContentUtilities.GetCachedAsset<BuildingCollection>(ScriptableAssetGroup.BUILDING_COLLECTION).buildings[0]);
             
             TurnController = new TurnController();
             

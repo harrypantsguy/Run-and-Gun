@@ -6,6 +6,7 @@ using _Project.Codebase.NavigationMesh;
 using DanonFramework.Core.Utilities;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace _Project.Codebase.Gameplay.World
@@ -30,12 +31,17 @@ namespace _Project.Codebase.Gameplay.World
             m_doorCells = new Dictionary<Vector2Int, Cell>(buildingToCopy.m_doorCells);
         }
         
-        public Building(Tilemap wallMap, Tilemap floorMap, Tilemap doorMap, Tilemap decorationMap, 
-                        Dictionary<SpawnTileType, SpawnTileCollection> spawnTileCollections)
+        public Building(GameObject buildingPrefab)
         {
+            BuildingAuthoring buildingAuthoring = Object.Instantiate(buildingPrefab).GetComponent<BuildingAuthoring>();
+            Tilemap wallMap = buildingAuthoring.m_wallMap;
+            Tilemap floorMap = buildingAuthoring.m_floorMap;
+            Tilemap doorMap = buildingAuthoring.m_doorMap;
+            Tilemap decorationMap = buildingAuthoring.m_decorationMap;
+            
             m_grid = wallMap.layoutGrid;
-
-            m_spawnTileCollections = spawnTileCollections;
+            
+            m_spawnTileCollections = buildingAuthoring.spawnTileLocations;
             
             var wallDataCollection = ContentUtilities.Instantiate<WallCellCollection>(ScriptableAssetGroup.WALL_COLLECTION);
 
@@ -75,7 +81,7 @@ namespace _Project.Codebase.Gameplay.World
 
             navmesh = new Navmesh(nodes);
 
-            if (spawnTileCollections.TryGetValue(SpawnTileType.KeyItem, out SpawnTileCollection collection))
+            if (m_spawnTileCollections.TryGetValue(SpawnTileType.KeyItem, out SpawnTileCollection collection))
             {
                 Vector2Int[] keyItemSpawnLocations = collection.locations.ToArray();
                 keyItemSpawnLocations.Shuffle();

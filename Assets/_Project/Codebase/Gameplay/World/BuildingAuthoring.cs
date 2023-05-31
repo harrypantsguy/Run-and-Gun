@@ -9,23 +9,17 @@ namespace _Project.Codebase.Gameplay.World
 {
     public class BuildingAuthoring : SerializedMonoBehaviour
     {
-        [SerializeField] private Tilemap m_wallMap;
-        [SerializeField] private Tilemap m_floorMap;
-        [SerializeField] private Tilemap m_doorMap;
-        [SerializeField] private Tilemap m_decorationMap;
+        public Tilemap m_wallMap;
+        public Tilemap m_floorMap;
+        public Tilemap m_doorMap;
+        public Tilemap m_decorationMap;
         [SerializeField] private bool m_debugNavmesh;
 
         // ReSharper disable once CollectionNeverUpdated.Global
-        [SerializeField] internal readonly Dictionary<SpawnTileType, SpawnTileCollection> spawnTileLocations = new();
+        public readonly Dictionary<SpawnTileType, SpawnTileCollection> spawnTileLocations = new();
 
         private Building m_building;
-        
-        public Building Initialize()
-        {
-            m_building = new Building(m_wallMap, m_floorMap, m_doorMap, m_decorationMap, spawnTileLocations);
-            return m_building;
-        }
-        
+
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying || !m_debugNavmesh) return;
