@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Codebase.AssetGroups;
+using _Project.Codebase.Gameplay.Items;
 using _Project.Codebase.NavigationMesh;
 using DanonFramework.Core.Utilities;
 using UnityEngine;
@@ -18,7 +19,9 @@ namespace _Project.Codebase.Gameplay.World
         private readonly Dictionary<Vector2Int, Wall> m_wallCells = new();
         private readonly Dictionary<Vector2Int, Floor> m_floorCells = new();    
         private readonly Dictionary<Vector2Int, Cell> m_doorCells = new();
+        private readonly Dictionary<Vector2Int, ICollectable> m_collectables = new();
         private readonly Dictionary<SpawnTileType, SpawnTileCollection> m_spawnTileCollections;
+        private readonly Tilemap m_itemMap;
         
         public const int WORLD_SIZE = 50;
 
@@ -34,10 +37,11 @@ namespace _Project.Codebase.Gameplay.World
         public Building(GameObject buildingPrefab)
         {
             BuildingAuthoring buildingAuthoring = Object.Instantiate(buildingPrefab).GetComponent<BuildingAuthoring>();
-            Tilemap wallMap = buildingAuthoring.m_wallMap;
-            Tilemap floorMap = buildingAuthoring.m_floorMap;
-            Tilemap doorMap = buildingAuthoring.m_doorMap;
-            Tilemap decorationMap = buildingAuthoring.m_decorationMap;
+            Tilemap wallMap = buildingAuthoring.wallMap;
+            Tilemap floorMap = buildingAuthoring.floorMap;
+            Tilemap doorMap = buildingAuthoring.doorMap;
+            Tilemap decorationMap = buildingAuthoring.decorationMap;
+            m_itemMap = buildingAuthoring.itemMap;
             
             m_grid = wallMap.layoutGrid;
             
@@ -81,13 +85,22 @@ namespace _Project.Codebase.Gameplay.World
 
             navmesh = new Navmesh(nodes);
 
+            Dictionary<KeyItemType, TileBase> keyItemTypeToTile =
+                ContentUtilities.GetCachedAsset<KeyItemCollection>(ScriptableAssetGroup.KEY_ITEM_COLLECTION).keyItemTiles;
+
             if (m_spawnTileCollections.TryGetValue(SpawnTileType.KeyItem, out SpawnTileCollection collection))
             {
                 Vector2Int[] keyItemSpawnLocations = collection.locations.ToArray();
                 keyItemSpawnLocations.Shuffle();
-                for (int i = 0; i < keyItemSpawnLocations.Length; i++)
-                {
 
+                int keyItemCount = 3;
+                KeyItemType keyItemType = MiscUtilities.GetRandomEnum<KeyItemType>();
+                for (var i = 0; i < Mathf.Min(keyItemCount, keyItemSpawnLocations.Length); i++)
+                {
+                    var pos = keyItemSpawnLocations[i];
+                    Bag bagItem = new Bag(pos);
+                    m_collectables[pos] = bagItem;
+                    m_itemMap.SetTile((Vector3Int)pos, keyItemTypeToTile[keyItemType]);
                 }
             }
         }

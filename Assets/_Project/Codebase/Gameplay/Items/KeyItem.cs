@@ -1,12 +1,14 @@
 ﻿using _Project.Codebase.Gameplay.World;
+using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Items
 {
-    public abstract class Item : ICollectable
+    public abstract class KeyItem : ICollectable
     {
-        public ItemType type;
+        public KeyItemType type;
+        public Vector2Int pos;
 
-        public Item(ItemType type)
+        public KeyItem(Vector2Int pos, KeyItemType type)
         {
             this.type = type;
         }

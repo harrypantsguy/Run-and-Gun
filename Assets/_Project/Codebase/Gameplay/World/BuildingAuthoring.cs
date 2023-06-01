@@ -9,10 +9,11 @@ namespace _Project.Codebase.Gameplay.World
 {
     public class BuildingAuthoring : SerializedMonoBehaviour
     {
-        public Tilemap m_wallMap;
-        public Tilemap m_floorMap;
-        public Tilemap m_doorMap;
-        public Tilemap m_decorationMap;
+        public Tilemap wallMap;
+        public Tilemap floorMap;
+        public Tilemap doorMap;
+        public Tilemap decorationMap;
+        public Tilemap itemMap;
         [SerializeField] private bool m_debugNavmesh;
 
         // ReSharper disable once CollectionNeverUpdated.Global
@@ -20,6 +21,11 @@ namespace _Project.Codebase.Gameplay.World
 
         private Building m_building;
 
+        private void OnValidate()
+        {
+            spawnTileLocations.Remove(0);   
+        }      
+        
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying || !m_debugNavmesh) return;

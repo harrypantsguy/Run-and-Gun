@@ -4341,66 +4341,36 @@ Tilemap:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 378992732562931616}
   m_Enabled: 1
-  m_Tiles:
-  - first: {x: 10, y: -7, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -10, y: 0, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: 13, y: 1, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+  m_Tiles: {}
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 3
-    m_Data: {fileID: 11400000, guid: 63846a1a50e50de45ae6df92ecf5ca37, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileSpriteArray:
-  - m_RefCount: 3
-    m_Data: {fileID: 21300000, guid: 4fb1b434bf2252f4cbe68a97a241f880, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileMatrixArray:
-  - m_RefCount: 3
+  - m_RefCount: 0
     m_Data:
-      e00: 1
+      e00: 0
       e01: 0
-      e02: 0
-      e03: 0
+      e02: 2.5749183e+29
+      e03: 2.5749183e+29
       e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
+      e11: 0
+      e12: 1.062e-42
+      e13: 1.062e-42
+      e20: 4.77459e+21
+      e21: 0.0000036082492
+      e22: -0.000000004024532
+      e23: -4.35e-42
+      e30: 4.5905e-41
+      e31: 1.062e-42
+      e32: 1.062e-42
+      e33: 1.066e-42
   m_TileColorArray:
-  - m_RefCount: 3
-    m_Data: {r: 1, g: 1, b: 1, a: 1}
+  - m_RefCount: 0
+    m_Data: {r: 5.0862e-41, g: 5.0862e-41, b: 5.0862e-41, a: 5.0862e-41}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -5065,13 +5035,10 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 1
+      Data: 2
     - Name: $v
       Entry: 7
       Data: _Project.Codebase.Gameplay.World.SpawnTileCollection, CodebaseAssembly
-    - Name: type
-      Entry: 3
-      Data: 0
     - Name: debugColor
       Entry: 7
       Data: UnityEngine.Color, UnityEngine.CoreModule
@@ -5154,10 +5121,11 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  m_wallMap: {fileID: 7895885288598946893}
-  m_floorMap: {fileID: 4609458500736013813}
-  m_doorMap: {fileID: 1526534265482731585}
-  m_decorationMap: {fileID: 411695705310309312}
+  wallMap: {fileID: 7895885288598946893}
+  floorMap: {fileID: 4609458500736013813}
+  doorMap: {fileID: 1526534265482731585}
+  decorationMap: {fileID: 411695705310309312}
+  itemMap: {fileID: 4331514699868973751}
   m_debugNavmesh: 0
 --- !u!156049354 &851840098058855491
 Grid:
