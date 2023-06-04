@@ -49,7 +49,8 @@ namespace _Project.Codebase.Gameplay.Characters
 
         public async UniTask TakeTurn(WorldRef worldContext)
         {
-            agent.CalculateAllPathsFromSource(FloorPos, LargestPossibleTravelDistance);
+            if (!agent.HasGeneratedPathTreeAtPos(FloorPos))
+                agent.CalculateAllPathsFromSource(FloorPos, LargestPossibleTravelDistance);
             await m_AIController.TakeTurn(worldContext);
         }
 

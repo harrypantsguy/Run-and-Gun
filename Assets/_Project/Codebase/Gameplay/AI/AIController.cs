@@ -22,7 +22,7 @@ namespace _Project.Codebase.Gameplay.AI
                 loops++;
                 if (loops > 20)
                 {
-                    Debug.LogWarning("yeah, no good.");
+                    Debug.LogWarning("AI Controller is looping infinitely trying to determine turn.");
                     return;
                 } 
                 CharacterAction action = DetermineAction(worldContext);

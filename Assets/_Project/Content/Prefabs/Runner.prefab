@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_debugPath: 1
-  m_moveSpeed: 4
+  m_moveSpeed: 8
   m_nodeReachedDist: 0.01
   followPath: 0
 --- !u!50 &830659561568731656
@@ -191,7 +191,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 291920937497989317, guid: 6008a8d8063bfb04ea11093979af21f5, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1636812000762482899, guid: 6008a8d8063bfb04ea11093979af21f5, type: 3}
       propertyPath: m_RootOrder

@@ -19,7 +19,6 @@ namespace _Project.Codebase.Gameplay.World
         private readonly Dictionary<Vector2Int, Wall> m_wallCells = new();
         private readonly Dictionary<Vector2Int, Floor> m_floorCells = new();    
         private readonly Dictionary<Vector2Int, Cell> m_doorCells = new();
-        private readonly Dictionary<Vector2Int, ICollectable> m_collectables = new();
         private readonly Dictionary<SpawnTileType, SpawnTileCollection> m_spawnTileCollections;
         private readonly Tilemap m_itemMap;
         
@@ -37,6 +36,8 @@ namespace _Project.Codebase.Gameplay.World
         public Building(GameObject buildingPrefab)
         {
             BuildingAuthoring buildingAuthoring = Object.Instantiate(buildingPrefab).GetComponent<BuildingAuthoring>();
+            buildingAuthoring.building = this;
+            
             Tilemap wallMap = buildingAuthoring.wallMap;
             Tilemap floorMap = buildingAuthoring.floorMap;
             Tilemap doorMap = buildingAuthoring.doorMap;
@@ -99,7 +100,7 @@ namespace _Project.Codebase.Gameplay.World
                 {
                     var pos = keyItemSpawnLocations[i];
                     Bag bagItem = new Bag(pos);
-                    m_collectables[pos] = bagItem;
+                    SetFloorObjectAtPos(pos, bagItem);
                     m_itemMap.SetTile((Vector3Int)pos, keyItemTypeToTile[keyItemType]);
                 }
             }
@@ -147,13 +148,13 @@ namespace _Project.Codebase.Gameplay.World
         public bool TryGetFloorAtPos(Vector2Int pos, out Floor floor) => m_floorCells.TryGetValue(pos, out floor);
         public bool IsFloorAtPos(Vector2 pos) => IsFloorAtPos(WorldToGrid(pos));
         public bool IsFloorAtPos(Vector2Int pos) => m_floorCells.ContainsKey(pos);
-        public void SetFloorObjectAtPos(Vector2Int pos, IFloorObject floorObject, bool walkable = true)
+        public void SetFloorObjectAtPos(Vector2Int pos, IFloorObject floorObject)
         {
             if (!m_floorCells.TryGetValue(pos, out Floor floor))
                 throw new Exception("Attempting to set floor object at nonexistent floor position");
 
             floor.floorObject = floorObject;
-            navmesh.SetWalkable(pos, walkable);
+            navmesh.SetWalkable(pos, floorObject == null);
         }
 
         public bool IsFloorObjectAtPos(Vector2Int pos) => m_floorCells.TryGetValue(pos, out Floor floor) && floor.floorObject != null;

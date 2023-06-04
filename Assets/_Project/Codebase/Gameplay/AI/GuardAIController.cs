@@ -13,6 +13,8 @@ namespace _Project.Codebase.Gameplay.AI
 
         protected override CharacterAction DetermineAction(World.WorldRef worldContext)
         {
+            if (worldContext.runner.Dead) return null;
+            
             RaycastHit2D hit = Physics2D.Raycast(character.transform.position,
                 worldContext.runner.transform.position - character.transform.position, character.firingRange);
             bool runnerCanBeShot = false;

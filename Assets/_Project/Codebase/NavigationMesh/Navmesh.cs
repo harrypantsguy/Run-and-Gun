@@ -10,6 +10,7 @@ namespace _Project.Codebase.NavigationMesh
         public const int SEARCH_LIMIT = 1000;
         
         private readonly Dictionary<Vector2Int, NavmeshNode> m_nodes = new();
+        public readonly List<INavmeshChangeSubscriber> navmeshSubscribers = new();
 
         public Navmesh(Navmesh navmeshToCopy)
         {
@@ -39,6 +40,20 @@ namespace _Project.Codebase.NavigationMesh
 
         public void SetWalkable(Vector2Int pos, bool walkableState)
         {
+            NavmeshNode node = m_nodes[pos];
+            if (node.walkable == walkableState) return;
+
+            for (var i = navmeshSubscribers.Count - 1; i >= 0; i--)
+            {
+                var subscriber = navmeshSubscribers[i];
+                if (subscriber == null)
+                {
+                    navmeshSubscribers.RemoveAt(i);
+                    continue;
+                }
+                subscriber.NavmeshReferenceDirty = true;
+            }
+
             m_nodes[pos].walkable = walkableState;
         }
     }

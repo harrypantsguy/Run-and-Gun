@@ -54,25 +54,35 @@ namespace _Project.Codebase.Gameplay.Player
                 {
                     m_pathRenderer.Enabled = true;
                     
-                    Vector2 targetPos = runner.agent.GetClosestTilePosInRange(MiscUtilities.WorldMousePos,
+                    bool foundPos = runner.agent.TryGetClosestTilePosInRange(MiscUtilities.WorldMousePos,
                         runner.CurrentLargestPossibleTravelDistance,
-                        out float distFromRunner);
+                        out float distFromRunner, out Vector2 targetPos);
 
-                    runner.agent.TryGetPath(targetPos, desiredMovePath);
-                    PathActionPointCost = runner.CalcActionPointCostOfMove(distFromRunner);
-                    IsValidSelectedPath = runner.actionPoints >= PathActionPointCost;
-                    m_pathRenderer.SetPath(desiredMovePath);
-                    m_tileBoxOutline.gameObject.SetActive(desiredMovePath.Count > 0);
-                    //m_tileBoxOutline.color = IsValidSelectedPath ? Color.white : Color.red;
-                    if (desiredMovePath.Count > 0)
-                        m_tileBoxOutline.transform.position = targetPos;
+                    if (foundPos)
+                    {
+                        runner.agent.TryGetPath(targetPos, desiredMovePath);
+                        PathActionPointCost = runner.CalcActionPointCostOfMove(distFromRunner);
+                        IsValidSelectedPath = runner.actionPoints >= PathActionPointCost;
+                        m_pathRenderer.SetPath(desiredMovePath);
+                        m_tileBoxOutline.gameObject.SetActive(desiredMovePath.Count > 0);
+                        //m_tileBoxOutline.color = IsValidSelectedPath ? Color.white : Color.red;
+                        if (desiredMovePath.Count > 0)
+                            m_tileBoxOutline.transform.position = targetPos;
+                    }
+                    else
+                        SetPathEnabledState(false);
                 }
             }
             else if (Selection == null)
             {
-                m_pathRenderer.Enabled = false;
-                m_tileBoxOutline.gameObject.SetActive(false);
+                SetPathEnabledState(false);
             }
+        }
+
+        private void SetPathEnabledState(bool state)
+        {
+            m_pathRenderer.Enabled = state;
+            m_tileBoxOutline.gameObject.SetActive(state);
         }
     }
 }

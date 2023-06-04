@@ -10,7 +10,7 @@ namespace _Project.CodeBase.Editor
     {
         protected bool debug = true;
         public T CastedTarget { get; private set; }
-        protected virtual bool MakeInspectorDebugToggleable => true;
+        protected virtual bool MakeInspectorDebugToggleable => false;
         
         protected const float DEFAULT_CIRCLE_SIZE = .05f;
         protected const float DEFAULT_LINE_SIZE = 1f;

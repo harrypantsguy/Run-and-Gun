@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_debugPath: 1
-  m_moveSpeed: 4
+  m_moveSpeed: 8
   m_nodeReachedDist: 0.01
   followPath: 0
 --- !u!50 &830659561568731656

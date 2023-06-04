@@ -24,6 +24,7 @@ namespace _Project.Codebase.Gameplay.Characters
             RunnerObject runnerObj = 
                 ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.RUNNER).GetComponent<RunnerObject>();
             m_world.runner = (Runner)runnerObj.Initialize(Vector2Int.zero);
+            world.building.navmesh.navmeshSubscribers.Add(m_world.runner);
             
             for (int i = 0; i < 3; i++)
             {
@@ -31,6 +32,7 @@ namespace _Project.Codebase.Gameplay.Characters
                     ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.ENEMY).GetComponent<EnemyObject>();
                 EnemyCharacter enemy = (EnemyCharacter)enemyObj.Initialize(world.building.GetRandomOpenFloor().position);
                 m_enemies.Add(enemy);
+                world.building.navmesh.navmeshSubscribers.Add(enemy);
             }
         }
 
@@ -46,14 +48,16 @@ namespace _Project.Codebase.Gameplay.Characters
                 WorldRef world = ModuleUtilities.Get<GameModule>().World;
                 foreach (EnemyCharacter enemy in m_enemies)
                 {
-                   await enemy.TakeTurn(world);
+                    enemy.PreTurnStart();
+                    await enemy.TakeTurn(world);
                 }
-                
+
                 m_turnController.NextTurn();
             }
             else
             {
                 m_world.runner.ResetActionPointsToMax();
+                m_world.runner.PreTurnStart();
             }
         }
     }

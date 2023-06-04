@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Characters
 {
-    public class Character : IFloorObject, IProjectileHittable, IPlayerSelectable, IDamageable
+    public abstract class Character : IFloorObject, IProjectileHittable, IPlayerSelectable, IDamageable, INavmeshChangeSubscriber
     {
         public event Action OnCharacterDeath;
         public readonly NavmeshAgent agent;
@@ -28,6 +28,7 @@ namespace _Project.Codebase.Gameplay.Characters
         public int LargestPossibleTravelDistance => moveDistancePerActionPoint * MaxActionPoints;
         public int Health { get; private set; }
         public int MaxHealth { get; private set; }
+        public bool NavmeshReferenceDirty { get; set; }
 
         public Vector2 FacingDirection { get; private set; }
 
@@ -48,7 +49,7 @@ namespace _Project.Codebase.Gameplay.Characters
             MaxHealth = maxHealth;
             Health = MaxHealth;
             agent.OnGeneratePathTree += OnAgentGeneratePathTree;
-            UpdateFloorPosition(position, true);
+            UpdateFloorPosition(position, true, false);
         }
 
         public void ResetActionPointsToMax() => actionPoints = MaxActionPoints;
@@ -59,6 +60,20 @@ namespace _Project.Codebase.Gameplay.Characters
         {
             FacingDirection = dir;
             m_renderer.GraphicsTransform.right = dir;
+        }
+
+        public void CalculatePathTreeAtPos()
+        {
+            agent.CalculateAllPathsFromSource(FloorPos, LargestPossibleTravelDistance);
+        }
+
+        public void PreTurnStart()
+        {
+            if (NavmeshReferenceDirty)
+            {
+                NavmeshReferenceDirty = false;
+                CalculatePathTreeAtPos();
+            }
         }
         
         public async UniTask PerformAction(CharacterAction action)
@@ -75,10 +90,11 @@ namespace _Project.Codebase.Gameplay.Characters
             m_renderer.Animator.SetLegsAnimationState(false);
         }
 
-        private void UpdateFloorPosition(Vector2Int gridPos, bool teleportToPos = false)
+        private void UpdateFloorPosition(Vector2Int gridPos, bool teleportToPos = false, bool clearOldPosition = true)
         {
             Building building = ModuleUtilities.Get<GameModule>().Building;
-            building.SetFloorObjectAtPos(FloorPos, null);
+            if (clearOldPosition)
+                building.SetFloorObjectAtPos(FloorPos, null);
             FloorPos = gridPos;
             building.SetFloorObjectAtPos(gridPos, this);
             if (teleportToPos)

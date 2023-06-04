@@ -51,6 +51,8 @@ namespace _Project.Codebase.Gameplay.Characters
                 transform.position = Vector2.MoveTowards(transform.position, m_pathIterator.NextNode,
                     Time.fixedDeltaTime * m_moveSpeed);
         }
+        
+        public bool HasGeneratedPathTreeAtPos(Vector2Int pos) => PathTree.source == pos;
 
         public void CalculateAllPathsFromSource(Vector2Int gridPos, float range)
         {
@@ -59,27 +61,36 @@ namespace _Project.Codebase.Gameplay.Characters
             OnGeneratePathTree?.Invoke(PathTree);
         }
 
-        public Vector2 GetClosestTilePosInRange(Vector2 pos, float maxDistance, out float distanceFromAgent)
+        public bool TryGetClosestTilePosInRange(Vector2 pos, float maxDistance, out float distanceFromAgent, out Vector2 closestPos)
         {
             Vector2Int gridPos = m_building.WorldToGrid(pos);
+            closestPos = Vector2.zero;
+            distanceFromAgent = 0f;
             
             if (PathTree == null)
             {
                 Debug.LogWarning("Path tree uninitialized");
-                distanceFromAgent = 0f;
-                return pos;
+                return false;
             }
             
-            if (PathTree.nodes.TryGetValue(gridPos, out PathNode node) && node.distance <= maxDistance)
+            if (PathTree.nodes.TryGetValue(gridPos, out PathNode node) && node.distance <= maxDistance && 
+                !m_building.IsFloorObjectAtPos(node.pos))
             {
                 distanceFromAgent = node.distance;
-                return m_building.GridToWorld(node.pos);
+                closestPos = m_building.GridToWorld(node.pos);
+                return true;
             }
 
-            PathNode closestTile = 
-                PathTree.GetNodesInRange(maxDistance).OrderBy(n => Vector2.Distance(n.pos, gridPos)).ToList()[0];
+            List<PathNode> nodesInRange = PathTree.GetNodesInRange(maxDistance);
+            //nodesInRange.RemoveAll(n => m_building.IsFloorObjectAtPos(n.pos));
+            
+            if (nodesInRange.Count == 0)
+                return false;
+            
+            PathNode closestTile = nodesInRange.OrderBy(n => Vector2.Distance(n.pos, gridPos)).ToList()[0];
             distanceFromAgent = closestTile.distance;
-            return m_building.GridToWorld(closestTile.pos);
+            closestPos = m_building.GridToWorld(closestTile.pos);
+            return true;
         }
 
         private void OnArriveAtPathEnd(Vector2 worldPos)

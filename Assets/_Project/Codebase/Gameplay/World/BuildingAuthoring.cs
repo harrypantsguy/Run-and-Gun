@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -16,16 +17,12 @@ namespace _Project.Codebase.Gameplay.World
         public Tilemap itemMap;
         [SerializeField] private bool m_debugNavmesh;
 
-        // ReSharper disable once CollectionNeverUpdated.Global
-        public readonly Dictionary<SpawnTileType, SpawnTileCollection> spawnTileLocations = new();
+        // ReSharper disable once UnassignedField.Global
+        public Dictionary<SpawnTileType, SpawnTileCollection> spawnTileLocations;
 
-        private Building m_building;
+        // ReSharper disable once Unity.RedundantHideInInspectorAttribute
+        [HideInInspector] public Building building;
 
-        private void OnValidate()
-        {
-            spawnTileLocations.Remove(0);   
-        }      
-        
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying || !m_debugNavmesh) return;
@@ -35,12 +32,13 @@ namespace _Project.Codebase.Gameplay.World
             for (int y = -halfSize; y < halfSize; y++)
             {
                 Vector2Int pos = new Vector2Int(x, y);
-                bool isValidAndWalkable = m_building.navmesh.IsValidNode(pos) && m_building.navmesh.IsWalkableNode(pos);
+                bool isValidAndWalkable = building.navmesh.IsValidNode(pos) && building.navmesh.IsWalkableNode(pos);
                 Gizmos.color = isValidAndWalkable
                     ? Color.green : Color.red;
-                Vector2 worldPos = m_building.GridToWorld(pos);
+                Vector2 worldPos = building.GridToWorld(pos);
                 Gizmos.DrawWireCube(worldPos, new Vector3(.99f, .99f));
-                if (m_building.IsFloorObjectAtPos(pos))
+                
+                if (building.IsFloorObjectAtPos(pos))
                 {
                     Gizmos.color = Color.magenta;
                     Gizmos.DrawWireSphere(worldPos, .3f);
