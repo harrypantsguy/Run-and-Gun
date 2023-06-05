@@ -154,7 +154,6 @@ namespace _Project.Codebase.Gameplay.World
                 throw new Exception("Attempting to set floor object at nonexistent floor position");
 
             floor.floorObject = floorObject;
-            navmesh.SetWalkable(pos, floorObject == null);
         }
 
         public bool IsFloorObjectAtPos(Vector2Int pos) => m_floorCells.TryGetValue(pos, out Floor floor) && floor.floorObject != null;

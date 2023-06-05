@@ -52,7 +52,7 @@ namespace _Project.Codebase.Gameplay.Characters
                     Time.fixedDeltaTime * m_moveSpeed);
         }
         
-        public bool HasGeneratedPathTreeAtPos(Vector2Int pos) => PathTree.source == pos;
+        public bool HasGeneratedPathTreeAtPos(Vector2Int pos) => PathTree != null && PathTree.source == pos;
 
         public void CalculateAllPathsFromSource(Vector2Int gridPos, float range)
         {
@@ -82,7 +82,7 @@ namespace _Project.Codebase.Gameplay.Characters
             }
 
             List<PathNode> nodesInRange = PathTree.GetNodesInRange(maxDistance);
-            //nodesInRange.RemoveAll(n => m_building.IsFloorObjectAtPos(n.pos));
+            nodesInRange.RemoveAll(n => m_building.IsFloorObjectAtPos(n.pos));
             
             if (nodesInRange.Count == 0)
                 return false;
