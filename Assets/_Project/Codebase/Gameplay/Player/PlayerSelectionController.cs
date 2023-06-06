@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Project.Codebase.AssetGroups;
 using _Project.Codebase.Gameplay.Characters;
+using _Project.Codebase.UI;
 using DanonFramework.Core.Utilities;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ namespace _Project.Codebase.Gameplay.Player
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (Input.GetKeyDown(KeyCode.Mouse0) && !GraphicMouseBlocker.IsMouseOverUI)
             {
                 m_pathRenderer.Enabled = false;
                 
