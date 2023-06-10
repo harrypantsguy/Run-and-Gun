@@ -24,7 +24,7 @@ namespace _Project.Codebase.Gameplay.Characters
             RunnerObject runnerObj = 
                 ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.RUNNER).GetComponent<RunnerObject>();
             m_world.runner = (Runner)runnerObj.Initialize(Vector2Int.zero);
-            world.building.navmesh.navmeshSubscribers.Add(m_world.runner);
+            //world.building.navmesh.navmeshSubscribers.Add(m_world.runner);
             
             for (int i = 0; i < 3; i++)
             {
@@ -32,7 +32,7 @@ namespace _Project.Codebase.Gameplay.Characters
                     ContentUtilities.Instantiate<GameObject>(PrefabAssetGroup.ENEMY).GetComponent<EnemyObject>();
                 EnemyCharacter enemy = (EnemyCharacter)enemyObj.Initialize(world.building.GetRandomOpenFloor().position);
                 m_enemies.Add(enemy);
-                world.building.navmesh.navmeshSubscribers.Add(enemy);
+                //world.building.navmesh.navmeshSubscribers.Add(enemy);
             }
         }
 

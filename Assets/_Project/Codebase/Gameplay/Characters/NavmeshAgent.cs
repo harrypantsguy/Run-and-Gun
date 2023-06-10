@@ -52,7 +52,7 @@ namespace _Project.Codebase.Gameplay.Characters
                     Time.fixedDeltaTime * m_moveSpeed);
         }
         
-        public bool HasGeneratedPathTreeAtPos(Vector2Int pos) => PathTree != null && PathTree.source == pos;
+        public bool IsGeneratedPathTreeAtPos(Vector2Int pos) => PathTree != null && PathTree.source == pos;
 
         public void CalculateAllPathsFromSource(Vector2Int gridPos, float range)
         {

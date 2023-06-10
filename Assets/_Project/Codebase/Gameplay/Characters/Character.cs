@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Characters
 {
-    public abstract class Character : IFloorObject, IProjectileHittable, IPlayerSelectable, IDamageable, INavmeshChangeSubscriber
+    public abstract class Character : IFloorObject, IProjectileHittable, IPlayerSelectable, IDamageable
     {
         public event Action OnCharacterDeath;
         public readonly NavmeshAgent agent;
@@ -28,7 +28,6 @@ namespace _Project.Codebase.Gameplay.Characters
         public int LargestPossibleTravelDistance => moveDistancePerActionPoint * MaxActionPoints;
         public int Health { get; private set; }
         public int MaxHealth { get; private set; }
-        public bool NavmeshReferenceDirty { get; set; }
 
         public Vector2 FacingDirection { get; private set; }
 
@@ -69,11 +68,7 @@ namespace _Project.Codebase.Gameplay.Characters
 
         public void PreTurnStart()
         {
-            if (NavmeshReferenceDirty)
-            {
-                NavmeshReferenceDirty = false;
-                CalculatePathTreeAtPos();
-            }
+            CalculatePathTreeAtPos();
         }
         
         public async UniTask PerformAction(CharacterAction action)

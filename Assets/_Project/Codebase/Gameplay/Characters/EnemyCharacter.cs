@@ -27,13 +27,13 @@ namespace _Project.Codebase.Gameplay.Characters
             m_AIController = new GuardAIController(this);
             this.firingRange = firingRange;
             m_projectileSpawnPos = projectileSpawnPos;
-            m_weapon = new Weapon(1);
+            m_weapon = new Weapon(0);
         }
 
         protected override void OnAgentGeneratePathTree(ShortestPathTree tree)
         {
             base.OnAgentGeneratePathTree(tree);
-            if (tree.source != FloorPos) return;
+
             WorldRef world = ModuleUtilities.Get<GameModule>().World;
             nodesInRangeOfPlayer.Clear();
             foreach (PathNode node in tree.nodes.Values)
@@ -49,8 +49,8 @@ namespace _Project.Codebase.Gameplay.Characters
 
         public async UniTask TakeTurn(WorldRef worldContext)
         {
-            if (!agent.HasGeneratedPathTreeAtPos(FloorPos))
-                agent.CalculateAllPathsFromSource(FloorPos, LargestPossibleTravelDistance);
+            //if (!agent.IsGeneratedPathTreeAtPos(FloorPos))
+            //    CalculatePathTreeAtPos();
             await m_AIController.TakeTurn(worldContext);
         }
 

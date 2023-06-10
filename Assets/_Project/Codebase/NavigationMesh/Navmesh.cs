@@ -42,6 +42,8 @@ namespace _Project.Codebase.NavigationMesh
         {
             NavmeshNode node = m_nodes[pos];
             if (node.walkable == walkableState) return;
+            
+            m_nodes[pos].walkable = walkableState;
 
             for (var i = navmeshSubscribers.Count - 1; i >= 0; i--)
             {
@@ -53,8 +55,6 @@ namespace _Project.Codebase.NavigationMesh
                 }
                 subscriber.NavmeshReferenceDirty = true;
             }
-
-            m_nodes[pos].walkable = walkableState;
         }
     }
 }
