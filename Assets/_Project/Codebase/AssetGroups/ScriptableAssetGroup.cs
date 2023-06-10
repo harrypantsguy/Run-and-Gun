@@ -1,4 +1,4 @@
-﻿using DanonFramework.Core.ContentLayer;
+﻿using DanonFramework.Core;
 using JetBrains.Annotations;
 
 namespace _Project.Codebase.AssetGroups

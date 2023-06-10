@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Project.Codebase.Gameplay.World;
-using DanonFramework.Core.Utilities;
+using DanonFramework.Core;
 using UnityEditor;
 using UnityEngine;
 

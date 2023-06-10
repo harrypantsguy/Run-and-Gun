@@ -3,7 +3,7 @@ using _Project.Codebase.Gameplay.AI;
 using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.Modules;
 using Cysharp.Threading.Tasks;
-using DanonFramework.Core.Utilities;
+using DanonFramework.Core;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Player

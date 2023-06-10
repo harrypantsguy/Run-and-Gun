@@ -1,5 +1,5 @@
 ﻿using _Project.Codebase.AssetGroups;
-using DanonFramework.Core.Utilities;
+using DanonFramework.Core;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Characters

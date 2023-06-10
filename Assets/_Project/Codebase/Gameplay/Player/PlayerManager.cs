@@ -1,7 +1,7 @@
 ﻿using System;
 using _Project.Codebase.AssetGroups;
 using _Project.Codebase.Gameplay.Shooter;
-using DanonFramework.Core.Utilities;
+using DanonFramework.Core;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Player

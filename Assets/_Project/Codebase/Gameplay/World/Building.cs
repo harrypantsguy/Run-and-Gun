@@ -4,7 +4,7 @@ using System.Linq;
 using _Project.Codebase.AssetGroups;
 using _Project.Codebase.Gameplay.Items;
 using _Project.Codebase.NavigationMesh;
-using DanonFramework.Core.Utilities;
+using DanonFramework.Core;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Object = UnityEngine.Object;

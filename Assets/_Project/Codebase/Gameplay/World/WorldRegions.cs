@@ -1,4 +1,4 @@
-﻿using DanonFramework.Core.Utilities;
+﻿using DanonFramework.Core;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.World

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Project.Codebase.Gameplay.Shooter;
 using _Project.Codebase.Modules;
-using DanonFramework.Core.Utilities;
+using DanonFramework.Core;
 using UnityEngine;
 
 namespace _Project.Codebase.UI

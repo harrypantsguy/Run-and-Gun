@@ -1,4 +1,4 @@
-﻿using DanonFramework.Core.Utilities;
+﻿using DanonFramework.Core;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;

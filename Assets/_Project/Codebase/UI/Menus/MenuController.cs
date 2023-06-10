@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Project.Codebase.Services;
 using Cysharp.Threading.Tasks;
-using DanonFramework.Core.Utilities;
+using DanonFramework.Core;
 using JetBrains.Annotations;
 using UnityEngine;
 

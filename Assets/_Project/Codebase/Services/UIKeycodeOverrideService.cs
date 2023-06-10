@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using CHR.MenuControllers;
-using DanonFramework.Core.ServiceLayer;
+using DanonFramework.Core;
 using UnityEngine;
 
 namespace _Project.Codebase.Services

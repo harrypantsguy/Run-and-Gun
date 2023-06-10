@@ -2,7 +2,7 @@
 using _Project.Codebase.AssetGroups;
 using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
-using DanonFramework.Core.Utilities;
+using DanonFramework.Core;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Characters

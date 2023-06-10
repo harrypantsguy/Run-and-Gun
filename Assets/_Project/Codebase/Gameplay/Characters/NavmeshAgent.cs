@@ -4,7 +4,7 @@ using System.Linq;
 using _Project.Codebase.Gameplay.World;
 using _Project.Codebase.Modules;
 using _Project.Codebase.NavigationMesh;
-using DanonFramework.Core.Utilities;
+using DanonFramework.Core;
 using UnityEngine;
 
 namespace _Project.Codebase.Gameplay.Characters

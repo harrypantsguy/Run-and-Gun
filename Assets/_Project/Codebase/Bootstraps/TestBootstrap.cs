@@ -1,8 +1,6 @@
 ﻿using _Project.Codebase.Modules;
 using Cysharp.Threading.Tasks;
-using DanonFramework.Core.BootstrapLayer;
-using DanonFramework.Core.ModuleLayer;
-using DanonFramework.Core.ServiceLayer;
+using DanonFramework.Core;
 using UnityEngine;
 
 namespace _Project.Codebase.Bootstraps

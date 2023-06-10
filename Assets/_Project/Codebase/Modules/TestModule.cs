@@ -1,6 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
-using DanonFramework.Core.ModuleLayer;
-using DanonFramework.Core.Utilities;
+using DanonFramework.Core;
 
 namespace _Project.Codebase.Modules
 {

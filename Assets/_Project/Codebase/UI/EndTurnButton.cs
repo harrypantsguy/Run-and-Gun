@@ -2,7 +2,7 @@
 using _Project.Codebase.Gameplay.Player;
 using _Project.Codebase.Modules;
 using Cysharp.Threading.Tasks;
-using DanonFramework.Core.Utilities;
+using DanonFramework.Core;
 
 namespace _Project.Codebase.UI
 {

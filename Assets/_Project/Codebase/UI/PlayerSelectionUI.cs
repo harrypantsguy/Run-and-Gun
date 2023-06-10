@@ -2,7 +2,7 @@
 using _Project.Codebase.Gameplay.Characters;
 using _Project.Codebase.Gameplay.Player;
 using _Project.Codebase.Modules;
-using DanonFramework.Core.Utilities;
+using DanonFramework.Core;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
